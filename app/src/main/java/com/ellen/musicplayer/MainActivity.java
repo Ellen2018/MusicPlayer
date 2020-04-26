@@ -15,6 +15,7 @@ import com.ellen.musicplayer.utils.ContentProviderUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.PermissionUtils;
+import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycler_view);
+        //设置无ActionBar效果
+        StatusUtils.setNoActionBar(this);
 
         //申请文件读写权限
         PermissionUtils permissionUtils = new PermissionUtils(this);
