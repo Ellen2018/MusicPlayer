@@ -1,8 +1,6 @@
 package com.ellen.musicplayer.notification;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
@@ -45,14 +43,8 @@ public class MusicNotification extends BaseNotification {
         }
 
         //设置点击事件
-        PendingIntent pauseIntent = PendingIntent.getBroadcast(getContext(), 1,
-                new Intent(ACTION_PAUSE), PendingIntent.FLAG_UPDATE_CURRENT);
-
-        PendingIntent nextIntent = PendingIntent.getBroadcast(getContext(), 1,
-                new Intent(ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT);
-
-        remoteViews.setOnClickPendingIntent(R.id.iv_pause, pauseIntent);//点击的id，点击事件
-        remoteViews.setOnClickPendingIntent(R.id.iv_next, nextIntent);//点击的id，点击事件
+        remoteViews.setOnClickPendingIntent(R.id.iv_pause, getBroadcastIntent(1,ACTION_PAUSE));//点击的id，点击事件
+        remoteViews.setOnClickPendingIntent(R.id.iv_next, getBroadcastIntent(2,ACTION_NEXT));//点击的id，点击事件
     }
 
     @Override

@@ -138,4 +138,9 @@ public abstract class BaseNotification {
         void cancel();
     }
 
+    protected PendingIntent getBroadcastIntent(int requestCode,String action){
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode,
+                new Intent(action), PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntent;
+    }
 }
