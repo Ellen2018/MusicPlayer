@@ -1,52 +1,82 @@
 package com.ellen.musicplayer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.ellen.musicplayer.adapter.MusicAdapter;
-import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.utils.ContentProviderUtils;
-import com.ellen.musicplayer.utils.LocalSDMusicUtils;
-import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.utils.PermissionUtils;
+import com.ellen.musicplayer.fragment.LocalFragment;
+import com.ellen.musicplayer.fragment.MyFragment;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private TextView tvTabOne,tvTabTwo;
+    private ViewPager viewPager;
+    private List<Fragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recycler_view);
         //设置无ActionBar效果
         StatusUtils.setNoActionBar(this);
-
-        //申请文件读写权限
-        PermissionUtils permissionUtils = new PermissionUtils(this);
-        permissionUtils.startCheckFileReadWritePermission(0, new PermissionUtils.PermissionCallback() {
+        setContentView(R.layout.activity_main);
+        viewPager = findViewById(R.id.view_pager);
+        tvTabOne = findViewById(R.id.tv_tab_1);
+        tvTabTwo = findViewById(R.id.tv_tab_2);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new LocalFragment());
+        fragmentList.add(new MyFragment());
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @NonNull
             @Override
-            public void success() {
-                List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(MainActivity.this);
-                MusicAdapter musicAdapter = new MusicAdapter(MainActivity.this, musicList);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(musicAdapter);
+            public Fragment getItem(int position) {
+               return fragmentList.get(position);
             }
 
             @Override
-            public void failure() {
+            public int getCount() {
+                return 2;
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0){
+                    tvTabOne.setTextColor(Color.RED);
+                    tvTabTwo.setTextColor(Color.GRAY);
+                }else {
+                    tvTabOne.setTextColor(Color.GRAY);
+                    tvTabTwo.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Fragment fragment = fragmentList.get(viewPager.getCurrentItem());
+        fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }
