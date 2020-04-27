@@ -27,5 +27,6 @@ public interface MediaPlayerInterface {
 
     Music currentOpenMusic();
     Bitmap getCurrentOpenMusicBitmap(Activity activity);
+    Bitmap getGaoShiBitmap(Activity activity);
     MediaPlayer getMediaPlayer();
 }

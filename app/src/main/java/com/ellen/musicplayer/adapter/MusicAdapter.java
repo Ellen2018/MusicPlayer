@@ -3,6 +3,7 @@ package com.ellen.musicplayer.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,30 +38,33 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
     protected void showData(final MusicViewHolder musicViewHolder, Music data, final int position) {
         musicViewHolder.tvMusicName.setText(data.getName());
         musicViewHolder.tvSingerName.setText(data.getArtist());
+        musicViewHolder.tvPosition.setText(String.valueOf(position + 1));
         Music music = MediaPlayerManager.getInstance().currentOpenMusic();
-        if(music != null) {
+        if (music != null) {
             if (data.getPath().equals(MediaPlayerManager.getInstance().currentOpenMusic().getPath())) {
-                musicViewHolder.playStatus.setVisibility(View.VISIBLE);
+                musicViewHolder.ivPlayStatus.setVisibility(View.VISIBLE);
+                musicViewHolder.tvPosition.setVisibility(View.GONE);
             } else {
-                musicViewHolder.playStatus.setVisibility(View.GONE);
+                musicViewHolder.ivPlayStatus.setVisibility(View.GONE);
+                musicViewHolder.tvPosition.setVisibility(View.VISIBLE);
             }
-        }else {
-            musicViewHolder.playStatus.setVisibility(View.GONE);
+        } else {
+            musicViewHolder.ivPlayStatus.setVisibility(View.GONE);
+            musicViewHolder.tvPosition.setVisibility(View.VISIBLE);
         }
     }
 
-    static class MusicViewHolder extends BaseViewHolder{
+    static class MusicViewHolder extends BaseViewHolder {
 
-        TextView tvMusicName,tvSingerName;
-        LinearLayout llItem;
-        View playStatus;
+        TextView tvMusicName, tvSingerName, tvPosition;
+        ImageView ivPlayStatus;
 
         public MusicViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMusicName = findViewById(R.id.tv_music_name);
             tvSingerName = findViewById(R.id.tv_singer_name);
-            llItem = findViewById(R.id.ll_item);
-            playStatus = findViewById(R.id.view_play_status);
+            tvPosition = findViewById(R.id.tv_position);
+            ivPlayStatus = findViewById(R.id.iv_play_status);
         }
     }
 }

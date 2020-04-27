@@ -46,21 +46,10 @@ public class MainActivity extends AppCompatActivity {
         StatusUtils.setNoActionBar(this);
         StatusUtils.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        viewPager = findViewById(R.id.view_pager);
-        tvTabOne = findViewById(R.id.tv_tab_1);
-        tvTabTwo = findViewById(R.id.tv_tab_2);
-        ivUser = findViewById(R.id.iv_user);
-        ivSerach = findViewById(R.id.iv_serach);
-        ivPlayerIcon = findViewById(R.id.iv_player_icon);
-        tvMusicName = findViewById(R.id.tv_music_name);
-        tvSingerName = findViewById(R.id.tv_singer_name);
-        ivPlayerBg = findViewById(R.id.iv_player_bg);
-        ivPlayerNext = findViewById(R.id.iv_player_next);
-        ivPlayerList = findViewById(R.id.iv_player_list);
         fragmentList = new ArrayList<>();
         fragmentList.add(new LocalFragment());
         fragmentList.add(new MyFragment());
+        initView();
 
         //走马灯设置
         tvMusicName.setSelected(true);
@@ -118,6 +107,33 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
+    private void initView() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        viewPager = findViewById(R.id.view_pager);
+        tvTabOne = findViewById(R.id.tv_tab_1);
+        tvTabTwo = findViewById(R.id.tv_tab_2);
+        ivUser = findViewById(R.id.iv_user);
+        ivSerach = findViewById(R.id.iv_serach);
+        ivPlayerIcon = findViewById(R.id.iv_player_icon);
+        tvMusicName = findViewById(R.id.tv_music_name);
+        tvSingerName = findViewById(R.id.tv_singer_name);
+        ivPlayerBg = findViewById(R.id.iv_player_bg);
+        ivPlayerNext = findViewById(R.id.iv_player_next);
+        ivPlayerList = findViewById(R.id.iv_player_list);
+        tvTabOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(0);
+            }
+        });
+        tvTabTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(1);
+            }
+        });
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void openMusic(Music music) {
 
@@ -125,13 +141,11 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
         if(bitmap == null){
             //设置默认图片
+            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+            ivPlayerBg.setImageResource(R.mipmap.default_bg);
         }else {
             ivPlayerIcon.setImageBitmap(bitmap);
-            Bitmap gaoShiBitmap = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                gaoShiBitmap = GaoShiUtils.blurBitmap(this,bitmap,23f);
-            }
-            ivPlayerBg.setImageBitmap(gaoShiBitmap);
+            ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
         }
 
 

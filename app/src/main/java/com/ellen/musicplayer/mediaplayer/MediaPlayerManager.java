@@ -1,10 +1,12 @@
 package com.ellen.musicplayer.mediaplayer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +32,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
      */
     private Bitmap bitmap = null;
     private int bitmapPosition = -1;
+    private Bitmap gaoShiBitmap = null;
 
     private MediaPlayerManager() {
         mediaPlayer = new MediaPlayer();
@@ -128,6 +131,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         return null;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public Bitmap getCurrentOpenMusicBitmap(Activity activity) {
         if(bitmapPosition == playPosition){
@@ -143,7 +147,29 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             } else {
                 bitmap = null;
             }
+            //获取高斯模糊图片
+            if(gaoShiBitmap != null && !gaoShiBitmap.isRecycled()){
+                gaoShiBitmap.recycle();
+            }
+            gaoShiBitmap = GaoShiUtils.blurBitmap(activity,bitmap,15f);
             return bitmap;
+        }
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public Bitmap getGaoShiBitmap(Activity activity) {
+        if(bitmapPosition == playPosition){
+            return gaoShiBitmap;
+        }else {
+            if(gaoShiBitmap != null && !gaoShiBitmap.isRecycled()){
+                gaoShiBitmap.recycle();
+            }
+            if(bitmap == null){
+                return null;
+            }else {
+                return GaoShiUtils.blurBitmap(activity,bitmap,15f);
+            }
         }
     }
 

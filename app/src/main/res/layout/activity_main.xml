@@ -24,15 +24,21 @@
             android:layout_height="match_parent"
             android:src="#88000000" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#883e3e3e" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:paddingTop="20dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="20dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize">
+                android:layout_height="?actionBarSize"
+                android:background="#883e3e3e">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -62,8 +68,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
-                        android:visibility="gone"
-                        android:background="@color/selector_color" />
+                        android:background="@color/selector_color"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_tab_2"
@@ -90,8 +96,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
-                android:visibility="gone"
-                android:background="@color/gray" />
+                android:background="@color/gray"
+                android:visibility="gone" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
@@ -118,20 +124,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/bg" />
+            android:src="@mipmap/bg_chl" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="#88000000" />
+            android:src="#66000000" />
 
-        <TextView
+        <View
+            android:id="@+id/view_status"
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+        <include
+            layout="@layout/layout_chl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="侧滑栏"
-            android:textColor="@color/white"
-            android:textSize="60sp" />
+            android:layout_below="@id/view_status" />
 
     </RelativeLayout>
 
