@@ -20,6 +20,7 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.fragment.LocalFragment;
 import com.ellen.musicplayer.fragment.MyFragment;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 
@@ -152,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
         //设置歌曲名和歌手名
         tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
         tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+
+        //发送通知
+        MusicNotification musicNotification = new MusicNotification(this);
+        musicNotification.showNotification();
 
     }
 

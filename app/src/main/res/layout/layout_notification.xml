@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_music_icon"
+        android:layout_width="?actionBarSize"
+        android:src="@mipmap/bg"
+        android:scaleType="centerCrop"
+        android:layout_height="?actionBarSize"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_noti_music_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="歌曲名"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="歌手名"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_music_pause"
+        android:layout_width="?actionBarSize"
+        android:src="@mipmap/next"
+        android:scaleType="centerCrop"
+        android:layout_height="?actionBarSize"/>
+
+    <ImageView
+        android:id="@+id/iv_music_cancel"
+        android:layout_width="?actionBarSize"
+        android:src="@mipmap/next"
+        android:scaleType="centerCrop"
+        android:layout_height="?actionBarSize"/>
+
+</LinearLayout>

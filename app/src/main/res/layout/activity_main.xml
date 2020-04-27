@@ -78,7 +78,7 @@
                         android:layout_weight="1"
                         android:gravity="left|center_vertical"
                         android:paddingLeft="10dp"
-                        android:text="我的"
+                        android:text="分类"
                         android:textColor="@color/gray"
                         android:textSize="20sp" />
 

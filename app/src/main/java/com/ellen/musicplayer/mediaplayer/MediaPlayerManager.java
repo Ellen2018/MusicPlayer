@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 
