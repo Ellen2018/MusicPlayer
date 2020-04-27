@@ -155,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
         tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
 
         //发送通知
-        MusicNotification musicNotification = new MusicNotification(this);
-        musicNotification.showNotification();
+//        MusicNotification musicNotification = new MusicNotification(this);
+//        musicNotification.showNotification();
 
     }
 
