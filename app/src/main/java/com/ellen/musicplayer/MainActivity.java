@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         intentFilterPause.addAction(MusicNotification.ACTION_PAUSE);
         NotificationPauseBroadcast notificationPauseBroadcast = new NotificationPauseBroadcast();
         registerReceiver(notificationPauseBroadcast, intentFilterPause);
-
         //下一曲广播注册
         intentFilterNext = new IntentFilter();
         intentFilterNext.addAction(MusicNotification.ACTION_NEXT);
