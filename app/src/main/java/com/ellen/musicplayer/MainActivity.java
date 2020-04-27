@@ -2,12 +2,16 @@ package com.ellen.musicplayer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ellen.musicplayer.fragment.LocalFragment;
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTabOne,tvTabTwo;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
+    private DrawerLayout drawerLayout;
+    private ImageView ivUser,ivSerach;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +35,23 @@ public class MainActivity extends AppCompatActivity {
         //设置无ActionBar效果
         StatusUtils.setNoActionBar(this);
         setContentView(R.layout.activity_main);
+        drawerLayout = findViewById(R.id.drawer_layout);
         viewPager = findViewById(R.id.view_pager);
         tvTabOne = findViewById(R.id.tv_tab_1);
         tvTabTwo = findViewById(R.id.tv_tab_2);
+        ivUser = findViewById(R.id.iv_user);
+        ivSerach = findViewById(R.id.iv_serach);
         fragmentList = new ArrayList<>();
         fragmentList.add(new LocalFragment());
         fragmentList.add(new MyFragment());
+
+        ivUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
             @Override
