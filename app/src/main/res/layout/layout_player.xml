@@ -65,16 +65,16 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_player_next"
+            android:id="@+id/iv_player_pause"
             android:layout_width="?actionBarSize"
-            android:padding="16dp"
-            android:src="@mipmap/next"
+            android:padding="15dp"
+            android:src="@mipmap/pause"
             android:layout_height="match_parent"/>
 
         <ImageView
             android:id="@+id/iv_player_list"
             android:src="@mipmap/play_list"
-            android:padding="16dp"
+            android:padding="12dp"
             android:layout_width="?actionBarSize"
             android:layout_height="match_parent"/>
 

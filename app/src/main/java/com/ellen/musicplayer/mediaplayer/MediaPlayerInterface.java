@@ -14,6 +14,7 @@ public interface MediaPlayerInterface {
     void pauseAndPlay();
     void stop();
     void start();
+    boolean checkCanPlay();
 
     /**
      * 下一曲

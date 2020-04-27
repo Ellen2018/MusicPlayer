@@ -93,6 +93,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             mediaPlayer.start();
         }
+        EventBus.getDefault().post(currentOpenMusic());
     }
 
     @Override
@@ -102,8 +103,16 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public void start() {
-        EventBus.getDefault().post(playList.get(playPosition));
         mediaPlayer.start();
+        EventBus.getDefault().post(playList.get(playPosition));
+    }
+
+    @Override
+    public boolean checkCanPlay() {
+        if (playList != null && playPosition >= 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -135,9 +144,9 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @SuppressLint("NewApi")
     @Override
     public Bitmap getCurrentOpenMusicBitmap(Activity activity) {
-        if(bitmapPosition == playPosition){
+        if (bitmapPosition == playPosition) {
             return bitmap;
-        }else {
+        } else {
             bitmapPosition = playPosition;
             Music music = currentOpenMusic();
             if (bitmap != null && !bitmap.isRecycled()) {
@@ -149,10 +158,10 @@ public class MediaPlayerManager implements MediaPlayerInterface {
                 bitmap = null;
             }
             //获取高斯模糊图片
-            if(gaoShiBitmap != null && !gaoShiBitmap.isRecycled()){
+            if (gaoShiBitmap != null && !gaoShiBitmap.isRecycled()) {
                 gaoShiBitmap.recycle();
             }
-            gaoShiBitmap = GaoShiUtils.blurBitmap(activity,bitmap,15f);
+            gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 15f);
             return bitmap;
         }
     }
@@ -160,16 +169,16 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @SuppressLint("NewApi")
     @Override
     public Bitmap getGaoShiBitmap(Activity activity) {
-        if(bitmapPosition == playPosition){
+        if (bitmapPosition == playPosition) {
             return gaoShiBitmap;
-        }else {
-            if(gaoShiBitmap != null && !gaoShiBitmap.isRecycled()){
+        } else {
+            if (gaoShiBitmap != null && !gaoShiBitmap.isRecycled()) {
                 gaoShiBitmap.recycle();
             }
-            if(bitmap == null){
+            if (bitmap == null) {
                 return null;
-            }else {
-                return GaoShiUtils.blurBitmap(activity,bitmap,15f);
+            } else {
+                return GaoShiUtils.blurBitmap(activity, bitmap, 15f);
             }
         }
     }

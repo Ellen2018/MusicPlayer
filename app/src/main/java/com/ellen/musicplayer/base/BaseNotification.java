@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.base;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,8 +18,8 @@ import java.lang.ref.WeakReference;
 public abstract class BaseNotification {
 
     private NotificationManager notificationManager;
-    private WeakReference<Context> contextWeakReference;
-    private Notification notification;
+    private WeakReference<Activity> activityWeakReference;
+    protected Notification notification;
 
     //通知id
     private int notificationId;
@@ -41,8 +42,8 @@ public abstract class BaseNotification {
         this.onNotificationCancelListener = onNotificationCancelListener;
     }
 
-    public Context getContext(){
-        return contextWeakReference.get();
+    public Activity getContext(){
+        return activityWeakReference.get();
     }
 
     public Intent getNotificationIntent() {
@@ -61,9 +62,9 @@ public abstract class BaseNotification {
         this.notificationId = notificationId;
     }
 
-    public BaseNotification(Context context) {
-        contextWeakReference = new WeakReference<>(context);
-        notificationManager = (NotificationManager) contextWeakReference.get().getSystemService(Context.NOTIFICATION_SERVICE);
+    public BaseNotification(Activity activity) {
+        activityWeakReference = new WeakReference<>(activity);
+        notificationManager = (NotificationManager) activityWeakReference.get().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationId = setNotificationId();
         notificationIntent = setNotificationIntent();
     }
@@ -77,7 +78,7 @@ public abstract class BaseNotification {
             //适配8.0以上的通知
             NotificationChannel channel = new NotificationChannel(String.valueOf(notificationId), setChannelName(), NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
-            Notification.Builder build = new Notification.Builder(contextWeakReference.get(), String.valueOf(notificationId));
+            Notification.Builder build = new Notification.Builder(activityWeakReference.get(), String.valueOf(notificationId));
             build.setSmallIcon(setIconResourecId())
                     .setTicker(setTicker())
                     .setContentTitle(setTitle())
@@ -100,12 +101,12 @@ public abstract class BaseNotification {
             notification.icon = setIconResourecId();
             isShowNotificaiton = true;
         }
-        RemoteViews remoteViews = new RemoteViews(contextWeakReference.get().getPackageName(), setNotificationLayoutId());
+        RemoteViews remoteViews = new RemoteViews(activityWeakReference.get().getPackageName(), setNotificationLayoutId());
         initView(remoteViews);
         notification.contentView = remoteViews;
         //封装一个Intent
         if(notificationIntent != null) {
-            PendingIntent resultPendingIntent = PendingIntent.getActivity(contextWeakReference.get(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(activityWeakReference.get(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // 设置通知主题的意图
             notification.contentIntent = resultPendingIntent;
         }

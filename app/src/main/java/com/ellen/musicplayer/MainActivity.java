@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,14 +18,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.fragment.LocalFragment;
 import com.ellen.musicplayer.fragment.MyFragment;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
-import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,12 +35,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvTabOne,tvTabTwo,tvMusicName,tvSingerName;
+    private TextView tvTabOne, tvTabTwo, tvMusicName, tvSingerName;
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     private DrawerLayout drawerLayout;
-    private ImageView ivUser,ivSerach,ivPlayerIcon;
-    private ImageView ivPlayerBg,ivPlayerNext,ivPlayerList;
+    private ImageView ivUser, ivSerach, ivPlayerIcon;
+    private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
+    private IntentFilter intentFilterPause,intentFilterNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ivPlayerNext.setOnClickListener(new View.OnClickListener() {
+        ivPlayerPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaPlayerManager.getInstance().next();
+                if (MediaPlayerManager.getInstance().checkCanPlay()) {
+                    MediaPlayerManager.getInstance().pauseAndPlay();
+                } else {
+
+                }
             }
         });
 
@@ -74,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-               return fragmentList.get(position);
+                return fragmentList.get(position);
             }
 
             @Override
@@ -91,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0){
+                if (position == 0) {
                     tvTabOne.setTextColor(Color.WHITE);
                     tvTabTwo.setTextColor(Color.GRAY);
-                }else {
+                } else {
                     tvTabOne.setTextColor(Color.GRAY);
                     tvTabTwo.setTextColor(Color.WHITE);
                 }
@@ -106,6 +113,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         EventBus.getDefault().register(this);
+
+        //播放暂停通知广播注册
+        intentFilterPause = new IntentFilter();
+        intentFilterPause.addAction(MusicNotification.ACTION_PAUSE);
+        NotificationPauseBroadcast notificationPauseBroadcast = new NotificationPauseBroadcast();
+        registerReceiver(notificationPauseBroadcast, intentFilterPause);
+
+        //下一曲广播注册
+        intentFilterNext = new IntentFilter();
+        intentFilterNext.addAction(MusicNotification.ACTION_NEXT);
+        NotificationNextBroadcast notificationNextBroadcast = new NotificationNextBroadcast();
+        registerReceiver(notificationNextBroadcast, intentFilterNext);
+
     }
 
     private void initView() {
@@ -119,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         tvMusicName = findViewById(R.id.tv_music_name);
         tvSingerName = findViewById(R.id.tv_singer_name);
         ivPlayerBg = findViewById(R.id.iv_player_bg);
-        ivPlayerNext = findViewById(R.id.iv_player_next);
+        ivPlayerPause = findViewById(R.id.iv_player_pause);
         ivPlayerList = findViewById(R.id.iv_player_list);
         tvTabOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,15 +160,21 @@ public class MainActivity extends AppCompatActivity {
 
         //设置歌曲图片
         Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-        if(bitmap == null){
+        if (bitmap == null) {
             //设置默认图片
             ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
             ivPlayerBg.setImageResource(R.mipmap.default_bg);
-        }else {
+        } else {
             ivPlayerIcon.setImageBitmap(bitmap);
             ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
         }
 
+        //更新播放/暂停状态
+        if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+            ivPlayerPause.setImageResource(R.mipmap.play);
+        } else {
+            ivPlayerPause.setImageResource(R.mipmap.pause);
+        }
 
         //设置歌曲名和歌手名
         tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
@@ -170,6 +196,24 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Fragment fragment = fragmentList.get(viewPager.getCurrentItem());
-        fragment.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    static class NotificationPauseBroadcast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                MediaPlayerManager.getInstance().pauseAndPlay();
+            }
+        }
+    }
+
+    static class NotificationNextBroadcast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                MediaPlayerManager.getInstance().next();
+            }
+        }
     }
 }
