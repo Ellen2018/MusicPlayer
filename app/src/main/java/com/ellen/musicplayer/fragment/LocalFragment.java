@@ -1,5 +1,7 @@
 package com.ellen.musicplayer.fragment;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,9 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -17,6 +25,7 @@ public class LocalFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private PermissionUtils permissionUtils;
+    private MusicAdapter musicAdapter;
 
     @Override
     protected void initData() {
@@ -27,9 +36,16 @@ public class LocalFragment extends BaseFragment {
             public void success() {
                 //发送消息去扫描本地所有歌曲
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
-                MusicAdapter musicAdapter = new MusicAdapter(getActivity(),musicList);
+                final List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
+                musicAdapter = new MusicAdapter(getActivity(),musicList);
                 recyclerView.setAdapter(musicAdapter);
+                musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView.ViewHolder viewHolder, int position) {
+                        //开始播放
+                        MediaPlayerManager.getInstance().open(position,musicList);
+                    }
+                });
             }
 
             @Override
@@ -41,6 +57,18 @@ public class LocalFragment extends BaseFragment {
     @Override
     protected void initView() {
        recyclerView = findViewById(R.id.recycler_view);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void openMusic(Music music) {
+       musicAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
