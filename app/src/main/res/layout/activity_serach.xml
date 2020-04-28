@@ -79,6 +79,16 @@
         android:layout_above="@id/layout_player"
         android:layout_below="@id/rl_serach_top">
 
+        <TextView
+            android:id="@+id/tv_serach_null"
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:text="抱歉,搜索不到如何歌曲!"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:layout_height="200dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

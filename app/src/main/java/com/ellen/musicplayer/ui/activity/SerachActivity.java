@@ -45,6 +45,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
 
     private ImageView ivBack,ivCancel;
     private EditText editText;
+    private TextView tvSerachNull;
 
     private List<Music> serachMusicLists;
     private SerachMusicAdapter serachMusicAdapter;
@@ -78,6 +79,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         editText = findViewById(R.id.edit_text);
         ivCancel = findViewById(R.id.iv_cancel);
         ivCancel.setOnClickListener(this);
+        tvSerachNull = findViewById(R.id.tv_serach_null);
 
         serachMusicAdapter = new SerachMusicAdapter(this,serachMusicLists = LocalSDMusicUtils.getLocalAllMusic(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -114,6 +116,13 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                     }
                 });
                 recyclerView.setAdapter(serachMusicAdapter);
+                if(serachMusicLists != null && serachMusicLists.size() == 0){
+                   recyclerView.setVisibility(View.GONE);
+                   tvSerachNull.setVisibility(View.VISIBLE);
+                }else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    tvSerachNull.setVisibility(View.GONE);
+                }
             }
 
             @Override
