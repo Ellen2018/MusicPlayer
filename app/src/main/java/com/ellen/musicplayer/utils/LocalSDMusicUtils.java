@@ -65,4 +65,16 @@ public class LocalSDMusicUtils {
         return CollectionUtils.arrange(musicList);
     }
 
+    public static List<Music> serachMusics(Context context,String serachString){
+        List<Music> musicList = getLocalAllMusic(context);
+        List<Music> serachMusics = new ArrayList<>();
+        for(Music music:musicList){
+            if(music.getName().contains(serachString)
+                    || music.getArtist().contains(serachString)
+                    || music.getAlbum().contains(serachString)){
+                serachMusics.add(music);
+            }
+        }
+        return serachMusics;
+    }
 }

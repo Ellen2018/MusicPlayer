@@ -39,7 +39,7 @@ import com.ellen.supermessagelibrary.SuperMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvTabOne, tvTabTwo, tvMusicName, tvSingerName;
     private ViewPager viewPager;
@@ -76,17 +76,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(Gravity.LEFT);
-            }
-        });
-
-        ivPlayerPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MediaPlayerManager.getInstance().checkCanPlay()) {
-                    MediaPlayerManager.getInstance().pauseAndPlay();
-                } else {
-
-                }
             }
         });
 
@@ -163,25 +152,11 @@ public class MainActivity extends AppCompatActivity {
         ivPlayerPause = findViewById(R.id.iv_player_pause);
         ivPlayerList = findViewById(R.id.iv_player_list);
         rlPlayerMb = findViewById(R.id.rl_player_mb);
-        tvTabOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(0);
-            }
-        });
-        tvTabTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(1);
-            }
-        });
-        rlPlayerMb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
-                startActivity(intent);
-            }
-        });
+        tvTabOne.setOnClickListener(this);
+        tvTabTwo.setOnClickListener(this);
+        rlPlayerMb.setOnClickListener(this);
+        ivSerach.setOnClickListener(this);
+        ivPlayerPause.setOnClickListener(this);
     }
 
 
@@ -196,6 +171,34 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Fragment fragment = fragmentList.get(viewPager.getCurrentItem());
         fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_tab_1:
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.tv_tab_2:
+                viewPager.setCurrentItem(1);
+                break;
+            case R.id.rl_player_mb:
+                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.iv_serach:
+                intent = new Intent(MainActivity.this,SerachActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.iv_player_pause:
+                if (MediaPlayerManager.getInstance().checkCanPlay()) {
+                    MediaPlayerManager.getInstance().pauseAndPlay();
+                } else {
+
+                }
+                break;
+        }
+
     }
 
     static class NotificationPauseBroadcast extends BroadcastReceiver {

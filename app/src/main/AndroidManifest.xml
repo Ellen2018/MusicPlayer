@@ -29,7 +29,12 @@
         <activity
             android:name=".ui.activity.PlayActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="fullSensor"></activity>
+            android:screenOrientation="fullSensor"/>
+
+        <activity
+            android:name=".ui.activity.SerachActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="fullSensor"/>
     </application>
 
 </manifest>
