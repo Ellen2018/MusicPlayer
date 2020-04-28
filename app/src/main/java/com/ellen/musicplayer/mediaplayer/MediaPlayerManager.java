@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.supermessagelibrary.MessageManager;
@@ -20,6 +19,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     private static MediaPlayerManager mediaPlayerManager;
     private MediaPlayer mediaPlayer;
+    private PlayMode playMode = PlayMode.XUN_HUAN;
     /**
      * 播放列表
      */
@@ -124,10 +124,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public void next() {
-        playPosition++;
-        if (playPosition >= playList.size()) {
-            playPosition = 0;
-        }
+        playPosition = getNextPostion(playPosition);
         open(playPosition, playList);
     }
 
@@ -146,6 +143,26 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             return playList.get(playPosition);
         }
         return null;
+    }
+
+    /**
+     * 根据播放模式产生下一曲位置
+     * @param playPosition
+     * @return
+     */
+    private int getNextPostion(int playPosition) {
+        int resultPlayPosition = 0;
+        if (playMode == PlayMode.XUN_HUAN) {
+            resultPlayPosition = playPosition + 1;
+            if (resultPlayPosition >= playList.size()) {
+                resultPlayPosition = 0;
+            }
+        } else if (playMode == PlayMode.SUI_JI) {
+            resultPlayPosition = (int) ((Math.random() * playList.size()));
+        } else {
+            resultPlayPosition = playPosition;
+        }
+        return resultPlayPosition;
     }
 
     @SuppressLint("NewApi")
@@ -168,7 +185,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (gaoShiBitmap != null && !gaoShiBitmap.isRecycled()) {
                 gaoShiBitmap.recycle();
             }
-            gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 15f);
+            gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 25f);
             return bitmap;
         }
     }
@@ -185,7 +202,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (bitmap == null) {
                 return null;
             } else {
-                return GaoShiUtils.blurBitmap(activity, bitmap, 15f);
+                return GaoShiUtils.blurBitmap(activity, bitmap, 25f);
             }
         }
     }
@@ -193,5 +210,21 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
+    }
+
+    @Override
+    public PlayMode getPlayMode() {
+        return playMode;
+    }
+
+    @Override
+    public void adjustPlayMode() {
+        if (playMode == PlayMode.XUN_HUAN) {
+            playMode = PlayMode.SUI_JI;
+        } else if (playMode == PlayMode.SUI_JI) {
+            playMode = PlayMode.DAN_QU;
+        } else {
+            playMode = PlayMode.XUN_HUAN;
+        }
     }
 }

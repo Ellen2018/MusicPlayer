@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.ellen.musicplayer.MainActivity;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseNotification;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.ui.activity.PlayActivity;
 
 public class MusicNotification extends BaseNotification {
 
@@ -79,7 +79,7 @@ public class MusicNotification extends BaseNotification {
 
     @Override
     protected Intent setNotificationIntent() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), PlayActivity.class);
         return intent;
     }
 

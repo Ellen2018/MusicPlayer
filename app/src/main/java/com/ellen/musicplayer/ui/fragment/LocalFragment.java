@@ -1,9 +1,7 @@
-package com.ellen.musicplayer.fragment;
+package com.ellen.musicplayer.ui.fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;

@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.fragment;
+package com.ellen.musicplayer.ui.fragment;
 
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseFragment;

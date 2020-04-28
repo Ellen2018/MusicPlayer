@@ -30,4 +30,6 @@ public interface MediaPlayerInterface {
     Bitmap getCurrentOpenMusicBitmap(Activity activity);
     Bitmap getGaoShiBitmap(Activity activity);
     MediaPlayer getMediaPlayer();
+    PlayMode getPlayMode();
+    void adjustPlayMode();
 }

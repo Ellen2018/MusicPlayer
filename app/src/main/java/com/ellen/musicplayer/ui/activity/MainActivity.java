@@ -1,4 +1,4 @@
-package com.ellen.musicplayer;
+package com.ellen.musicplayer.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,19 +11,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ellen.musicplayer.MessageTag;
+import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.fragment.LocalFragment;
-import com.ellen.musicplayer.fragment.MyFragment;
+import com.ellen.musicplayer.ui.fragment.LocalFragment;
+import com.ellen.musicplayer.ui.fragment.MyFragment;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
+import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -42,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivUser, ivSerach, ivPlayerIcon;
     private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
     private IntentFilter intentFilterPause,intentFilterNext;
+    private RelativeLayout rlPlayerMb;
 
     /**
      * 取代EventBus
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         StatusUtils.setNoActionBar(this);
         StatusUtils.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         fragmentList = new ArrayList<>();
         fragmentList.add(new LocalFragment());
         fragmentList.add(new MyFragment());
@@ -154,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         ivPlayerBg = findViewById(R.id.iv_player_bg);
         ivPlayerPause = findViewById(R.id.iv_player_pause);
         ivPlayerList = findViewById(R.id.iv_player_list);
+        rlPlayerMb = findViewById(R.id.rl_player_mb);
         tvTabOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +173,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(1);
+            }
+        });
+        rlPlayerMb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -226,5 +242,18 @@ public class MainActivity extends AppCompatActivity {
         //发送通知
         MusicNotification musicNotification = new MusicNotification(this);
         musicNotification.showNotification();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            //返回桌面
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
