@@ -93,7 +93,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/ll_top"
-            android:layout_margin="40dp" />
+            android:layout_margin="40dp"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:id="@+id/ll_bottom"
@@ -140,20 +141,29 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="?actionBarSize"
+                    android:id="@+id/tv_current_time"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="03:33"
                     android:textColor="@color/white" />
 
-                <SeekBar
+                <com.warkiz.widget.IndicatorSeekBar xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/seek_bar"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_thumb_color="@color/white"
+                    app:isb_thumb_size="8dp"
+                    app:isb_track_background_color="@color/gray"
+                    app:isb_track_progress_color="@color/white" />
 
                 <TextView
-                    android:layout_width="?actionBarSize"
+                    android:id="@+id/tv_all_time"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="02:33"

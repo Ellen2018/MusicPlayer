@@ -1,9 +1,16 @@
 package com.ellen.musicplayer.ui.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
@@ -11,17 +18,28 @@ import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.mediaplayer.PlayMode;
+import com.ellen.musicplayer.utils.TimeUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.IndicatorType;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
+import com.warkiz.widget.TickMarkType;
+
+import java.lang.ref.WeakReference;
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause,ivPlayMode;
+    private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName,tvAllTime,tvCurrentTime;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode;
     private BaseEvent baseEvent;
+    private IndicatorSeekBar indicatorSeekBar;
+    private TimeHandler timeHandler;
+    private static final int UPDATE_TIME = 500;
 
     @Override
     protected void setStatus() {
@@ -48,6 +66,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         tvSingerName1 = findViewById(R.id.tv_singer_name_1);
         tvAlbumName = findViewById(R.id.tv_album_name);
         ivPlayMode = findViewById(R.id.iv_play_mode);
+        indicatorSeekBar = findViewById(R.id.seek_bar);
+        tvAllTime = findViewById(R.id.tv_all_time);
+        tvCurrentTime = findViewById(R.id.tv_current_time);
         ivBg = findViewById(R.id.iv_bg);
         tvMusicName.setSelected(true);
         tvSingerName.setSelected(true);
@@ -60,12 +81,34 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivPause.setOnClickListener(this);
         ivNext.setOnClickListener(this);
         ivPlayMode.setOnClickListener(this);
+
+
+        indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+                timeHandler.setCanUdpateTime(false);
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                MediaPlayerManager.getInstance().getMediaPlayer().seekTo(seekBar.getProgress());
+                timeHandler.setCanUdpateTime(true);
+            }
+        });
+
     }
 
     @Override
     protected void initData() {
+        timeHandler = new TimeHandler(this);
         if (MediaPlayerManager.getInstance().checkCanPlay()) {
             updateUi(MediaPlayerManager.getInstance().currentOpenMusic());
+            timeHandler.sendEmptyMessage(0);
         }
         baseEvent = new MessageEventTrigger() {
             @Override
@@ -79,6 +122,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void destory() {
         MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
+        timeHandler.removeMessages(0);
+        timeHandler = null;
     }
 
     @Override
@@ -110,13 +155,20 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
         //更新播放模式
         PlayMode playMode = MediaPlayerManager.getInstance().getPlayMode();
-        if(playMode == PlayMode.XUN_HUAN){
+        if (playMode == PlayMode.XUN_HUAN) {
             ivPlayMode.setImageResource(R.mipmap.playmode_xun_huan);
-        }else if(playMode == PlayMode.SUI_JI){
+        } else if (playMode == PlayMode.SUI_JI) {
             ivPlayMode.setImageResource(R.mipmap.playmode_sui_ji);
-        }else {
+        } else {
             ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
         }
+
+        //设置进度条最大时间
+        indicatorSeekBar.setMax(MediaPlayerManager.getInstance().getMediaPlayer().getDuration());
+        indicatorSeekBar.setProgress(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition());
+
+        tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
+        tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
     }
 
     @Override
@@ -145,14 +197,47 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             case R.id.iv_play_mode:
                 MediaPlayerManager.getInstance().adjustPlayMode();
                 PlayMode playMode = MediaPlayerManager.getInstance().getPlayMode();
-                if(playMode == PlayMode.XUN_HUAN){
+                if (playMode == PlayMode.XUN_HUAN) {
                     ivPlayMode.setImageResource(R.mipmap.playmode_xun_huan);
-                }else if(playMode == PlayMode.SUI_JI){
+                } else if (playMode == PlayMode.SUI_JI) {
                     ivPlayMode.setImageResource(R.mipmap.playmode_sui_ji);
-                }else {
+                } else {
                     ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
                 }
                 break;
+        }
+    }
+
+    private static class TimeHandler extends Handler {
+
+        private boolean isCanUdpateTime = true;
+
+        public void setCanUdpateTime(boolean canUdpateTime) {
+            isCanUdpateTime = canUdpateTime;
+        }
+
+        private WeakReference<PlayActivity> playActivityWeakReference;
+
+        TimeHandler(PlayActivity playActivity) {
+            playActivityWeakReference = new WeakReference<>(playActivity);
+        }
+
+        PlayActivity getPlayActivity() {
+            return playActivityWeakReference.get();
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            //更新时间
+            if (isCanUdpateTime) {
+                getPlayActivity().indicatorSeekBar
+                        .setProgress(MediaPlayerManager.getInstance()
+                                .getMediaPlayer().getCurrentPosition());
+                getPlayActivity().tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
+                getPlayActivity().tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
+            }
+            this.sendEmptyMessageDelayed(0, UPDATE_TIME);
         }
     }
 }
