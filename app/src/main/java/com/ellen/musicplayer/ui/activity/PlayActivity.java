@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.ui.activity;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -20,8 +21,11 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.mediaplayer.PlayMode;
 import com.ellen.musicplayer.sql.SQLManager;
+import com.ellen.musicplayer.utils.LinShenUtils;
+import com.ellen.musicplayer.utils.PermissionUtils;
 import com.ellen.musicplayer.utils.ShareUtils;
 import com.ellen.musicplayer.utils.TimeUtils;
+import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.UriUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -36,6 +40,8 @@ import com.warkiz.widget.TickMarkType;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import gdut.bsx.share2.Share2;
 import gdut.bsx.share2.ShareContentType;
@@ -43,11 +49,12 @@ import gdut.bsx.share2.ShareContentType;
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike,ivLinShen;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
     private static final int UPDATE_TIME = 500;
+    private PermissionUtils permissionUtils;
 
     @Override
     protected void setStatus() {
@@ -77,6 +84,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         indicatorSeekBar = findViewById(R.id.seek_bar);
         tvAllTime = findViewById(R.id.tv_all_time);
         tvCurrentTime = findViewById(R.id.tv_current_time);
+        ivLinShen = findViewById(R.id.iv_lin_shen);
         ivLike = findViewById(R.id.iv_like);
         ivBg = findViewById(R.id.iv_bg);
         tvMusicName.setSelected(true);
@@ -91,6 +99,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivNext.setOnClickListener(this);
         ivPlayMode.setOnClickListener(this);
         ivLike.setOnClickListener(this);
+        ivLinShen.setOnClickListener(this);
 
         indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -149,7 +158,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
         if (bitmap == null) {
             //显示默认
-            ivBg.setImageResource(R.mipmap.default_bg);
+            ivMusicIcon.setImageResource(R.mipmap.play_default_bg);
+            ivBg.setImageResource(R.mipmap.play_default_bg);
         } else {
             ivMusicIcon.setImageBitmap(bitmap);
             ivBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
@@ -198,29 +208,62 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv_share:
                 //分享音乐
-                Music music = MediaPlayerManager.getInstance().currentOpenMusic();
-                File musicShareFile = new File(music.getPath());
-                new Share2.Builder(this)
-                        .setContentType(ShareContentType.AUDIO)
-                        .setShareFileUri(UriUtils.getFileUri(this,ShareContentType.AUDIO,musicShareFile))
-                        .setTextContent(music.getName()+"-"+music.getArtist())
-                        .setTitle("Share Music")
-                        .build()
-                        .shareBySystem();
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    Music music = MediaPlayerManager.getInstance().currentOpenMusic();
+                    File musicShareFile = new File(music.getPath());
+                    new Share2.Builder(this)
+                            .setContentType(ShareContentType.AUDIO)
+                            .setShareFileUri(UriUtils.getFileUri(this, ShareContentType.AUDIO, musicShareFile))
+                            .setTextContent(music.getName() + "-" + music.getArtist())
+                            .setTitle("Share Music")
+                            .build()
+                            .shareBySystem();
+                }else {
+                    ToastUtils.toast(this,"当前没有播放歌曲，分享失败!");
+                }
+                break;
+            case R.id.iv_lin_shen:
+                //检测权限(铃声问题没有解决2020-04-28)
+                List<String> permissonList = new ArrayList<>();
+                permissonList.add(Manifest.permission.WRITE_SETTINGS);
+                permissionUtils = new PermissionUtils(this);
+                permissionUtils.checkPermissions(permissonList, 0, new PermissionUtils.PermissionCallback() {
+                    @Override
+                    public void success() {
+                        //设置铃声
+                        if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                            LinShenUtils.setRingtoneImpl(PlayActivity.this, MediaPlayerManager.getInstance().currentOpenMusic());
+                        }else {
+                            ToastUtils.toast(PlayActivity.this,"当前没有播放歌曲，设置铃声失败!");
+                        }
+                    }
+
+                    @Override
+                    public void failure() {
+                        ToastUtils.toast(PlayActivity.this,"抱歉，你未给予铃声设置权限!");
+                    }
+                });
+
                 break;
             case R.id.iv_play_pre:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MediaPlayerManager.getInstance().pre();
+                }else {
+                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_pause:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MediaPlayerManager.getInstance().pauseAndPlay();
+                }else {
+                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_next:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MediaPlayerManager.getInstance().next();
+                }else {
+                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_mode:
@@ -235,17 +278,21 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_like:
-                music = MediaPlayerManager.getInstance().currentOpenMusic();
-                //先判断是否喜欢
-                boolean isLike = SQLManager.getInstance().isLikeMusic(music);
-                if(isLike){
-                    //设置为不喜欢
-                    SQLManager.getInstance().removeLikeMusic(music);
-                    ivLike.setImageResource(R.mipmap.not_like);
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    Music music = MediaPlayerManager.getInstance().currentOpenMusic();
+                    //先判断是否喜欢
+                    boolean isLike = SQLManager.getInstance().isLikeMusic(music);
+                    if (isLike) {
+                        //设置为不喜欢
+                        SQLManager.getInstance().removeLikeMusic(music);
+                        ivLike.setImageResource(R.mipmap.not_like);
+                    } else {
+                        //设置为喜欢
+                        SQLManager.getInstance().addLikeMusic(music);
+                        ivLike.setImageResource(R.mipmap.like);
+                    }
                 }else {
-                    //设置为喜欢
-                    SQLManager.getInstance().addLikeMusic(music);
-                    ivLike.setImageResource(R.mipmap.like);
+                    ToastUtils.toast(this,"当前没有播放歌曲，喜欢失败!");
                 }
                 break;
         }
@@ -281,5 +328,11 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             }
             this.sendEmptyMessageDelayed(0, UPDATE_TIME);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }

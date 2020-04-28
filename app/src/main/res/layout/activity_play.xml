@@ -7,6 +7,7 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@mipmap/play_default_bg"
         android:scaleType="centerCrop" />
 
     <ImageView
@@ -93,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/ll_top"
+            android:src="@mipmap/play_default_bg"
             android:layout_margin="40dp"
             android:scaleType="centerCrop" />
 
@@ -125,6 +127,7 @@
                     android:src="@mipmap/not_like" />
 
                 <ImageView
+                    android:id="@+id/iv_lin_shen"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -242,8 +245,8 @@
             android:layout_height="match_parent"
             android:layout_above="@id/ll_bottom"
             android:layout_below="@id/iv_music_icon"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:orientation="vertical">
 
             <TextView
