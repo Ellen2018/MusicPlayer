@@ -3,6 +3,7 @@ package com.ellen.musicplayer.ui.activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,7 +20,9 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.mediaplayer.PlayMode;
 import com.ellen.musicplayer.sql.SQLManager;
+import com.ellen.musicplayer.utils.ShareUtils;
 import com.ellen.musicplayer.utils.TimeUtils;
+import com.ellen.musicplayer.utils.UriUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -31,7 +34,11 @@ import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 import com.warkiz.widget.TickMarkType;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+
+import gdut.bsx.share2.Share2;
+import gdut.bsx.share2.ShareContentType;
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
@@ -171,6 +178,16 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
         tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
         tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
+
+        //设置是否喜欢的ui
+        boolean isLike = SQLManager.getInstance().isLikeMusic(music);
+        if(isLike){
+            //设置为不喜欢
+            ivLike.setImageResource(R.mipmap.like);
+        }else {
+            //设置为喜欢
+            ivLike.setImageResource(R.mipmap.not_like);
+        }
     }
 
     @Override
@@ -180,6 +197,16 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.iv_share:
+                //分享音乐
+                Music music = MediaPlayerManager.getInstance().currentOpenMusic();
+                File musicShareFile = new File(music.getPath());
+                new Share2.Builder(this)
+                        .setContentType(ShareContentType.AUDIO)
+                        .setShareFileUri(UriUtils.getFileUri(this,ShareContentType.AUDIO,musicShareFile))
+                        .setTextContent(music.getName()+"-"+music.getArtist())
+                        .setTitle("Share Music")
+                        .build()
+                        .shareBySystem();
                 break;
             case R.id.iv_play_pre:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
@@ -208,8 +235,18 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_like:
+                music = MediaPlayerManager.getInstance().currentOpenMusic();
                 //先判断是否喜欢
-                SQLManager.getInstance().isLikeMusic(MediaPlayerManager.getInstance().currentOpenMusic());
+                boolean isLike = SQLManager.getInstance().isLikeMusic(music);
+                if(isLike){
+                    //设置为不喜欢
+                    SQLManager.getInstance().removeLikeMusic(music);
+                    ivLike.setImageResource(R.mipmap.not_like);
+                }else {
+                    //设置为喜欢
+                    SQLManager.getInstance().addLikeMusic(music);
+                    ivLike.setImageResource(R.mipmap.like);
+                }
                 break;
         }
     }

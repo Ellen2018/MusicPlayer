@@ -151,4 +151,12 @@ public class Music implements ArrangeInterface<Music> {
             return this.getAlbum().equals(music.getAlbum());
         }
     }
+
+    /**
+     * 歌曲的唯一标识
+     * @return
+     */
+    public String getWeiOneTag(){
+        return this.getMusicId()+"_"+this.getAlbumId();
+    }
 }

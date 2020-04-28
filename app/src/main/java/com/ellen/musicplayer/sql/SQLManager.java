@@ -2,7 +2,6 @@ package com.ellen.musicplayer.sql;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.ellen.musicplayer.SQLTag;
 import com.ellen.musicplayer.bean.LikeMusic;
@@ -57,10 +56,15 @@ public class SQLManager {
         return nearMusicTable;
     }
 
+    /**
+     * 判断此歌曲是否为喜欢曲目
+     * @param music
+     * @return
+     */
     public boolean isLikeMusic(Music music){
         String whererSqlWhere = Where
                 .getInstance(false)
-                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getMusicId()+"_"+music.getAlbumId())
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getWeiOneTag())
                 .createSQL();
         String serachSQL = SerachTableData.getInstance()
                 .setTableName(SQLTag.LIKE_TABLE_NAME)
@@ -70,6 +74,30 @@ public class SQLManager {
             return false;
         }
         return cursor.getCount() != 0;
+    }
+
+    /**
+     * 添加喜欢曲目
+     * @param music
+     */
+    public void addLikeMusic(Music music){
+        LikeMusic likeMusic = new LikeMusic();
+        likeMusic.setLikeTag(music.getWeiOneTag());
+        likeMusic.setMusic(music);
+        likeMusic.setLikeTime(System.currentTimeMillis());
+        getLikeMusicTable().saveData(likeMusic);
+    }
+
+    /**
+     * 移除喜欢曲目
+     * @param music
+     */
+    public void removeLikeMusic(Music music){
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getWeiOneTag())
+                .createSQL();
+        getLikeMusicTable().delete(whererSqlWhere);
     }
 
 }
