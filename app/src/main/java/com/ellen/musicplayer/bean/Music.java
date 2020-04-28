@@ -2,11 +2,14 @@ package com.ellen.musicplayer.bean;
 
 import com.ellen.musicplayer.utils.collectionutil.ArrangeInterface;
 
+import java.io.File;
+
 public class Music implements ArrangeInterface<Music> {
 
     /**
      * 1->按照歌手进行分类
      * 2->按照专辑分类
+     * 3->按照父目录分类
      */
     private static int biJiao = 1;
 
@@ -50,6 +53,22 @@ public class Music implements ArrangeInterface<Music> {
      * 专辑id
      */
     private int albumId;
+    /**
+     * 父目录
+     */
+    private String fatherPath;
+    /**
+     * 是否喜欢
+     */
+    private boolean isLike = false;
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
+    }
 
     public String getPath() {
         return path;
@@ -57,6 +76,15 @@ public class Music implements ArrangeInterface<Music> {
 
     public void setPath(String path) {
         this.path = path;
+        fatherPath = new File(path).getParentFile().getAbsolutePath();
+    }
+
+    public String getFatherPath() {
+        return fatherPath;
+    }
+
+    public void setFatherPath(String fatherPath) {
+        this.fatherPath = fatherPath;
     }
 
     public String getName() {

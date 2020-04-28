@@ -1,0 +1,75 @@
+package com.ellen.musicplayer.sql;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
+
+import com.ellen.musicplayer.SQLTag;
+import com.ellen.musicplayer.bean.LikeMusic;
+import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.NearMusic;
+import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
+import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
+import com.ellen.sqlitecreate.createsql.where.Where;
+
+import java.lang.ref.WeakReference;
+
+public class SQLManager {
+
+    private WeakReference<Context> contextWeakReference;
+    private Library library;
+    private static volatile SQLManager sqlManager;
+    private LikeMusicTable likeMusicTable;
+    private NearMusicTable nearMusicTable;
+
+    private SQLManager(){
+    }
+
+    public static SQLManager getInstance(){
+         if(sqlManager == null){
+             synchronized (SQLManager.class){
+                 if(sqlManager == null){
+                     sqlManager = new SQLManager();
+                 }
+             }
+         }
+        return sqlManager;
+    }
+
+    public void initLibrary(Context context){
+        this.contextWeakReference = new WeakReference<>(context);
+        library = new Library(contextWeakReference.get(), SQLTag.LIBRARY_NAME,1);
+    }
+
+    public LikeMusicTable getLikeMusicTable() {
+        if(likeMusicTable == null){
+            likeMusicTable = new LikeMusicTable(library.getWriteDataBase(), LikeMusic.class,SQLTag.LIKE_TABLE_NAME);
+            likeMusicTable.onCreateTableIfNotExits();
+        }
+        return likeMusicTable;
+    }
+
+    public NearMusicTable getNearMusicTable() {
+        if(nearMusicTable == null){
+            nearMusicTable = new NearMusicTable(library.getWriteDataBase(), NearMusic.class,SQLTag.NEAR_TABLE_NAME);
+            nearMusicTable.onCreateTableIfNotExits();
+        }
+        return nearMusicTable;
+    }
+
+    public boolean isLikeMusic(Music music){
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getMusicId()+"_"+music.getAlbumId())
+                .createSQL();
+        String serachSQL = SerachTableData.getInstance()
+                .setTableName(SQLTag.LIKE_TABLE_NAME)
+                .createSQLAutoWhere(whererSqlWhere);
+        Cursor cursor = getLikeMusicTable().serachBySQL(serachSQL);
+        if(cursor == null){
+            return false;
+        }
+        return cursor.getCount() != 0;
+    }
+
+}

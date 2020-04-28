@@ -147,6 +147,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     /**
      * 根据播放模式产生下一曲位置
+     *
      * @param playPosition
      * @return
      */
@@ -226,5 +227,13 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             playMode = PlayMode.XUN_HUAN;
         }
+    }
+
+    public int getAllTime() {
+        return mediaPlayer.getDuration() / 1000;
+    }
+
+    public int getCurrentTime() {
+        return mediaPlayer.getCurrentPosition() / 1000;
     }
 }

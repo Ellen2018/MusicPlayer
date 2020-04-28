@@ -18,6 +18,7 @@ import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.mediaplayer.PlayMode;
+import com.ellen.musicplayer.sql.SQLManager;
 import com.ellen.musicplayer.utils.TimeUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -34,8 +35,8 @@ import java.lang.ref.WeakReference;
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName,tvAllTime,tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode;
+    private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
@@ -69,6 +70,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         indicatorSeekBar = findViewById(R.id.seek_bar);
         tvAllTime = findViewById(R.id.tv_all_time);
         tvCurrentTime = findViewById(R.id.tv_current_time);
+        ivLike = findViewById(R.id.iv_like);
         ivBg = findViewById(R.id.iv_bg);
         tvMusicName.setSelected(true);
         tvSingerName.setSelected(true);
@@ -81,12 +83,12 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivPause.setOnClickListener(this);
         ivNext.setOnClickListener(this);
         ivPlayMode.setOnClickListener(this);
-
+        ivLike.setOnClickListener(this);
 
         indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-
+                tvCurrentTime.setText(TimeUtils.format(seekParams.progress * 1000));
             }
 
             @Override
@@ -96,7 +98,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-                MediaPlayerManager.getInstance().getMediaPlayer().seekTo(seekBar.getProgress());
+                MediaPlayerManager.getInstance().getMediaPlayer().seekTo(seekBar.getProgress() * 1000);
                 timeHandler.setCanUdpateTime(true);
             }
         });
@@ -164,8 +166,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
 
         //设置进度条最大时间
-        indicatorSeekBar.setMax(MediaPlayerManager.getInstance().getMediaPlayer().getDuration());
-        indicatorSeekBar.setProgress(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition());
+        indicatorSeekBar.setMax(MediaPlayerManager.getInstance().getAllTime());
+        indicatorSeekBar.setProgress(MediaPlayerManager.getInstance().getCurrentTime());
 
         tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
         tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
@@ -205,6 +207,10 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                     ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
                 }
                 break;
+            case R.id.iv_like:
+                //先判断是否喜欢
+                SQLManager.getInstance().isLikeMusic(MediaPlayerManager.getInstance().currentOpenMusic());
+                break;
         }
     }
 
@@ -232,8 +238,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             //更新时间
             if (isCanUdpateTime) {
                 getPlayActivity().indicatorSeekBar
-                        .setProgress(MediaPlayerManager.getInstance()
-                                .getMediaPlayer().getCurrentPosition());
+                        .setProgress(MediaPlayerManager.getInstance().getCurrentTime());
                 getPlayActivity().tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
                 getPlayActivity().tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
             }

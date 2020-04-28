@@ -37,4 +37,6 @@ dependencies {
 
     implementation 'com.github.Ellen2018:SuperMessage:1.0.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+    implementation 'com.github.Ellen2018:DhcSQLite:1.0.6'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

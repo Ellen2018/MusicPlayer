@@ -10,13 +10,19 @@ import java.util.List;
 
 public class LocalSDMusicUtils {
 
+    private static List<Music> musicList;
+
     /**
      * 获取本地所有歌曲
      * @param context
      * @return
      */
     public static List<Music> getLocalAllMusic(Context context){
-        final List<Music> musicList = new ArrayList<>();
+        if(musicList == null) {
+            musicList = new ArrayList<>();
+        }else {
+            return musicList;
+        }
 
         ContentProviderUtils.getMusicPathList(context, new ContentProviderUtils.IntoMusic() {
             @Override
