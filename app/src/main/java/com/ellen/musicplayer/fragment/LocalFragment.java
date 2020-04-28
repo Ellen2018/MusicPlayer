@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
@@ -16,10 +18,10 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.ellen.supermessagelibrary.BaseEvent;
+import com.ellen.supermessagelibrary.MessageEventTrigger;
+import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class LocalFragment extends BaseFragment {
     private PermissionUtils permissionUtils;
     private MusicAdapter musicAdapter;
     private ImageView ivDinWei;
+    private BaseEvent baseEvent;
 
     @Override
     protected void initData() {
@@ -55,20 +58,27 @@ public class LocalFragment extends BaseFragment {
             public void failure() {
             }
         });
+
+        baseEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                musicAdapter.notifyDataSetChanged();
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
     }
 
     @Override
     protected void initView() {
         recyclerView = findViewById(R.id.recycler_view);
         ivDinWei = findViewById(R.id.iv_din_wei);
-        EventBus.getDefault().register(this);
         ivDinWei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //进行定位
                 for (int i = 0; i < musicAdapter.getDataList().size(); i++) {
-                    if(musicAdapter.getDataList().get(i).getPath()
-                            .equals(MediaPlayerManager.getInstance().currentOpenMusic().getPath())){
+                    if (musicAdapter.getDataList().get(i).getPath()
+                            .equals(MediaPlayerManager.getInstance().currentOpenMusic().getPath())) {
                         recyclerView.scrollToPosition(i);
                         break;
                     }
@@ -77,15 +87,10 @@ public class LocalFragment extends BaseFragment {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void openMusic(Music music) {
-        musicAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
     }
 
     @Override

@@ -25,10 +25,10 @@ import com.ellen.musicplayer.fragment.MyFragment;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.ellen.supermessagelibrary.BaseEvent;
+import com.ellen.supermessagelibrary.MessageEventTrigger;
+import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivUser, ivSerach, ivPlayerIcon;
     private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
     private IntentFilter intentFilterPause,intentFilterNext;
+
+    /**
+     * 取代EventBus
+     */
+    private BaseEvent baseEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +117,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        EventBus.getDefault().register(this);
+
+        baseEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                 Music music = (Music) message.object;
+                 updateUi(music);
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
 
         //播放暂停通知广播注册
         intentFilterPause = new IntentFilter();
@@ -155,41 +168,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void openMusic(Music music) {
-
-        //设置歌曲图片
-        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-        if (bitmap == null) {
-            //设置默认图片
-            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
-            ivPlayerBg.setImageResource(R.mipmap.default_bg);
-        } else {
-            ivPlayerIcon.setImageBitmap(bitmap);
-            ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
-        }
-
-        //更新播放/暂停状态
-        if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
-            ivPlayerPause.setImageResource(R.mipmap.play);
-        } else {
-            ivPlayerPause.setImageResource(R.mipmap.pause);
-        }
-
-        //设置歌曲名和歌手名
-        tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-        tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
-
-        //发送通知
-        MusicNotification musicNotification = new MusicNotification(this);
-        musicNotification.showNotification();
-
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
     }
 
     @Override
@@ -215,5 +198,33 @@ public class MainActivity extends AppCompatActivity {
                 MediaPlayerManager.getInstance().next();
             }
         }
+    }
+
+    private void updateUi(Music music){
+        //设置歌曲图片
+        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+        if (bitmap == null) {
+            //设置默认图片
+            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+            ivPlayerBg.setImageResource(R.mipmap.default_bg);
+        } else {
+            ivPlayerIcon.setImageBitmap(bitmap);
+            ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+        }
+
+        //更新播放/暂停状态
+        if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+            ivPlayerPause.setImageResource(R.mipmap.play);
+        } else {
+            ivPlayerPause.setImageResource(R.mipmap.pause);
+        }
+
+        //设置歌曲名和歌手名
+        tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+        tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+
+        //发送通知
+        MusicNotification musicNotification = new MusicNotification(this);
+        musicNotification.showNotification();
     }
 }

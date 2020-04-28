@@ -5,12 +5,13 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 
+import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
-
-import org.greenrobot.eventbus.EventBus;
+import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.io.IOException;
 import java.util.List;
@@ -93,7 +94,10 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             mediaPlayer.start();
         }
-        EventBus.getDefault().post(currentOpenMusic());
+
+        SuperMessage superMessage = new SuperMessage(MessageTag.OPEN_MUSIC_ID);
+        superMessage.object = currentOpenMusic();
+        MessageManager.getInstance().sendMainThreadMessage(superMessage);
     }
 
     @Override
@@ -104,7 +108,10 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public void start() {
         mediaPlayer.start();
-        EventBus.getDefault().post(playList.get(playPosition));
+
+        SuperMessage superMessage = new SuperMessage(MessageTag.OPEN_MUSIC_ID);
+        superMessage.object = currentOpenMusic();
+        MessageManager.getInstance().sendMainThreadMessage(superMessage);
     }
 
     @Override
