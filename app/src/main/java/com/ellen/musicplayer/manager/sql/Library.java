@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.sql;
+package com.ellen.musicplayer.manager.sql;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

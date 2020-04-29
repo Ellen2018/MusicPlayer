@@ -1,18 +1,13 @@
 package com.ellen.musicplayer;
 
-import android.util.Log;
-
 import com.ellen.musicplayer.base.BaseApplication;
-import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
+import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.message.MusicPlay;
-import com.ellen.musicplayer.sql.SQLManager;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
-
-import java.util.List;
 
 public class App extends BaseApplication {
 

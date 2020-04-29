@@ -16,14 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
-import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.adapter.SerachMusicAdapter;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.message.MusicPlay;
-import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -31,7 +29,6 @@ import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SerachActivity extends BaseActivity implements View.OnClickListener {

@@ -1,21 +1,19 @@
-package com.ellen.musicplayer.sql;
+package com.ellen.musicplayer.manager.sql;
 
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ellen.dhcsqlitelibrary.table.reflection.ZxyReflectionTable;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.sqlitecreate.createsql.helper.SQLFieldType;
-import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
-import com.google.gson.Gson;
 
-public class NearMusicTable extends ZxyReflectionTable<NearMusic> {
+public class MusicTable extends ZxyReflectionTable<Music> {
 
-    public NearMusicTable(SQLiteDatabase db, Class<? extends NearMusic> dataClass) {
+
+    public MusicTable(SQLiteDatabase db, Class<? extends Music> dataClass) {
         super(db, dataClass);
     }
 
-    public NearMusicTable(SQLiteDatabase db, Class<? extends NearMusic> dataClass, String autoTableName) {
+    public MusicTable(SQLiteDatabase db, Class<? extends Music> dataClass, String autoTableName) {
         super(db, dataClass, autoTableName);
     }
 
@@ -31,7 +29,11 @@ public class NearMusicTable extends ZxyReflectionTable<NearMusic> {
 
     @Override
     protected Object setBooleanValue(String classFieldName, boolean value) {
-        return null;
+        if(value){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     @Override
@@ -41,19 +43,16 @@ public class NearMusicTable extends ZxyReflectionTable<NearMusic> {
 
     @Override
     protected SQLFieldType conversionSQLiteType(String classFieldName, Class typeClass) {
-        return new SQLFieldType(SQLFieldTypeEnum.TEXT,null);
+        return null;
     }
 
     @Override
-    protected <E> E setConversionValue(NearMusic nearMusic, String classFieldName, Class typeClass) {
-        String json = new Gson().toJson(nearMusic.getMusic());
-        return (E) json;
+    protected <E> E setConversionValue(Music music, String classFieldName, Class typeClass) {
+        return null;
     }
 
     @Override
     protected <E> E resumeConversionObject(Object value, String classFieldName, Class typeClass) {
-        String json  = (String) value;
-        Music music = new Gson().fromJson(json, Music.class);
-        return (E) music;
+        return null;
     }
 }

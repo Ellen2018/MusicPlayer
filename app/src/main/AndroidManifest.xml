@@ -32,6 +32,10 @@
         <activity
             android:name=".ui.activity.SerachActivity"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".ui.activity.PiFuSettingActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

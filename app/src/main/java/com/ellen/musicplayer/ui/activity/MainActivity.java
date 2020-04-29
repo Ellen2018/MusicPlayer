@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.BroadcastReceiver;
@@ -24,13 +26,13 @@ import android.widget.TextView;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
-import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.adapter.MenuAdapter;
+import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.ui.fragment.LocalFragment;
 import com.ellen.musicplayer.ui.fragment.MyFragment;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
-import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
     private IntentFilter intentFilterPause,intentFilterNext;
     private RelativeLayout rlPlayerMb;
+    private RecyclerView recyclerViewMenu;
 
     /**
      * 取代EventBus
@@ -137,6 +140,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NotificationNextBroadcast notificationNextBroadcast = new NotificationNextBroadcast();
         registerReceiver(notificationNextBroadcast, intentFilterNext);
 
+        recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
+        List<Menu> menus = new ArrayList<>();
+        menus.add(new Menu(R.mipmap.pi_fu,"皮肤"));
+        MenuAdapter menuAdapter = new MenuAdapter(this,menus);
+        menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
+            @Override
+            public void onClick(Menu menu) {
+               switch (menu.getIconId()){
+                   case R.mipmap.pi_fu:
+                       Intent intent = new Intent(MainActivity.this,PiFuSettingActivity.class);
+                       startActivity(intent);
+                       break;
+               }
+            }
+        });
+        recyclerViewMenu.setAdapter(menuAdapter);
     }
 
     private void initView() {
@@ -153,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayerPause = findViewById(R.id.iv_player_pause);
         ivPlayerList = findViewById(R.id.iv_player_list);
         rlPlayerMb = findViewById(R.id.rl_player_mb);
+        recyclerViewMenu = findViewById(R.id.recycler_view_menu);
         tvTabOne.setOnClickListener(this);
         tvTabTwo.setOnClickListener(this);
         rlPlayerMb.setOnClickListener(this);

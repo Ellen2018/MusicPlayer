@@ -9,4 +9,7 @@
     <color name="white">#ffffff</color>
 
     <color name="decker_gary">#9E9E9E</color>
+    <color name="menu_color">#883e3e3e</color>
+    <color name="wu_se">#00000000</color>
+    <color name="sai_zi_color">#88000000</color>
 </resources>

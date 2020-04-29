@@ -6,7 +6,7 @@ import android.widget.RemoteViews;
 
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseNotification;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.ui.activity.PlayActivity;
 
 public class MusicNotification extends BaseNotification {

@@ -11,7 +11,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
 import java.util.List;

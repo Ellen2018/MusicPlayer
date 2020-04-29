@@ -1,10 +1,8 @@
 package com.ellen.musicplayer.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 
 import java.util.List;
 

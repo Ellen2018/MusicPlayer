@@ -1,13 +1,8 @@
 package com.ellen.musicplayer.ui.activity;
 
-import android.Manifest;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,13 +13,11 @@ import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
-import com.ellen.musicplayer.mediaplayer.PlayMode;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.PlayMode;
 import com.ellen.musicplayer.message.MusicPlay;
-import com.ellen.musicplayer.sql.SQLManager;
-import com.ellen.musicplayer.utils.LinShenUtils;
+import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.PermissionUtils;
-import com.ellen.musicplayer.utils.ShareUtils;
 import com.ellen.musicplayer.utils.TimeUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.UriUtils;
@@ -34,15 +27,11 @@ import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 import com.warkiz.widget.IndicatorSeekBar;
-import com.warkiz.widget.IndicatorType;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
-import com.warkiz.widget.TickMarkType;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import gdut.bsx.share2.Share2;
 import gdut.bsx.share2.ShareContentType;

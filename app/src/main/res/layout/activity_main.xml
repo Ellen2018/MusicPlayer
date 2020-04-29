@@ -117,30 +117,12 @@
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#ffffff">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/bg_chl" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="#66000000" />
-
-        <View
-            android:id="@+id/view_status"
-            android:layout_width="match_parent"
-            android:layout_height="25dp" />
+        android:layout_gravity="start">
 
         <include
             layout="@layout/layout_chl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/view_status" />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 

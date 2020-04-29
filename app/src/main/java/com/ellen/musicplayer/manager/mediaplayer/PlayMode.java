@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.mediaplayer;
+package com.ellen.musicplayer.manager.mediaplayer;
 
 public enum PlayMode {
     XUN_HUAN,

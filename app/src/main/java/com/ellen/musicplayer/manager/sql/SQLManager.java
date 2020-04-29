@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.sql;
+package com.ellen.musicplayer.manager.sql;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +7,7 @@ import com.ellen.musicplayer.SQLTag;
 import com.ellen.musicplayer.bean.LikeMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
+import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
 import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
 import com.ellen.sqlitecreate.createsql.where.Where;
@@ -20,6 +21,7 @@ public class SQLManager {
     private static volatile SQLManager sqlManager;
     private LikeMusicTable likeMusicTable;
     private NearMusicTable nearMusicTable;
+    private PiFuTable piFuTable;
 
     private SQLManager(){
     }
@@ -54,6 +56,14 @@ public class SQLManager {
             nearMusicTable.onCreateTableIfNotExits();
         }
         return nearMusicTable;
+    }
+
+    public PiFuTable getPiFuTable() {
+        if(piFuTable == null){
+            piFuTable = new PiFuTable(library.getWriteDataBase(), PiFu.class,SQLTag.PIFU_TABLE_NAME);
+            piFuTable.onCreateTableIfNotExits();
+        }
+        return piFuTable;
     }
 
     /**

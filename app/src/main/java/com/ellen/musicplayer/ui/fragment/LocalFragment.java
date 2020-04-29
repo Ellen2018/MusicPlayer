@@ -13,7 +13,7 @@ import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
