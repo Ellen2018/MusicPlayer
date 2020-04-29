@@ -8,10 +8,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.youth.banner.Banner
+        <com.ellen.musicplayer.view.ZhengFangBanner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp" />
 
         <LinearLayout

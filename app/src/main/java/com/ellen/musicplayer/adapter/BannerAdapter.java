@@ -47,8 +47,7 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
 
     @Override
     public void onBindView(BannerViewHolder holder, Music data, final int position, int size) {
-        Bitmap bitmap = MusicBitmap.getArtwork(context,data.getMusicId(),data.getAlbumId());
-        Glide.with(context).load(bitmap).into(holder.imageView);
+        Glide.with(context).load(MusicBitmap.getArtwork(context,data.getMusicId(),data.getAlbumId())).into(holder.imageView);
         holder.tvMusicName.setText(data.getName());
         holder.tvSingerName.setText(data.getArtist());
         holder.tvProgress.setText((position+1)+"/"+(getItemCount()-2));

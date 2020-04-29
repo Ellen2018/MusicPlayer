@@ -3,9 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/recycler_view"
+   <com.scwang.smartrefresh.layout.SmartRefreshLayout
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       android:id="@+id/refreshLayout"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+       android:layout_height="match_parent">
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+
+
+   </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+   <ImageView
+       android:id="@+id/iv_go_top"
+       android:layout_width="?actionBarSize"
+       android:layout_height="?actionBarSize"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginRight="20dp"
+       android:layout_marginBottom="20dp"
+       android:padding="15dp"
+       android:src="@mipmap/go_top" />
 
 </RelativeLayout>

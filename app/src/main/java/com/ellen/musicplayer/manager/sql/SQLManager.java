@@ -128,15 +128,37 @@ public class SQLManager {
     }
 
     /**
-     * 获取用户听得最多的五首
+     * 获取随机size首歌
+     * size >= 本地最大曲目 则返回整个本地列表，否则从本地列表里抽取size首歌
      */
-    public List<Music> getMostFiveMusic(Context context) {
+    public List<Music> getMostMusic(Context context, int size) {
         List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(context);
-        List<Music> musicList1 = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            musicList1.add(musicList.get(i));
+        if (musicList.size() <= size) {
+            return musicList;
+        } else {
+            List<Music> musicList1 = new ArrayList<>();
+            List<Integer> integerList = new ArrayList<>();
+            //随机产生size个数
+            for (int i = 0; i < size; i++) {
+                boolean isSame = false;
+                do {
+                    isSame = false;
+                    int currentPosition = (int) ((Math.random() * musicList.size()));
+                    for (int j = 0; j < integerList.size(); j++) {
+                        if (currentPosition == integerList.get(j)) {
+                            isSame = true;
+                        }
+                    }
+                    if (!isSame) {
+                        integerList.add(currentPosition);
+                    }
+                } while (isSame);
+            }
+            for (int postion : integerList) {
+                musicList1.add(musicList.get(postion));
+            }
+            return musicList1;
         }
-        return musicList1;
     }
 
 }
