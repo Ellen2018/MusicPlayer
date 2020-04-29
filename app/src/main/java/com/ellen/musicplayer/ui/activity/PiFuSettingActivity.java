@@ -55,9 +55,9 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initData() {
-
+        currentPiFu = PiFuManager.getInstance().getPiFu();
         piFuList = new ArrayList<>();
-        piFuList.add(currentPiFu = new PiFu(true,null, false,R.mipmap.pi_fu_0,0));
+        piFuList.add(new PiFu(true,null, false,R.mipmap.pi_fu_0,0));
         piFuList.add(new PiFu(true,null, false,R.mipmap.pi_fu_1,1));
         piFuList.add(new PiFu(true,null, false,R.mipmap.pi_fu_2,2));
         piFuList.add(new PiFu(true,null, false,R.mipmap.pi_fu_3,3));
@@ -73,6 +73,8 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewPiFu.setLayoutManager(linearLayoutManager);
         piFuSelectorAdapter = new PiFuSelectorAdapter(this, piFuList);
+        piFuSelectorAdapter.setSelectorPiFu(currentPiFu);
+        updatePiFu(currentPiFu);
         recyclerViewPiFu.setAdapter(piFuSelectorAdapter);
 
         piFuSelectorAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
@@ -84,7 +86,7 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
                     currentPiFu = piFuList.get(position);
                     //切换当前皮肤
                     if(currentPiFu.isGuDinPiFu()){
-                        ivPiFuIcon.setImageResource(currentPiFu.getPiFuIconId());
+                       updatePiFu(currentPiFu);
                     }else {
                         //使用Glide进行加载
                     }
@@ -122,6 +124,16 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
                 MessageManager.getInstance().sendMainThreadMessage(superMessage);
                 finish();
                 break;
+        }
+    }
+
+    private void updatePiFu(PiFu piFu){
+        if(piFu != null) {
+            if (piFu.isGuDinPiFu()) {
+                ivPiFuIcon.setImageResource(piFu.getPiFuIconId());
+            } else {
+                //使用Glide加载本地图片
+            }
         }
     }
 }

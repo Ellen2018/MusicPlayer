@@ -8,6 +8,7 @@ import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
+import com.tencent.mmkv.MMKV;
 
 public class App extends BaseApplication {
 
@@ -17,6 +18,7 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         SQLManager.getInstance().initLibrary(getApplicationContext());
+        MMKV.initialize(App.this);
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {

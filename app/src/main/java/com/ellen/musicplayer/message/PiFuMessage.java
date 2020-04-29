@@ -7,6 +7,9 @@ public class PiFuMessage {
     private PiFu piFu;
 
     public PiFu getPiFu() {
+        if(piFu == null){
+            //读取本地皮肤数据
+        }
         return piFu;
     }
 

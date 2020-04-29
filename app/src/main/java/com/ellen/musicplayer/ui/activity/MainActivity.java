@@ -76,17 +76,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentList.add(new LocalFragment());
         fragmentList.add(new MyFragment());
         initView();
+        initData();
+    }
 
+    private void initData() {
+        updatePiFu(PiFuManager.getInstance().getPiFu());
         //走马灯设置
         tvMusicName.setSelected(true);
         tvSingerName.setSelected(true);
 
-        ivUser.setOnClickListener(new View.OnClickListener() {
+        recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
+        List<Menu> menus = new ArrayList<>();
+        menus.add(new Menu(R.mipmap.pi_fu,"皮肤"));
+        MenuAdapter menuAdapter = new MenuAdapter(this,menus);
+        menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
             @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.LEFT);
+            public void onClick(Menu menu) {
+                switch (menu.getIconId()){
+                    case R.mipmap.pi_fu:
+                        Intent intent = new Intent(MainActivity.this,PiFuSettingActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
+        recyclerViewMenu.setAdapter(menuAdapter);
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
@@ -127,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         musicEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-                 MusicPlay musicPlay = (MusicPlay) message.object;
-                 updateUi(musicPlay);
+                MusicPlay musicPlay = (MusicPlay) message.object;
+                updateUi(musicPlay);
             }
 
             @Override
@@ -164,23 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intentFilterNext.addAction(MusicNotification.ACTION_NEXT);
         NotificationNextBroadcast notificationNextBroadcast = new NotificationNextBroadcast();
         registerReceiver(notificationNextBroadcast, intentFilterNext);
-
-        recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
-        List<Menu> menus = new ArrayList<>();
-        menus.add(new Menu(R.mipmap.pi_fu,"皮肤"));
-        MenuAdapter menuAdapter = new MenuAdapter(this,menus);
-        menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
-            @Override
-            public void onClick(Menu menu) {
-               switch (menu.getIconId()){
-                   case R.mipmap.pi_fu:
-                       Intent intent = new Intent(MainActivity.this,PiFuSettingActivity.class);
-                       startActivity(intent);
-                       break;
-               }
-            }
-        });
-        recyclerViewMenu.setAdapter(menuAdapter);
     }
 
     private void initView() {
@@ -204,6 +201,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rlPlayerMb.setOnClickListener(this);
         ivSerach.setOnClickListener(this);
         ivPlayerPause.setOnClickListener(this);
+
+        ivUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
     }
 
     @Override
