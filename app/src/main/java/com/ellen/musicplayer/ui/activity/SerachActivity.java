@@ -20,6 +20,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.SerachMusicAdapter;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
@@ -87,7 +88,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(RecyclerView.ViewHolder viewHolder, int position) {
+            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                 MediaPlayerManager.getInstance().open(position,serachMusicLists);
             }
         });
@@ -113,7 +114,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                 recyclerView.setLayoutManager(new LinearLayoutManager(SerachActivity.this));
                 serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(RecyclerView.ViewHolder viewHolder, int position) {
+                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                         MediaPlayerManager.getInstance().open(position,serachMusicLists);
                     }
                 });

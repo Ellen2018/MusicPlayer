@@ -8,11 +8,14 @@ import com.ellen.musicplayer.bean.LikeMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
 import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
 import com.ellen.sqlitecreate.createsql.where.Where;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLManager {
 
@@ -23,44 +26,44 @@ public class SQLManager {
     private NearMusicTable nearMusicTable;
     private PiFuTable piFuTable;
 
-    private SQLManager(){
+    private SQLManager() {
     }
 
-    public static SQLManager getInstance(){
-         if(sqlManager == null){
-             synchronized (SQLManager.class){
-                 if(sqlManager == null){
-                     sqlManager = new SQLManager();
-                 }
-             }
-         }
+    public static SQLManager getInstance() {
+        if (sqlManager == null) {
+            synchronized (SQLManager.class) {
+                if (sqlManager == null) {
+                    sqlManager = new SQLManager();
+                }
+            }
+        }
         return sqlManager;
     }
 
-    public void initLibrary(Context context){
+    public void initLibrary(Context context) {
         this.contextWeakReference = new WeakReference<>(context);
-        library = new Library(contextWeakReference.get(), SQLTag.LIBRARY_NAME,1);
+        library = new Library(contextWeakReference.get(), SQLTag.LIBRARY_NAME, 1);
     }
 
     public LikeMusicTable getLikeMusicTable() {
-        if(likeMusicTable == null){
-            likeMusicTable = new LikeMusicTable(library.getWriteDataBase(), LikeMusic.class,SQLTag.LIKE_TABLE_NAME);
+        if (likeMusicTable == null) {
+            likeMusicTable = new LikeMusicTable(library.getWriteDataBase(), LikeMusic.class, SQLTag.LIKE_TABLE_NAME);
             likeMusicTable.onCreateTableIfNotExits();
         }
         return likeMusicTable;
     }
 
     public NearMusicTable getNearMusicTable() {
-        if(nearMusicTable == null){
-            nearMusicTable = new NearMusicTable(library.getWriteDataBase(), NearMusic.class,SQLTag.NEAR_TABLE_NAME);
+        if (nearMusicTable == null) {
+            nearMusicTable = new NearMusicTable(library.getWriteDataBase(), NearMusic.class, SQLTag.NEAR_TABLE_NAME);
             nearMusicTable.onCreateTableIfNotExits();
         }
         return nearMusicTable;
     }
 
     public PiFuTable getPiFuTable() {
-        if(piFuTable == null){
-            piFuTable = new PiFuTable(library.getWriteDataBase(), PiFu.class,SQLTag.PIFU_TABLE_NAME);
+        if (piFuTable == null) {
+            piFuTable = new PiFuTable(library.getWriteDataBase(), PiFu.class, SQLTag.PIFU_TABLE_NAME);
             piFuTable.onCreateTableIfNotExits();
         }
         return piFuTable;
@@ -68,19 +71,20 @@ public class SQLManager {
 
     /**
      * 判断此歌曲是否为喜欢曲目
+     *
      * @param music
      * @return
      */
-    public boolean isLikeMusic(Music music){
+    public boolean isLikeMusic(Music music) {
         String whererSqlWhere = Where
                 .getInstance(false)
-                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getWeiOneTag())
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL, music.getWeiOneTag())
                 .createSQL();
         String serachSQL = SerachTableData.getInstance()
                 .setTableName(SQLTag.LIKE_TABLE_NAME)
                 .createSQLAutoWhere(whererSqlWhere);
         Cursor cursor = getLikeMusicTable().serachBySQL(serachSQL);
-        if(cursor == null){
+        if (cursor == null) {
             return false;
         }
         return cursor.getCount() != 0;
@@ -88,9 +92,10 @@ public class SQLManager {
 
     /**
      * 添加喜欢曲目
+     *
      * @param music
      */
-    public void addLikeMusic(Music music){
+    public void addLikeMusic(Music music) {
         LikeMusic likeMusic = new LikeMusic();
         likeMusic.setLikeTag(music.getWeiOneTag());
         likeMusic.setMusic(music);
@@ -100,12 +105,13 @@ public class SQLManager {
 
     /**
      * 移除喜欢曲目
+     *
      * @param music
      */
-    public void removeLikeMusic(Music music){
+    public void removeLikeMusic(Music music) {
         String whererSqlWhere = Where
                 .getInstance(false)
-                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL,music.getWeiOneTag())
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL, music.getWeiOneTag())
                 .createSQL();
         getLikeMusicTable().delete(whererSqlWhere);
     }
@@ -113,12 +119,24 @@ public class SQLManager {
     /**
      * 删除皮肤数据
      */
-    public void deletePiFu(PiFu piFu){
+    public void deletePiFu(PiFu piFu) {
         String whererSqlWhere = Where
                 .getInstance(false)
-                .addAndWhereValue("piFuId", WhereSymbolEnum.EQUAL,piFu.getPiFuId())
+                .addAndWhereValue("piFuId", WhereSymbolEnum.EQUAL, piFu.getPiFuId())
                 .createSQL();
         getPiFuTable().delete(whererSqlWhere);
+    }
+
+    /**
+     * 获取用户听得最多的五首
+     */
+    public List<Music> getMostFiveMusic(Context context) {
+        List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(context);
+        List<Music> musicList1 = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            musicList1.add(musicList.get(i));
+        }
+        return musicList1;
     }
 
 }

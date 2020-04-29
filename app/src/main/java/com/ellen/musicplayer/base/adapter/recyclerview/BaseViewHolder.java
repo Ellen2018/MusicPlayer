@@ -14,8 +14,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         this.mItemView = itemView;
     }
 
-    protected <T extends View> T findViewById(int id){
-        return (T)this.mItemView.findViewById(id);
+    public  <T extends View> T findViewById(int id){
+        return this.mItemView.findViewById(id);
     }
 
 }

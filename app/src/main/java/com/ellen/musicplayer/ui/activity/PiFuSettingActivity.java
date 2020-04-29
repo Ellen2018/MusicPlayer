@@ -21,6 +21,8 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.PiFuSelectorAdapter;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter.OnItemClickListener;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.manager.sql.SQLManager;
@@ -88,9 +90,9 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
         updatePiFu(currentPiFu);
         recyclerViewPiFu.setAdapter(piFuSelectorAdapter);
 
-        piFuSelectorAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+        piFuSelectorAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(RecyclerView.ViewHolder viewHolder, int position) {
+            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                 if (position == piFuList.size() - 1) {
                     //选取相册图片
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -111,11 +113,12 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
 
                 }
             }
+
         });
 
         piFuSelectorAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
-            public boolean onItemLoncClick(RecyclerView.ViewHolder viewHolder, int position) {
+            public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
                 PiFu piFu = piFuSelectorAdapter.getDataList().get(position);
                 if (!piFu.isGuDinPiFu()) {
                     if (!piFu.isAddIcon()) {

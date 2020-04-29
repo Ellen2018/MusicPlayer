@@ -35,7 +35,7 @@ import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.message.PiFuMessage;
 import com.ellen.musicplayer.ui.fragment.LocalFragment;
-import com.ellen.musicplayer.ui.fragment.MyFragment;
+import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         fragmentList = new ArrayList<>();
         fragmentList.add(new LocalFragment());
-        fragmentList.add(new MyFragment());
+        fragmentList.add(new SortFragment());
         initView();
         initData();
     }

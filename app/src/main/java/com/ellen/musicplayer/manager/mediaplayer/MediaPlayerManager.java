@@ -161,12 +161,12 @@ public class MediaPlayerManager implements MediaPlayerInterface {
      */
     private int getNextPostion(int playPosition) {
         int resultPlayPosition = 0;
-        if (playMode == PlayMode.XUN_HUAN) {
+        if (getPlayMode() == PlayMode.XUN_HUAN) {
             resultPlayPosition = playPosition + 1;
             if (resultPlayPosition >= playList.size()) {
                 resultPlayPosition = 0;
             }
-        } else if (playMode == PlayMode.SUI_JI) {
+        } else if (getPlayMode() == PlayMode.SUI_JI) {
             resultPlayPosition = (int) ((Math.random() * playList.size()));
         } else {
             resultPlayPosition = playPosition;

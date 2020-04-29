@@ -12,6 +12,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
@@ -45,7 +46,7 @@ public class LocalFragment extends BaseFragment {
                 recyclerView.setAdapter(musicAdapter);
                 musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(RecyclerView.ViewHolder viewHolder, int position) {
+                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                         //开始播放
                         MediaPlayerManager.getInstance().open(position, musicList);
                     }
