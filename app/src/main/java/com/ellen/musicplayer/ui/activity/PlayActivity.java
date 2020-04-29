@@ -20,6 +20,7 @@ import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.mediaplayer.PlayMode;
+import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.sql.SQLManager;
 import com.ellen.musicplayer.utils.LinShenUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;
@@ -125,13 +126,16 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     protected void initData() {
         timeHandler = new TimeHandler(this);
         if (MediaPlayerManager.getInstance().checkCanPlay()) {
-            updateUi(MediaPlayerManager.getInstance().currentOpenMusic());
+            MusicPlay musicPlay = new MusicPlay();
+            musicPlay.setMusic(MediaPlayerManager.getInstance().currentOpenMusic());
+            musicPlay.setQieHuan(true);
+            updateUi(musicPlay);
             timeHandler.sendEmptyMessage(0);
         }
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-                updateUi((Music) message.object);
+                updateUi((MusicPlay) message.object);
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
@@ -149,20 +153,40 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         return true;
     }
 
-    private void updateUi(Music music) {
-        tvMusicName.setText(music.getName());
-        tvSingerName.setText(music.getArtist());
-        tvMusicName1.setText(music.getName());
-        tvSingerName1.setText(music.getArtist());
-        tvAlbumName.setText(music.getAlbum());
-        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-        if (bitmap == null) {
-            //显示默认
-            ivMusicIcon.setImageResource(R.mipmap.play_default_bg);
-            ivBg.setImageResource(R.mipmap.play_default_bg);
-        } else {
-            ivMusicIcon.setImageBitmap(bitmap);
-            ivBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+    private void updateUi(MusicPlay musicPlay) {
+        if(musicPlay.isQieHuan()) {
+            Music music = musicPlay.getMusic();
+            tvMusicName.setText(music.getName());
+            tvSingerName.setText(music.getArtist());
+            tvMusicName1.setText(music.getName());
+            tvSingerName1.setText(music.getArtist());
+            tvAlbumName.setText(music.getAlbum());
+            Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+            if (bitmap == null) {
+                //显示默认
+                ivMusicIcon.setImageResource(R.mipmap.play_default_bg);
+                ivBg.setImageResource(R.mipmap.play_default_bg);
+            } else {
+                ivMusicIcon.setImageBitmap(bitmap);
+                ivBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+            }
+
+            //设置是否喜欢的ui
+            boolean isLike = SQLManager.getInstance().isLikeMusic(music);
+            if (isLike) {
+                //设置为不喜欢
+                ivLike.setImageResource(R.mipmap.like);
+            } else {
+                //设置为喜欢
+                ivLike.setImageResource(R.mipmap.not_like);
+            }
+
+            //设置进度条最大时间
+            indicatorSeekBar.setMax(MediaPlayerManager.getInstance().getAllTime());
+            indicatorSeekBar.setProgress(MediaPlayerManager.getInstance().getCurrentTime());
+
+            tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
+            tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
         }
 
         //更新播放/暂停状态
@@ -182,22 +206,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
         }
 
-        //设置进度条最大时间
-        indicatorSeekBar.setMax(MediaPlayerManager.getInstance().getAllTime());
-        indicatorSeekBar.setProgress(MediaPlayerManager.getInstance().getCurrentTime());
-
-        tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
-        tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
-
-        //设置是否喜欢的ui
-        boolean isLike = SQLManager.getInstance().isLikeMusic(music);
-        if(isLike){
-            //设置为不喜欢
-            ivLike.setImageResource(R.mipmap.like);
-        }else {
-            //设置为喜欢
-            ivLike.setImageResource(R.mipmap.not_like);
-        }
     }
 
     @Override
@@ -224,26 +232,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv_lin_shen:
                 //检测权限(铃声问题没有解决2020-04-28)
-                List<String> permissonList = new ArrayList<>();
-                permissonList.add(Manifest.permission.WRITE_SETTINGS);
-                permissionUtils = new PermissionUtils(this);
-                permissionUtils.checkPermissions(permissonList, 0, new PermissionUtils.PermissionCallback() {
-                    @Override
-                    public void success() {
-                        //设置铃声
-                        if(MediaPlayerManager.getInstance().checkCanPlay()) {
-                            LinShenUtils.setRingtoneImpl(PlayActivity.this, MediaPlayerManager.getInstance().currentOpenMusic());
-                        }else {
-                            ToastUtils.toast(PlayActivity.this,"当前没有播放歌曲，设置铃声失败!");
-                        }
-                    }
-
-                    @Override
-                    public void failure() {
-                        ToastUtils.toast(PlayActivity.this,"抱歉，你未给予铃声设置权限!");
-                    }
-                });
-
+                ToastUtils.toast(this,"抱歉,铃声功能暂未开通!");
                 break;
             case R.id.iv_play_pre:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {

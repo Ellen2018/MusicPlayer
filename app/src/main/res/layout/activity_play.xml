@@ -168,10 +168,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    app:isb_max="100"
-                    app:isb_min="0"
                     app:isb_thumb_color="@color/white"
-                    app:isb_thumb_size="8dp"
                     app:isb_track_background_color="@color/decker_gary"
                     app:isb_track_progress_color="@color/white" />
 

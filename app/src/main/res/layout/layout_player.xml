@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/default_bg" />
+            android:src="@mipmap/play_default_bg" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -80,8 +80,8 @@
                 android:id="@+id/iv_player_list"
                 android:layout_width="?actionBarSize"
                 android:layout_height="match_parent"
-                android:padding="12dp"
-                android:src="@mipmap/play_list" />
+                android:padding="8dp"
+                android:src="@mipmap/play_play_list" />
 
         </LinearLayout>
 

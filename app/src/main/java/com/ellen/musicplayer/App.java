@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ellen.musicplayer.base.BaseApplication;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
+import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.sql.SQLManager;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -25,11 +26,13 @@ public class App extends BaseApplication {
             @Override
             public void handleMessage(SuperMessage message) {
                 //存储最近播放的歌曲
-                Music music = (Music) message.object;
-                NearMusic nearMusic = new NearMusic();
-                nearMusic.setMusic(music);
-                nearMusic.setPlayTime(System.currentTimeMillis());
-                SQLManager.getInstance().getNearMusicTable().saveData(nearMusic);
+                MusicPlay musicPlay = (MusicPlay) message.object;
+                if(musicPlay.isQieHuan()) {
+                    NearMusic nearMusic = new NearMusic();
+                    nearMusic.setMusic(musicPlay.getMusic());
+                    nearMusic.setPlayTime(System.currentTimeMillis());
+                    SQLManager.getInstance().getNearMusicTable().saveData(nearMusic);
+                }
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);

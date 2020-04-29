@@ -22,6 +22,7 @@ import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
@@ -135,12 +136,15 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData() {
         if(MediaPlayerManager.getInstance().checkCanPlay()) {
-            updateUi(MediaPlayerManager.getInstance().currentOpenMusic());
+            MusicPlay musicPlay = new MusicPlay();
+            musicPlay.setMusic(MediaPlayerManager.getInstance().currentOpenMusic());
+            musicPlay.setQieHuan(true);
+            updateUi(musicPlay);
         }
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-                updateUi((Music) message.object);
+                updateUi((MusicPlay) message.object);
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
@@ -156,16 +160,24 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         return true;
     }
 
-    private void updateUi(Music music){
-        //设置歌曲图片
-        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-        if (bitmap == null) {
-            //设置默认图片
-            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
-            ivPlayerBg.setImageResource(R.mipmap.default_bg);
-        } else {
-            ivPlayerIcon.setImageBitmap(bitmap);
-            ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+    private void updateUi(MusicPlay musicPlay){
+        if(musicPlay.isQieHuan()) {
+            //设置歌曲名和歌手名
+            tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+            tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+
+            //设置歌曲图片
+            Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+            if (bitmap == null) {
+                //设置默认图片
+                ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+                ivPlayerBg.setImageResource(R.mipmap.default_bg);
+            } else {
+                ivPlayerIcon.setImageBitmap(bitmap);
+                ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+            }
+
+            serachMusicAdapter.notifyDataSetChanged();
         }
 
         //更新播放/暂停状态
@@ -174,16 +186,6 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         } else {
             ivPlayerPause.setImageResource(R.mipmap.pause);
         }
-
-        //设置歌曲名和歌手名
-        tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-        tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
-
-        //发送通知
-        MusicNotification musicNotification = new MusicNotification(this);
-        musicNotification.showNotification();
-
-        serachMusicAdapter.notifyDataSetChanged();
     }
 
     @Override

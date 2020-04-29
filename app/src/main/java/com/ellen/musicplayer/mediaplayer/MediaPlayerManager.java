@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.supermessagelibrary.MessageManager;
@@ -94,10 +95,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             mediaPlayer.start();
         }
-
-        SuperMessage superMessage = new SuperMessage(MessageTag.OPEN_MUSIC_ID);
-        superMessage.object = currentOpenMusic();
-        MessageManager.getInstance().sendMainThreadMessage(superMessage);
+        sendMessage(false);
     }
 
     @Override
@@ -108,9 +106,15 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public void start() {
         mediaPlayer.start();
+        sendMessage(true);
+    }
 
+    private void sendMessage(boolean isQieHuan){
+        MusicPlay musicPlay = new MusicPlay();
+        musicPlay.setQieHuan(isQieHuan);
+        musicPlay.setMusic(currentOpenMusic());
         SuperMessage superMessage = new SuperMessage(MessageTag.OPEN_MUSIC_ID);
-        superMessage.object = currentOpenMusic();
+        superMessage.object = musicPlay;
         MessageManager.getInstance().sendMainThreadMessage(superMessage);
     }
 

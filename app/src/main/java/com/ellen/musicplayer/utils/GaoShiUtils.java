@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi;
 public class GaoShiUtils {
 
     // 图片缩放比例(即模糊度)
-    private static final float BITMAP_SCALE = 0.4f;
+    private static final float BITMAP_SCALE = 0.3f;
 
     /**
      * @param context 上下文对象

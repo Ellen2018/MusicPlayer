@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.ui.fragment.LocalFragment;
 import com.ellen.musicplayer.ui.fragment.MyFragment;
 import com.ellen.musicplayer.mediaplayer.MediaPlayerManager;
@@ -118,8 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-                 Music music = (Music) message.object;
-                 updateUi(music);
+                 MusicPlay musicPlay = (MusicPlay) message.object;
+                 updateUi(musicPlay);
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
@@ -219,16 +220,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void updateUi(Music music){
-        //设置歌曲图片
-        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-        if (bitmap == null) {
-            //设置默认图片
-            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
-            ivPlayerBg.setImageResource(R.mipmap.default_bg);
-        } else {
-            ivPlayerIcon.setImageBitmap(bitmap);
-            ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+    private void updateUi(MusicPlay musicPlay){
+        if(musicPlay.isQieHuan()) {
+            //设置歌曲名和歌手名
+            tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+            tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+
+            //设置歌曲图片
+            Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+            if (bitmap == null) {
+                //设置默认图片
+                ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+                ivPlayerBg.setImageResource(R.mipmap.default_bg);
+            } else {
+                ivPlayerIcon.setImageBitmap(bitmap);
+                ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+            }
         }
 
         //更新播放/暂停状态
@@ -237,10 +244,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             ivPlayerPause.setImageResource(R.mipmap.pause);
         }
-
-        //设置歌曲名和歌手名
-        tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-        tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
 
         //发送通知
         MusicNotification musicNotification = new MusicNotification(this);
