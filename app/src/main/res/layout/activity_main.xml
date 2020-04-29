@@ -27,14 +27,14 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:background="#883e3e3e" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:paddingTop="30dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"

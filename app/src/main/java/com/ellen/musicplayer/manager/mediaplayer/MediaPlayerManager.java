@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 
+import com.ellen.musicplayer.KeyValueTag;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.helper.MMKVHelper;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.utils.GaoShiUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
@@ -20,7 +22,8 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     private static MediaPlayerManager mediaPlayerManager;
     private MediaPlayer mediaPlayer;
-    private PlayMode playMode = PlayMode.XUN_HUAN;
+    private PlayMode playMode = null;
+    private MMKVHelper musicMmkv;
     /**
      * 播放列表
      */
@@ -38,6 +41,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     private Bitmap gaoShiBitmap = null;
 
     private MediaPlayerManager() {
+        musicMmkv = new MMKVHelper(KeyValueTag.MUSIC_PLAY_NAME);
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -219,11 +223,26 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public PlayMode getPlayMode() {
+        if(playMode == null) {
+            int playValue = musicMmkv.getValue(KeyValueTag.PLAY_MODE_KEY, 1);
+            switch (playValue) {
+                case 1:
+                    playMode = PlayMode.XUN_HUAN;
+                    break;
+                case 2:
+                    playMode = PlayMode.DAN_QU;
+                    break;
+                case 3:
+                    playMode = PlayMode.SUI_JI;
+                    break;
+            }
+        }
         return playMode;
     }
 
     @Override
     public void adjustPlayMode() {
+        getPlayMode();
         if (playMode == PlayMode.XUN_HUAN) {
             playMode = PlayMode.SUI_JI;
         } else if (playMode == PlayMode.SUI_JI) {
@@ -231,6 +250,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             playMode = PlayMode.XUN_HUAN;
         }
+        musicMmkv.save(KeyValueTag.PLAY_MODE_KEY,playMode.getValue());
     }
 
     public int getAllTime() {

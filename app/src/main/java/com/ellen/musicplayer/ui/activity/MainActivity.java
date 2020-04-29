@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
             @Override
             public void onClick(Menu menu) {
+                drawerLayout.closeDrawers();
                 switch (menu.getIconId()){
                     case R.mipmap.pi_fu:
                         Intent intent = new Intent(MainActivity.this,PiFuSettingActivity.class);

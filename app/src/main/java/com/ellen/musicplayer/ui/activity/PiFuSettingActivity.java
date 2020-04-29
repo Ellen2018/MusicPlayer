@@ -116,6 +116,7 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.iv_save:
                 PiFuManager.getInstance().setPiFu(currentPiFu);
+                ToastUtils.toast(PiFuSettingActivity.this,"修改皮肤成功!");
                 //发送消息
                 PiFuMessage piFuMessage = new PiFuMessage();
                 piFuMessage.setPiFu(currentPiFu);

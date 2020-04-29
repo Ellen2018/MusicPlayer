@@ -8,6 +8,7 @@
         android:layout_height="74dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
+        android:background="@drawable/touch_bg"
         android:orientation="horizontal">
 
         <TextView
@@ -16,8 +17,8 @@
             android:layout_height="66dp"
             android:gravity="center"
             android:padding="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/iv_play_status"

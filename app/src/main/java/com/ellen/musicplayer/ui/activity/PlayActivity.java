@@ -114,11 +114,14 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initData() {
         timeHandler = new TimeHandler(this);
+        MusicPlay musicPlay = null;
         if (MediaPlayerManager.getInstance().checkCanPlay()) {
-            MusicPlay musicPlay = new MusicPlay();
+            musicPlay = new MusicPlay();
             musicPlay.setMusic(MediaPlayerManager.getInstance().currentOpenMusic());
             musicPlay.setQieHuan(true);
-            updateUi(musicPlay);
+        }
+        updateUi(musicPlay);
+        if(MediaPlayerManager.getInstance().checkCanPlay()) {
             timeHandler.sendEmptyMessage(0);
         }
         baseEvent = new MessageEventTrigger() {
@@ -143,7 +146,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void updateUi(MusicPlay musicPlay) {
-        if(musicPlay.isQieHuan()) {
+        if(musicPlay !=null && musicPlay.isQieHuan()) {
             Music music = musicPlay.getMusic();
             tvMusicName.setText(music.getName());
             tvSingerName.setText(music.getArtist());
@@ -194,7 +197,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         } else {
             ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
         }
-
     }
 
     @Override
