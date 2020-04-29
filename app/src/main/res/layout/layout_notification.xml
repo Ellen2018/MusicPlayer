@@ -25,7 +25,7 @@
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/bg" />
+            android:src="@mipmap/pi_fu_0" />
 
         <LinearLayout
             android:layout_width="0dp"

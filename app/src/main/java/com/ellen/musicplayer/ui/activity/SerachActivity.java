@@ -20,8 +20,11 @@ import com.ellen.musicplayer.adapter.SerachMusicAdapter;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
+import com.ellen.musicplayer.message.PiFuMessage;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -145,6 +148,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
+        updatePiFu(PiFuManager.getInstance().getPiFu());
     }
 
     @Override
@@ -205,6 +209,17 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
             case R.id.iv_cancel:
                 editText.setText("");
                 break;
+        }
+    }
+
+    private void updatePiFu(PiFu piFu){
+        if(piFu != null) {
+            if (piFu.isGuDinPiFu()) {
+                ImageView imageView = findViewById(R.id.iv_pi_fu);
+                imageView.setImageResource(piFu.getPiFuIconId());
+            } else {
+                //使用Glide加载本地图片
+            }
         }
     }
 }

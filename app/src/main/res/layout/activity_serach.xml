@@ -4,10 +4,11 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/iv_pi_fu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@mipmap/bg" />
+        android:src="@mipmap/pi_fu_0" />
 
     <ImageView
         android:layout_width="match_parent"

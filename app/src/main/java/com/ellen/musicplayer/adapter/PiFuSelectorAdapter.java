@@ -44,36 +44,26 @@ public class PiFuSelectorAdapter extends BaseSingleRecyclerViewAdapter<PiFu, PiF
 
     @Override
     protected void showData(PiFuSelectorViewHolder piFuSelectorViewHolder, PiFu data, int position) {
-         if(TextUtils.isEmpty(data.getImagePath())){
-             if(data.isAddIcon()) {
-                 piFuSelectorViewHolder.ivAddPiFu.setVisibility(View.GONE);
-                 piFuSelectorViewHolder.ivIcon.setVisibility(View.VISIBLE);
-                 piFuSelectorViewHolder.ivIcon.setImageResource(R.mipmap.bg);
-             }else {
-                 piFuSelectorViewHolder.ivAddPiFu.setVisibility(View.VISIBLE);
-                 piFuSelectorViewHolder.ivIcon.setVisibility(View.GONE);
-             }
+         if(position == getDataList().size() - 1){
+             //对应添加item的逻辑
+             piFuSelectorViewHolder.ivAddPiFu.setVisibility(View.VISIBLE);
+             piFuSelectorViewHolder.ivIcon.setVisibility(View.GONE);
          }else {
-
              piFuSelectorViewHolder.ivAddPiFu.setVisibility(View.GONE);
              piFuSelectorViewHolder.ivIcon.setVisibility(View.VISIBLE);
-
-             //使用Glide加载本地图片
-         }
-
-         if(position == 0){
-             if(TextUtils.isEmpty(selectorPiFu.getImagePath())) {
-                 piFuSelectorViewHolder.viewSelector.setVisibility(View.VISIBLE);
-             }
-         }else if(position == getDataList().size() - 1){
-             piFuSelectorViewHolder.viewSelector.setVisibility(View.GONE);
-         }else {
-             if(data.getImagePath().equals(selectorPiFu.getImagePath())){
-                 piFuSelectorViewHolder.viewSelector.setVisibility(View.VISIBLE);
+             if(data.isGuDinPiFu()){
+                 piFuSelectorViewHolder.ivIcon.setImageResource(data.getPiFuIconId());
              }else {
-                 piFuSelectorViewHolder.viewSelector.setVisibility(View.GONE);
+                 //使用Glide进行加载
              }
          }
+
+         //选中的逻辑
+        if(selectorPiFu.getPiFuId() == data.getPiFuId()){
+            piFuSelectorViewHolder.viewSelector.setVisibility(View.VISIBLE);
+        }else {
+            piFuSelectorViewHolder.viewSelector.setVisibility(View.GONE);
+        }
     }
 
     static class PiFuSelectorViewHolder extends BaseViewHolder{

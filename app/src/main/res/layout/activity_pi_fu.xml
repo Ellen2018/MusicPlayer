@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,17 +8,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@mipmap/bg" />
+        android:src="@mipmap/pi_fu_0" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="#88000000" />
 
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#883e3e3e" />
+
+    <RelativeLayout
+        android:id="@+id/rl_serach_top"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_below="@id/view_top"
+        android:background="#883e3e3e">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:padding="15dp"
+            android:src="@mipmap/back" />
+
+        <ImageView
+            android:id="@+id/iv_save"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentRight="true"
+            android:padding="15dp"
+            android:src="@mipmap/save" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/iv_save"
+            android:layout_toRightOf="@id/iv_back"
+            android:gravity="center"
+            android:text="皮肤设置"
+            android:textSize="18sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_View_pi_fu"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,10 @@ import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
 import com.ellen.musicplayer.bean.Menu;
+import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
+import com.ellen.musicplayer.message.PiFuMessage;
 import com.ellen.musicplayer.ui.fragment.LocalFragment;
 import com.ellen.musicplayer.ui.fragment.MyFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
@@ -53,11 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private IntentFilter intentFilterPause,intentFilterNext;
     private RelativeLayout rlPlayerMb;
     private RecyclerView recyclerViewMenu;
+    private ImageView ivPiFu;
 
     /**
      * 取代EventBus
      */
-    private BaseEvent baseEvent;
+    private BaseEvent musicEvent,piFuEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +124,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        baseEvent = new MessageEventTrigger() {
+        musicEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
                  MusicPlay musicPlay = (MusicPlay) message.object;
                  updateUi(musicPlay);
             }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return MainActivity.this;
+            }
         };
-        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
+
+        piFuEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                PiFuMessage piFuMessage = (PiFuMessage) message.object;
+                updatePiFu(piFuMessage.getPiFu());
+            }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return MainActivity.this;
+            }
+        };
+
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,musicEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.PI_FU_ID,piFuEvent);
 
         //播放暂停通知广播注册
         intentFilterPause = new IntentFilter();
@@ -173,18 +198,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayerList = findViewById(R.id.iv_player_list);
         rlPlayerMb = findViewById(R.id.rl_player_mb);
         recyclerViewMenu = findViewById(R.id.recycler_view_menu);
+        ivPiFu = findViewById(R.id.iv_pi_fu);
         tvTabOne.setOnClickListener(this);
         tvTabTwo.setOnClickListener(this);
         rlPlayerMb.setOnClickListener(this);
         ivSerach.setOnClickListener(this);
         ivPlayerPause.setOnClickListener(this);
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
     }
 
     @Override
@@ -281,5 +300,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void updatePiFu(PiFu piFu){
+        if(piFu != null) {
+            if (piFu.isGuDinPiFu()) {
+                ivPiFu.setImageResource(piFu.getPiFuIconId());
+            } else {
+                //使用Glide加载本地图片
+            }
+        }
     }
 }
