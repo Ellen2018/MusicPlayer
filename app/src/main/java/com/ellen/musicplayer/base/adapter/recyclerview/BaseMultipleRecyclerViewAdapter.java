@@ -37,6 +37,14 @@ public abstract class BaseMultipleRecyclerViewAdapter extends BaseRecyclerViewAd
                 }
             });
         }
+        if(onItemLongClickListener != null){
+            baseViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onItemLongClickListener.onItemLoncClick(baseViewHolder,position);
+                }
+            });
+        }
     }
 
     @Override

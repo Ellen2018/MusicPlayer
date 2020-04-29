@@ -110,4 +110,15 @@ public class SQLManager {
         getLikeMusicTable().delete(whererSqlWhere);
     }
 
+    /**
+     * 删除皮肤数据
+     */
+    public void deletePiFu(PiFu piFu){
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("piFuId", WhereSymbolEnum.EQUAL,piFu.getPiFuId())
+                .createSQL();
+        getPiFuTable().delete(whererSqlWhere);
+    }
+
 }

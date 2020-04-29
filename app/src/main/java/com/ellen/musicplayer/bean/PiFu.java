@@ -5,10 +5,10 @@ public class PiFu {
     private String imagePath;
     private boolean isAddIcon;
     private int piFuIconId;
-    private boolean isGuDinPiFu = true;
-    private int piFuId;
+    private boolean isGuDinPiFu;
+    private long piFuId;
 
-    public PiFu(boolean isGuDinPiFu,String imagePath, boolean isAddIcon, int piFuIconId,int piFuId) {
+    public PiFu(boolean isGuDinPiFu,String imagePath, boolean isAddIcon, int piFuIconId,long piFuId) {
         this.imagePath = imagePath;
         this.isAddIcon = isAddIcon;
         this.piFuIconId = piFuIconId;
@@ -16,11 +16,11 @@ public class PiFu {
         this.piFuId = piFuId;
     }
 
-    public int getPiFuId() {
+    public long getPiFuId() {
         return piFuId;
     }
 
-    public void setPiFuId(int piFuId) {
+    public void setPiFuId(long piFuId) {
         this.piFuId = piFuId;
     }
 

@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ivPiFu.setImageResource(piFu.getPiFuIconId());
             } else {
                 //使用Glide加载本地图片
+                Glide.with(MainActivity.this).load(piFu.getImagePath()).into(ivPiFu);
             }
         }
     }

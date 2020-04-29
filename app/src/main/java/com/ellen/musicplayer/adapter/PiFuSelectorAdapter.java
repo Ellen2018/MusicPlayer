@@ -1,13 +1,13 @@
 package com.ellen.musicplayer.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
@@ -29,7 +29,6 @@ public class PiFuSelectorAdapter extends BaseSingleRecyclerViewAdapter<PiFu, PiF
 
     public PiFuSelectorAdapter(Context context, List<PiFu> dataList) {
         super(context, dataList);
-        selectorPiFu = dataList.get(0);
     }
 
     @Override
@@ -55,6 +54,7 @@ public class PiFuSelectorAdapter extends BaseSingleRecyclerViewAdapter<PiFu, PiF
                  piFuSelectorViewHolder.ivIcon.setImageResource(data.getPiFuIconId());
              }else {
                  //使用Glide进行加载
+                 Glide.with(getContext()).load(data.getImagePath()).into(piFuSelectorViewHolder.ivIcon);
              }
          }
 

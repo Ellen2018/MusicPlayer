@@ -42,6 +42,14 @@ public abstract class BaseSingleRecyclerViewAdapter<T,VH extends BaseViewHolder>
                 }
             });
         }
+        if(onItemLongClickListener != null){
+            vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onItemLongClickListener.onItemLoncClick(vh,position);
+                }
+            });
+        }
     }
 
     @Override

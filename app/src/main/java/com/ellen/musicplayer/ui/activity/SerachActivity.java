@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.SerachMusicAdapter;
@@ -214,11 +215,12 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
 
     private void updatePiFu(PiFu piFu){
         if(piFu != null) {
+            ImageView imageView = findViewById(R.id.iv_pi_fu);
             if (piFu.isGuDinPiFu()) {
-                ImageView imageView = findViewById(R.id.iv_pi_fu);
                 imageView.setImageResource(piFu.getPiFuIconId());
             } else {
                 //使用Glide加载本地图片
+                Glide.with(SerachActivity.this).load(piFu.getImagePath()).into(imageView);
             }
         }
     }
