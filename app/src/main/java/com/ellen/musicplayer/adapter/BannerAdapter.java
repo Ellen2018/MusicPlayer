@@ -22,8 +22,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music, BannerAdapter.BannerViewHolder> {
-
-
+    
     private Context context;
     private OnItemClickListener onItemClickListener;
 
