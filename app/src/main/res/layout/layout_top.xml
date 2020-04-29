@@ -12,108 +12,35 @@
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" />
+            android:layout_margin="8dp" />
 
-        <LinearLayout
-            android:id="@+id/ll_top_1"
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:text="歌单"
+            android:textSize="18sp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="?actionBarSize"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_ge_dan"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content"/>
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:text="音乐日记"
+            android:textSize="18sp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="?actionBarSize"/>
 
-                <com.ellen.musicplayer.view.YuanJiaoImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:src="@mipmap/default_bg" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="我喜欢"
-                    android:textColor="@color/white" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <com.ellen.musicplayer.view.YuanJiaoImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:src="@mipmap/default_bg" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="最近"
-                    android:textColor="@color/white" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_top_2"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_music_note"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_below="@id/ll_top_1">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <com.ellen.musicplayer.view.YuanJiaoImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:src="@mipmap/default_bg" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="歌手"
-                    android:textColor="@color/white" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <com.ellen.musicplayer.view.YuanJiaoImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:src="@mipmap/default_bg" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="专辑"
-                    android:textColor="@color/white" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

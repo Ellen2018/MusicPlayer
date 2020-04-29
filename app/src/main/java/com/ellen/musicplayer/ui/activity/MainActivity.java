@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         fragmentList = new ArrayList<>();
-        fragmentList.add(new LocalFragment());
         fragmentList.add(new SortFragment());
+        fragmentList.add(new LocalFragment());
         initView();
         initData();
     }

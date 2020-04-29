@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:gravity="right|center_vertical"
                         android:paddingRight="10dp"
-                        android:text="本地"
+                        android:text="分类"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
@@ -79,7 +79,7 @@
                         android:layout_weight="1"
                         android:gravity="left|center_vertical"
                         android:paddingLeft="10dp"
-                        android:text="分类"
+                        android:text="本地"
                         android:textColor="@color/gray"
                         android:textSize="20sp" />
 
