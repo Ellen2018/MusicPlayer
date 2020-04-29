@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StatusUtils.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         initView();
         initData();
     }
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         permissionUtils.startCheckFileReadWritePermission(0, new PermissionUtils.PermissionCallback() {
             @Override
             public void success() {
-                
+
                 fragmentList = new ArrayList<>();
                 fragmentList.add(new SortFragment());
                 fragmentList.add(new LocalFragment());
