@@ -174,6 +174,7 @@ public class PiFuSettingActivity extends BaseActivity implements View.OnClickLis
                 ivPiFuIcon.setImageResource(piFu.getPiFuIconId());
             } else {
                 //使用Glide加载本地图片
+
                 Glide.with(PiFuSettingActivity.this).load(piFu.getImagePath()).into(ivPiFuIcon);
             }
         }
