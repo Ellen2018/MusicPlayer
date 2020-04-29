@@ -57,7 +57,7 @@ public class SortFragment extends BaseFragment {
     /**
      * 注意：这里设置过大会导致播放图片加载错位问题
      */
-    private final int SUI_JI_MUSIC_COUNT = 6;
+    private final int SUI_JI_MUSIC_COUNT = 10;
 
     @Override
     protected void initData() {

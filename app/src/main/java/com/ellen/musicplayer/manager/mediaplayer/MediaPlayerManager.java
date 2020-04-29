@@ -80,6 +80,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     public void open(int position, List<Music> musicList) {
         this.playList = musicList;
         this.playPosition = position;
+        reset();
         Music music = playList.get(playPosition);
         //重置资源
         mediaPlayer.reset();
@@ -90,6 +91,10 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void reset() {
+        bitmapPosition = -1;
     }
 
     @Override
