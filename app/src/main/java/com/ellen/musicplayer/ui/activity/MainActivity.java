@@ -38,6 +38,7 @@ import com.ellen.musicplayer.ui.fragment.LocalFragment;
 import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
+import com.ellen.musicplayer.utils.PermissionUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout rlPlayerMb;
     private RecyclerView recyclerViewMenu;
     private ImageView ivPiFu;
+    private PermissionUtils permissionUtils;
 
     /**
      * 取代EventBus
@@ -73,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StatusUtils.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        fragmentList = new ArrayList<>();
-        fragmentList.add(new SortFragment());
-        fragmentList.add(new LocalFragment());
+
         initView();
         initData();
     }
@@ -85,6 +85,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //走马灯设置
         tvMusicName.setSelected(true);
         tvSingerName.setSelected(true);
+        permissionUtils = new PermissionUtils(this);
+        permissionUtils.startCheckFileReadWritePermission(0, new PermissionUtils.PermissionCallback() {
+            @Override
+            public void success() {
+                fragmentList = new ArrayList<>();
+                fragmentList.add(new SortFragment());
+                fragmentList.add(new LocalFragment());
+
+                viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                    @NonNull
+                    @Override
+                    public Fragment getItem(int position) {
+                        return fragmentList.get(position);
+                    }
+
+                    @Override
+                    public int getCount() {
+                        return 2;
+                    }
+                });
+
+                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (position == 0) {
+                            tvTabOne.setTextColor(Color.WHITE);
+                            tvTabTwo.setTextColor(Color.GRAY);
+                        } else {
+                            tvTabOne.setTextColor(Color.GRAY);
+                            tvTabTwo.setTextColor(Color.WHITE);
+                        }
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure() {
+
+            }
+        });
 
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         List<Menu> menus = new ArrayList<>();
@@ -104,41 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         recyclerViewMenu.setAdapter(menuAdapter);
 
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return fragmentList.get(position);
-            }
 
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        });
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    tvTabOne.setTextColor(Color.WHITE);
-                    tvTabTwo.setTextColor(Color.GRAY);
-                } else {
-                    tvTabOne.setTextColor(Color.GRAY);
-                    tvTabTwo.setTextColor(Color.WHITE);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
         musicEvent = new MessageEventTrigger() {
             @Override
@@ -215,8 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Fragment fragment = fragmentList.get(viewPager.getCurrentItem());
-        fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 
     @Override
