@@ -325,6 +325,42 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         }
     }
 
+    @Override
+    public List<Music> getPlayList() {
+        return playList;
+    }
+
+    @Override
+    public void deletePlayList(int position) {
+        if(this.playPosition == position){
+            //切换到下一曲
+            if(this.playPosition == playList.size() - 1){
+                this.playPosition = 0;
+            }
+            playList.remove(position);
+            open(playPosition,playList);
+        }else if(playPosition < position){
+            //不需要作任何调整
+            playList.remove(position);
+        }else {
+            playPosition--;
+            playList.remove(position);
+        }
+
+    }
+
+    @Override
+    public void clearPlayList() {
+        stop();
+        bitmapPosition = -1;
+        playList.clear();
+        playList = null;
+        if(addMusicPlayList != null) {
+            addMusicPlayList.clear();
+        }
+        addMusicPlayList = null;
+    }
+
     public int getAllTime() {
         return mediaPlayer.getDuration() / 1000;
     }

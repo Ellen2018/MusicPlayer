@@ -302,6 +302,7 @@
                             android:src="@mipmap/play_next" />
 
                         <ImageView
+                            android:id="@+id/iv_play_list"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

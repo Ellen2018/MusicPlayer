@@ -16,6 +16,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.dialog.MusicMessageDialog;
+import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.mediaplayer.PlayMode;
 import com.ellen.musicplayer.message.MusicPlay;
@@ -42,7 +43,7 @@ import gdut.bsx.share2.ShareContentType;
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode, ivLike, ivLinShen, ivMessage;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode, ivLike, ivLinShen, ivMessage,ivPlayList;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
@@ -81,6 +82,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivLinShen = findViewById(R.id.iv_lin_shen);
         ivLike = findViewById(R.id.iv_like);
         ivBg = findViewById(R.id.iv_bg);
+        ivPlayList = findViewById(R.id.iv_play_list);
         ivMessage = findViewById(R.id.iv_message);
         rl = findViewById(R.id.rl);
         tvMusicName.setSelected(true);
@@ -97,6 +99,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivLike.setOnClickListener(this);
         ivLinShen.setOnClickListener(this);
         ivMessage.setOnClickListener(this);
+        ivPlayList.setOnClickListener(this);
 
         indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -290,6 +293,10 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     ToastUtils.toast(this, "当前没有播放歌曲!");
                 }
+                break;
+            case R.id.iv_play_list:
+                PlayListDialog playListDialog = new PlayListDialog(PlayActivity.this);
+                playListDialog.showAtLocation(rl,Gravity.BOTTOM,0,0);
                 break;
         }
     }

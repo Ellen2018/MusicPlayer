@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
@@ -52,6 +54,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
 
     private List<Music> serachMusicLists;
     private SerachMusicAdapter serachMusicAdapter;
+    private RelativeLayout rl;
 
     @Override
     protected void setStatus() {
@@ -75,13 +78,14 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         ivPlayerIcon = findViewById(R.id.iv_player_icon);
         rlPlayerMb.setOnClickListener(this);
         ivPlayerPause.setOnClickListener(this);
-
+        rl = findViewById(R.id.rl);
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_view);
         editText = findViewById(R.id.edit_text);
         ivCancel = findViewById(R.id.iv_cancel);
         ivCancel.setOnClickListener(this);
+        ivPlayerList.setOnClickListener(this);
         tvSerachNull = findViewById(R.id.tv_serach_null);
 
         serachMusicAdapter = new SerachMusicAdapter(this,recyclerView,serachMusicLists = LocalSDMusicUtils.getLocalAllMusic(this));
@@ -210,6 +214,10 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.iv_cancel:
                 editText.setText("");
+                break;
+            case R.id.iv_player_list:
+                PlayListDialog playListDialog = new PlayListDialog(SerachActivity.this);
+                playListDialog.showAtLocation(rl, Gravity.BOTTOM,0,0);
                 break;
         }
     }

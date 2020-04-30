@@ -31,6 +31,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
 import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.message.PiFuMessage;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerViewMenu;
     private ImageView ivPiFu;
     private PermissionUtils permissionUtils;
+    private RelativeLayout rl;
 
     /**
      * 取代EventBus
@@ -214,12 +216,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayerList = findViewById(R.id.iv_player_list);
         rlPlayerMb = findViewById(R.id.rl_player_mb);
         recyclerViewMenu = findViewById(R.id.recycler_view_menu);
+        rl = findViewById(R.id.rl);
         ivPiFu = findViewById(R.id.iv_pi_fu);
         tvTabOne.setOnClickListener(this);
         tvTabTwo.setOnClickListener(this);
         rlPlayerMb.setOnClickListener(this);
         ivSerach.setOnClickListener(this);
         ivPlayerPause.setOnClickListener(this);
+        ivPlayerList.setOnClickListener(this);
 
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +262,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
 
                 }
+                break;
+            case R.id.iv_player_list:
+                PlayListDialog playListDialog = new PlayListDialog(MainActivity.this);
+                playListDialog.showAtLocation(rl,Gravity.BOTTOM,0,0);
                 break;
         }
 

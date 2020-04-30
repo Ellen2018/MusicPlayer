@@ -31,7 +31,8 @@ public abstract class BasePopwindow {
 
     protected void onstart(){}
 
-    private void showBefore(){
+    private void showInit(){
+        showBefore();
         mContentView = onCreateView();
         if(this instanceof ButterKnifeInterface){
             ButterKnifeInterface butterKnifeInterface = (ButterKnifeInterface) this;
@@ -77,27 +78,27 @@ public abstract class BasePopwindow {
 
     //显示在目标View的下方
     protected void showAsDropDown(View parentView){
-        showBefore();
+        showInit();
         popupWindow.showAsDropDown(parentView);
         onResume();
     }
 
     //显示在目标View的下方,并且加上偏移量
     public void showAsDropDown(View parentView, int xoff, int yoff){
-        showBefore();
+        showInit();
         popupWindow.showAsDropDown(parentView,xoff,yoff);
         onResume();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void showAsDropDown(View parentView, int xoff, int yoff, int gravity){
-        showBefore();
+        showInit();
         popupWindow.showAsDropDown(parentView,xoff,yoff,gravity);
         onResume();
     }
 
     public void showAtLocation(View parentView, int gravity, int xoff, int yoff){
-        showBefore();
+        showInit();
         popupWindow.showAtLocation(parentView,gravity,xoff,yoff);
         onResume();
     }
@@ -142,6 +143,7 @@ public abstract class BasePopwindow {
     protected abstract Boolean isSetShowBackgroundBlack();
     //dismiss之前调用
     protected abstract void dismissBefore();
+    protected abstract void showBefore();
 
     public Activity getActivity(){
         return activityWeakReference.get();

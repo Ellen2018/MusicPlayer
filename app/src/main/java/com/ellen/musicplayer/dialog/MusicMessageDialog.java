@@ -112,10 +112,7 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
             }
         });
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-        if(imm != null){
-            imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
-        }
+
 
     }
 }

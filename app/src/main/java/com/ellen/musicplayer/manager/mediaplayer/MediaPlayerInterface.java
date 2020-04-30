@@ -35,4 +35,7 @@ public interface MediaPlayerInterface {
 
     void addNextPlayMusic(Music music);
     void addNextPlayMusics(List<Music> musicList);
+    List<Music> getPlayList();
+    void deletePlayList(int position);
+    void clearPlayList();
 }
