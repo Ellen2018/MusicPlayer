@@ -34,4 +34,5 @@ public interface MediaPlayerInterface {
     void adjustPlayMode();
 
     void addNextPlayMusic(Music music);
+    void addNextPlayMusics(List<Music> musicList);
 }

@@ -1,6 +1,8 @@
 package com.ellen.musicplayer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,6 +17,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.FileMusic;
 import com.ellen.musicplayer.bean.LiuPai;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.LeiBieDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.ToastUtils;
 
@@ -23,8 +26,13 @@ import java.util.List;
 public class FileMusicAdapter extends BaseSingleRecyclerViewAdapter<FileMusic, FileMusicAdapter.ZhuanJiViewHolder> {
 
 
-    public FileMusicAdapter(Context context, List<FileMusic> dataList) {
-        super(context, dataList);
+    private View parentView;
+    private Activity activity;
+
+    public FileMusicAdapter(Activity activity,View view, List<FileMusic> dataList) {
+        super(activity, dataList);
+        this.activity = activity;
+        this.parentView = view;
     }
 
     @Override
@@ -45,7 +53,8 @@ public class FileMusicAdapter extends BaseSingleRecyclerViewAdapter<FileMusic, F
         singlerViewHolder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.toast(getContext(),data.getName());
+                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,"文件夹",data.getName(),data.getMusicList());
+                leiBieDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });
     }

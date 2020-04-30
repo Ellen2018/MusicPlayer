@@ -1,6 +1,8 @@
 package com.ellen.musicplayer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,6 +16,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAda
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.Singer;
+import com.ellen.musicplayer.dialog.LeiBieDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.ToastUtils;
 
@@ -21,9 +24,13 @@ import java.util.List;
 
 public class SingerAdapter extends BaseSingleRecyclerViewAdapter<Singer, SingerAdapter.SinglerViewHolder> {
 
+    private Activity activity;
+    private View parentView;
 
-    public SingerAdapter(Context context, List<Singer> dataList) {
-        super(context, dataList);
+    public SingerAdapter(Activity activity,View parentView, List<Singer> dataList) {
+        super(activity, dataList);
+        this.parentView = parentView;
+        this.activity = activity;
     }
 
     @Override
@@ -49,7 +56,8 @@ public class SingerAdapter extends BaseSingleRecyclerViewAdapter<Singer, SingerA
         singlerViewHolder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.toast(getContext(),data.getName());
+                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,"歌手",data.getName(),data.getMusicList());
+                leiBieDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });
     }

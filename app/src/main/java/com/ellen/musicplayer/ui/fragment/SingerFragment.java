@@ -43,7 +43,7 @@ public class SingerFragment extends BaseFragment {
                     protected void handleMessage(List<Singer> message) {
                         List<Singer> singerList = message;
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerView.setAdapter(singerAdapter = new SingerAdapter(getActivity(),singerList));
+                        recyclerView.setAdapter(singerAdapter = new SingerAdapter(getActivity(),recyclerView,singerList));
                         singerAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {

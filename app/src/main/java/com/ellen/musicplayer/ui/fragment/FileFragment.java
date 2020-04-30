@@ -33,7 +33,7 @@ public class FileFragment extends BaseFragment {
                     @Override
                     protected void handleMessage(List<FileMusic> message) {
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        recyclerView.setAdapter(new FileMusicAdapter(getActivity(),message));
+                        recyclerView.setAdapter(new FileMusicAdapter(getActivity(),recyclerView,message));
                     }
 
                     @Override

@@ -34,7 +34,7 @@ public class ZhuanJiFragment extends BaseFragment {
             @Override
             protected void handleMessage(List<ZhuanJi> message) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(zhuanJiAdapter = new ZhuanJiAdapter(getActivity(),message));
+                recyclerView.setAdapter(zhuanJiAdapter = new ZhuanJiAdapter(getActivity(),recyclerView,message));
             }
 
             @Override

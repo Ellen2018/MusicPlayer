@@ -85,7 +85,15 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public void open(int position, List<Music> musicList) {
-        this.playList = musicList;
+        if (playList == null) {
+            playList = new ArrayList<>();
+            this.playList.addAll(musicList);
+        } else {
+            if(musicList != playList) {
+                this.playList.clear();
+                this.playList.addAll(musicList);
+            }
+        }
         this.playPosition = position;
         reset();
         Music music = playList.get(playPosition);
@@ -155,8 +163,8 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         open(playPosition, playList);
     }
 
-    public void nextByUser(){
-        if(playMode == PlayMode.DAN_QU) {
+    public void nextByUser() {
+        if (playMode == PlayMode.DAN_QU) {
             if (playMode == PlayMode.DAN_QU) {
                 playPosition++;
                 if (playPosition >= playList.size()) {
@@ -164,7 +172,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
                 }
             }
             open(playPosition, playList);
-        }else {
+        } else {
             next();
         }
     }
@@ -301,6 +309,19 @@ public class MediaPlayerManager implements MediaPlayerInterface {
                 addMusicPlayList = new ArrayList<>();
             }
             addMusicPlayList.add(addMusicPlayList.size(), music);
+        }
+    }
+
+    @Override
+    public void addNextPlayMusics(List<Music> musicList) {
+        if (playList == null || playList.size() == 0) {
+            open(0, musicList);
+        } else {
+            playList.addAll(playPosition + 1, musicList);
+            if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
+                addMusicPlayList = new ArrayList<>();
+            }
+            addMusicPlayList.addAll(addMusicPlayList.size(), musicList);
         }
     }
 

@@ -118,48 +118,4 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
         }
 
     }
-
-    @Override
-    protected int setWidth() {
-        return ViewGroup.LayoutParams.MATCH_PARENT;
-    }
-
-    @Override
-    protected int setHeight() {
-        return ViewGroup.LayoutParams.WRAP_CONTENT;
-    }
-
-    @Override
-    protected boolean isGetFocus() {
-        return true;
-    }
-
-    @Override
-    protected Boolean isSetBackgroundDrawable() {
-        return false;
-    }
-
-    @Override
-    protected Drawable setBackgroundDrawable() {
-        return null;
-    }
-
-    @Override
-    protected boolean isResponseOutsideTouchable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isResponseTouchable() {
-        return true;
-    }
-
-    @Override
-    protected Boolean isSetShowBackgroundBlack() {
-        return true;
-    }
-
-    @Override
-    protected void dismissBefore() {
-    }
 }
