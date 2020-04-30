@@ -1,11 +1,15 @@
 package com.ellen.musicplayer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.view.YuanJiaoImageView;
 
@@ -23,12 +28,14 @@ import java.util.List;
 
 public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music, BannerAdapter.BannerViewHolder> {
 
-    private Context context;
+    private Activity activity;
+    private View prentView;
     private OnItemClickListener onItemClickListener;
 
-    public BannerAdapter(Context context,List<Music> datas) {
+    public BannerAdapter(View prentView,Activity activity,List<Music> datas) {
         super(datas);
-        this.context = context;
+        this.activity = activity;
+        this.prentView = prentView;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -37,7 +44,7 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
 
     @Override
     public BannerViewHolder onCreateHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.banner_layout,null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.banner_layout,null);
         view.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
@@ -46,8 +53,8 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
 
     @Override
     public void onBindView(BannerViewHolder holder, Music data, final int position, int size) {
-        Glide.with(context)
-                .load(MusicBitmap.getArtwork(context,data.getMusicId(),data.getAlbumId()))
+        Glide.with(activity)
+                .load(MusicBitmap.getArtwork(activity,data.getMusicId(),data.getAlbumId()))
                 .error(R.mipmap.default_music_icon)
                 .into(holder.imageView);
         holder.tvMusicName.setText(data.getName());
@@ -61,17 +68,26 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
                 }
             });
         }
+        holder.rlMusicMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MusicMessageDialog musicMessageDialog = new MusicMessageDialog(activity,data);
+                musicMessageDialog.showAtLocation(prentView, Gravity.BOTTOM,0,0);
+            }
+        });
     }
 
     static class BannerViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView tvMusicName,tvSingerName,tvProgress;
+        RelativeLayout rlMusicMessage;
         public BannerViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_banner_icon);
             tvMusicName = itemView.findViewById(R.id.tv_music_name);
             tvSingerName = itemView.findViewById(R.id.tv_singer_name);
             tvProgress = itemView.findViewById(R.id.tv_progress);
+            rlMusicMessage = itemView.findViewById(R.id.rl_music_message);
         }
     }
 

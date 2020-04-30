@@ -42,11 +42,11 @@ import gdut.bsx.share2.ShareContentType;
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike,ivLinShen,ivMessage;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode, ivLike, ivLinShen, ivMessage;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
-    private static final int UPDATE_TIME = 500;
+    private static final int UPDATE_TIME = 42;
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
 
@@ -128,7 +128,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             musicPlay.setQieHuan(true);
         }
         updateUi(musicPlay);
-        if(MediaPlayerManager.getInstance().checkCanPlay()) {
+        if (MediaPlayerManager.getInstance().checkCanPlay()) {
             timeHandler.sendEmptyMessage(0);
         }
         baseEvent = new MessageEventTrigger() {
@@ -153,7 +153,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void updateUi(MusicPlay musicPlay) {
-        if(musicPlay !=null && musicPlay.isQieHuan()) {
+        if (musicPlay != null && musicPlay.isQieHuan()) {
+            timeHandler.setJiaoDu(-2);
             Music music = musicPlay.getMusic();
             tvMusicName.setText(music.getName());
             tvSingerName.setText(music.getArtist());
@@ -214,7 +215,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv_share:
                 //分享音乐
-                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     Music music = MediaPlayerManager.getInstance().currentOpenMusic();
                     File musicShareFile = new File(music.getPath());
                     new Share2.Builder(this)
@@ -224,33 +225,33 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                             .setTitle("Share Music")
                             .build()
                             .shareBySystem();
-                }else {
-                    ToastUtils.toast(this,"当前没有播放歌曲，分享失败!");
+                } else {
+                    ToastUtils.toast(this, "当前没有播放歌曲，分享失败!");
                 }
                 break;
             case R.id.iv_lin_shen:
                 //检测权限(铃声问题没有解决2020-04-28)
-                ToastUtils.toast(this,"抱歉,铃声功能暂未开通!");
+                ToastUtils.toast(this, "抱歉,铃声功能暂未开通!");
                 break;
             case R.id.iv_play_pre:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MediaPlayerManager.getInstance().pre();
-                }else {
-                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
+                } else {
+                    ToastUtils.toast(this, "播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_pause:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MediaPlayerManager.getInstance().pauseAndPlay();
-                }else {
-                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
+                } else {
+                    ToastUtils.toast(this, "播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_next:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
-                    MediaPlayerManager.getInstance().next();
-                }else {
-                    ToastUtils.toast(this,"播放列表没有任何歌曲!");
+                    MediaPlayerManager.getInstance().nextByUser();
+                } else {
+                    ToastUtils.toast(this, "播放列表没有任何歌曲!");
                 }
                 break;
             case R.id.iv_play_mode:
@@ -265,7 +266,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_like:
-                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     Music music = MediaPlayerManager.getInstance().currentOpenMusic();
                     //先判断是否喜欢
                     boolean isLike = SQLManager.getInstance().isLikeMusic(music);
@@ -278,16 +279,16 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                         SQLManager.getInstance().addLikeMusic(music);
                         ivLike.setImageResource(R.mipmap.like);
                     }
-                }else {
-                    ToastUtils.toast(this,"当前没有播放歌曲，喜欢失败!");
+                } else {
+                    ToastUtils.toast(this, "当前没有播放歌曲，喜欢失败!");
                 }
                 break;
             case R.id.iv_message:
-                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                if (MediaPlayerManager.getInstance().checkCanPlay()) {
                     MusicMessageDialog musicMessageDialog = new MusicMessageDialog(this, MediaPlayerManager.getInstance().currentOpenMusic());
                     musicMessageDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
-                }else {
-                    ToastUtils.toast(this,"当前没有播放歌曲!");
+                } else {
+                    ToastUtils.toast(this, "当前没有播放歌曲!");
                 }
                 break;
         }
@@ -296,6 +297,17 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private static class TimeHandler extends Handler {
 
         private boolean isCanUdpateTime = true;
+        private float jiaoDu = -2;
+
+        public float getJiaoDu() {
+            return jiaoDu;
+        }
+
+        public void setJiaoDu(float jiaoDu) {
+            this.jiaoDu = jiaoDu;
+            rotate();
+
+        }
 
         public void setCanUdpateTime(boolean canUdpateTime) {
             isCanUdpateTime = canUdpateTime;
@@ -320,14 +332,29 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                         .setProgress(MediaPlayerManager.getInstance().getCurrentTime());
                 getPlayActivity().tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
                 getPlayActivity().tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
+
+                //进行旋转
+                rotate();
             }
             this.sendEmptyMessageDelayed(0, UPDATE_TIME);
+        }
+
+        private void rotate(){
+            if(MediaPlayerManager.getInstance().checkCanPlay() && MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+                jiaoDu = jiaoDu + 0.3f;
+                getPlayActivity().ivMusicIcon.setPivotX(getPlayActivity().ivMusicIcon.getWidth() / 2);
+                getPlayActivity().ivMusicIcon.setPivotY(getPlayActivity().ivMusicIcon.getHeight() / 2);//支点在图片中心
+                getPlayActivity().ivMusicIcon.setRotation(jiaoDu);
+                if (jiaoDu % 360 == 0) {
+                    jiaoDu = 360;
+                }
+            }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

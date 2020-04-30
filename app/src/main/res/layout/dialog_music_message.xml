@@ -26,6 +26,7 @@
                 android:layout_width="88dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/default_music_icon" />
 
             <LinearLayout

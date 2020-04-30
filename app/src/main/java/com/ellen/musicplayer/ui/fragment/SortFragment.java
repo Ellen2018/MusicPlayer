@@ -118,7 +118,7 @@ public class SortFragment extends BaseFragment {
     }
 
     private void initBanner(){
-        bannerAdapter = new BannerAdapter(getActivity(),suiJiMusicLists);
+        bannerAdapter = new BannerAdapter(recyclerView,getActivity(),suiJiMusicLists);
         bannerAdapter.setOnItemClickListener(new BannerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

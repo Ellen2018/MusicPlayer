@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onReceive(Context context, Intent intent) {
             if(MediaPlayerManager.getInstance().checkCanPlay()) {
-                MediaPlayerManager.getInstance().next();
+                MediaPlayerManager.getInstance().nextByUser();
             }
         }
     }

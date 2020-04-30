@@ -30,7 +30,11 @@ public class MediaPlayerManager implements MediaPlayerInterface {
      * 播放列表
      */
     private List<Music> playList = null;
+    /**
+     * 添加的歌曲列表
+     */
     private List<Music> addMusicPlayList = null;
+
     /**
      * 记录播放的位置
      */
@@ -151,8 +155,23 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         open(playPosition, playList);
     }
 
+    public void nextByUser(){
+        if(playMode == PlayMode.DAN_QU) {
+            if (playMode == PlayMode.DAN_QU) {
+                playPosition++;
+                if (playPosition >= playList.size()) {
+                    playPosition = 0;
+                }
+            }
+            open(playPosition, playList);
+        }else {
+            next();
+        }
+    }
+
     @Override
     public void pre() {
+        //先判断上一曲列表是否有歌曲,有的话，将列表切换到record
         playPosition--;
         if (playPosition < 0) {
             playPosition = playList.size() - 1;

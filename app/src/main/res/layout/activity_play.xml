@@ -104,7 +104,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_top"
                 android:gravity="center"
-                app:layout_marginPercent="8%"
+                app:layout_marginLeftPercent="12%"
+                app:layout_marginRightPercent="12%"
+                app:layout_marginTopPercent="8%"
+                app:layout_marginBottomPercent="8%"
                 app:layout_heightPercent="44%">
 
                 <com.ellen.musicplayer.view.ZhengFangRelativeLayout

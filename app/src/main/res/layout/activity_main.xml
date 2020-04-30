@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:gravity="right|center_vertical"
                         android:paddingRight="10dp"
-                        android:text="分类"
+                        android:text="趣听"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
