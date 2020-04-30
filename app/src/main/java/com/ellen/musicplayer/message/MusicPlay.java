@@ -9,6 +9,11 @@ public class MusicPlay {
      */
     private boolean isQieHuan = false;
     /**
+     *
+     */
+    private boolean isClear = false;
+
+    /**
      * 记录当前播放的音乐
      */
     private Music music;
@@ -27,5 +32,13 @@ public class MusicPlay {
 
     public void setMusic(Music music) {
         this.music = music;
+    }
+
+    public boolean isClear() {
+        return isClear;
+    }
+
+    public void setClear(boolean clear) {
+        isClear = clear;
     }
 }

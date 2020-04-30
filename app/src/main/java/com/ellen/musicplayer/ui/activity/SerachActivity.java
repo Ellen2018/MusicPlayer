@@ -168,30 +168,39 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void updateUi(MusicPlay musicPlay){
-        if(musicPlay.isQieHuan()) {
-            //设置歌曲名和歌手名
-            tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-            tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+        if(musicPlay.isClear()){
+            tvMusicName.setText("歌曲名");
+            tvSingerName.setText("歌手名");
+            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+            ivPlayerBg.setImageResource(R.mipmap.default_bg);
+            ivPlayerPause.setImageResource(R.mipmap.pause);
+            serachMusicAdapter.notifyDataSetChanged();
+        }else {
+            if (musicPlay.isQieHuan()) {
+                //设置歌曲名和歌手名
+                tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+                tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
 
-            //设置歌曲图片
-            Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-            if (bitmap == null) {
-                //设置默认图片
-                ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
-                ivPlayerBg.setImageResource(R.mipmap.default_bg);
-            } else {
-                ivPlayerIcon.setImageBitmap(bitmap);
-                ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+                //设置歌曲图片
+                Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+                if (bitmap == null) {
+                    //设置默认图片
+                    ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+                    ivPlayerBg.setImageResource(R.mipmap.default_bg);
+                } else {
+                    ivPlayerIcon.setImageBitmap(bitmap);
+                    ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+                }
+
+                serachMusicAdapter.notifyDataSetChanged();
             }
 
-            serachMusicAdapter.notifyDataSetChanged();
-        }
-
-        //更新播放/暂停状态
-        if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
-            ivPlayerPause.setImageResource(R.mipmap.play);
-        } else {
-            ivPlayerPause.setImageResource(R.mipmap.pause);
+            //更新播放/暂停状态
+            if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+                ivPlayerPause.setImageResource(R.mipmap.play);
+            } else {
+                ivPlayerPause.setImageResource(R.mipmap.pause);
+            }
         }
     }
 

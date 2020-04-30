@@ -38,4 +38,5 @@ public interface MediaPlayerInterface {
     List<Music> getPlayList();
     void deletePlayList(int position);
     void clearPlayList();
+    int getCurrentPlayPosition();
 }

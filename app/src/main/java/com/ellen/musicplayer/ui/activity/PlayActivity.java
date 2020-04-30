@@ -3,6 +3,7 @@ package com.ellen.musicplayer.ui.activity;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ import gdut.bsx.share2.ShareContentType;
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode, ivLike, ivLinShen, ivMessage,ivPlayList;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode, ivLike, ivLinShen, ivMessage, ivPlayList;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
@@ -156,7 +157,50 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void updateUi(MusicPlay musicPlay) {
+
+        if (musicPlay != null && musicPlay.isClear()) {
+            //恢复默认
+            tvMusicName.setText("歌曲名");
+            tvSingerName.setText("歌手名");
+            tvMusicName1.setText("歌曲名");
+            tvSingerName1.setText("歌手名");
+            tvAlbumName.setText("专辑名");
+            timeHandler.setJiaoDu(-2);
+            timeHandler.removeMessages(0);
+            ivMusicIcon.setPivotX(ivMusicIcon.getWidth() / 2);
+            ivMusicIcon.setPivotY(ivMusicIcon.getHeight() / 2);//支点在图片中心
+            ivMusicIcon.setRotation(-2);
+            ivMusicIcon.setImageResource(R.mipmap.default_music_icon);
+            ivBg.setImageResource(R.mipmap.play_default_bg);
+            ivLike.setImageResource(R.mipmap.not_like);
+            ivPause.setImageResource(R.mipmap.play_pause);
+            indicatorSeekBar.setMax(0);
+            indicatorSeekBar.setProgress(0);
+            indicatorSeekBar.setOnSeekChangeListener(null);
+            tvCurrentTime.setText("00:00");
+            tvAllTime.setText("00:00");
+            return;
+        }
+
         if (musicPlay != null && musicPlay.isQieHuan()) {
+            indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+                    tvCurrentTime.setText(TimeUtils.format(seekParams.progress * 1000));
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+                    timeHandler.setCanUdpateTime(false);
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    MediaPlayerManager.getInstance().getMediaPlayer().seekTo(seekBar.getProgress() * 1000);
+                    timeHandler.setCanUdpateTime(true);
+                }
+            });
+
             timeHandler.setJiaoDu(-2);
             Music music = musicPlay.getMusic();
             tvMusicName.setText(music.getName());
@@ -208,6 +252,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         } else {
             ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
         }
+
     }
 
     @Override
@@ -296,7 +341,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv_play_list:
                 PlayListDialog playListDialog = new PlayListDialog(PlayActivity.this);
-                playListDialog.showAtLocation(rl,Gravity.BOTTOM,0,0);
+                playListDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
                 break;
         }
     }
@@ -313,7 +358,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         public void setJiaoDu(float jiaoDu) {
             this.jiaoDu = jiaoDu;
             rotate();
-
         }
 
         public void setCanUdpateTime(boolean canUdpateTime) {
@@ -335,19 +379,21 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
             //更新时间
             if (isCanUdpateTime) {
-                getPlayActivity().indicatorSeekBar
-                        .setProgress(MediaPlayerManager.getInstance().getCurrentTime());
-                getPlayActivity().tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
-                getPlayActivity().tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    getPlayActivity().indicatorSeekBar
+                            .setProgress(MediaPlayerManager.getInstance().getCurrentTime());
+                    getPlayActivity().tvCurrentTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getCurrentPosition()));
+                    getPlayActivity().tvAllTime.setText(TimeUtils.format(MediaPlayerManager.getInstance().getMediaPlayer().getDuration()));
 
-                //进行旋转
-                rotate();
+                    //进行旋转
+                    rotate();
+                }
             }
             this.sendEmptyMessageDelayed(0, UPDATE_TIME);
         }
 
-        private void rotate(){
-            if(MediaPlayerManager.getInstance().checkCanPlay() && MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+        private void rotate() {
+            if (MediaPlayerManager.getInstance().checkCanPlay() && MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
                 jiaoDu = jiaoDu + 0.25f;
                 getPlayActivity().ivMusicIcon.setPivotX(getPlayActivity().ivMusicIcon.getWidth() / 2);
                 getPlayActivity().ivMusicIcon.setPivotY(getPlayActivity().ivMusicIcon.getHeight() / 2);//支点在图片中心

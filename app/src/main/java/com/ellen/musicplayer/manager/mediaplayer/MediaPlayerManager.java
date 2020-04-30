@@ -89,7 +89,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             playList = new ArrayList<>();
             this.playList.addAll(musicList);
         } else {
-            if(musicList != playList) {
+            if (musicList != playList) {
                 this.playList.clear();
                 this.playList.addAll(musicList);
             }
@@ -308,7 +308,8 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
                 addMusicPlayList = new ArrayList<>();
             }
-            addMusicPlayList.add(addMusicPlayList.size(), music);
+            addMusicPlayList.clear();
+            addMusicPlayList.add(music);
         }
     }
 
@@ -321,7 +322,8 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
                 addMusicPlayList = new ArrayList<>();
             }
-            addMusicPlayList.addAll(addMusicPlayList.size(), musicList);
+            addMusicPlayList.clear();
+            addMusicPlayList.add(musicList.get(0));
         }
     }
 
@@ -332,17 +334,17 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public void deletePlayList(int position) {
-        if(this.playPosition == position){
+        if (this.playPosition == position) {
             //切换到下一曲
-            if(this.playPosition == playList.size() - 1){
+            if (this.playPosition == playList.size() - 1) {
                 this.playPosition = 0;
             }
             playList.remove(position);
-            open(playPosition,playList);
-        }else if(playPosition < position){
+            open(playPosition, playList);
+        } else if (playPosition < position) {
             //不需要作任何调整
             playList.remove(position);
-        }else {
+        } else {
             playPosition--;
             playList.remove(position);
         }
@@ -352,13 +354,27 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public void clearPlayList() {
         stop();
+        mediaPlayer.reset();
         bitmapPosition = -1;
+        playPosition = -1;
         playList.clear();
         playList = null;
-        if(addMusicPlayList != null) {
+        if (addMusicPlayList != null) {
             addMusicPlayList.clear();
         }
         addMusicPlayList = null;
+
+        //发送消息清空了
+        MusicPlay musicPlay = new MusicPlay();
+        musicPlay.setClear(true);
+        SuperMessage superMessage = new SuperMessage(MessageTag.OPEN_MUSIC_ID);
+        superMessage.object = musicPlay;
+        MessageManager.getInstance().sendMainThreadMessage(superMessage);
+    }
+
+    @Override
+    public int getCurrentPlayPosition() {
+        return playPosition;
     }
 
     public int getAllTime() {

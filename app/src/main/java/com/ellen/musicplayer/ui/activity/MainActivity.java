@@ -58,17 +58,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     private ImageView ivUser, ivSerach, ivPlayerIcon;
     private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
-    private IntentFilter intentFilterPause,intentFilterNext;
+    private IntentFilter intentFilterPause, intentFilterNext;
     private RelativeLayout rlPlayerMb;
     private RecyclerView recyclerViewMenu;
     private ImageView ivPiFu;
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
+    private MusicNotification musicNotification;
 
     /**
      * 取代EventBus
      */
-    private BaseEvent musicEvent,piFuEvent;
+    private BaseEvent musicEvent, piFuEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,22 +142,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         List<Menu> menus = new ArrayList<>();
-        menus.add(new Menu(R.mipmap.pi_fu,"皮肤"));
-        MenuAdapter menuAdapter = new MenuAdapter(this,menus);
+        menus.add(new Menu(R.mipmap.pi_fu, "皮肤"));
+        MenuAdapter menuAdapter = new MenuAdapter(this, menus);
         menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
             @Override
             public void onClick(Menu menu) {
                 drawerLayout.closeDrawers();
-                switch (menu.getIconId()){
+                switch (menu.getIconId()) {
                     case R.mipmap.pi_fu:
-                        Intent intent = new Intent(MainActivity.this,PiFuSettingActivity.class);
+                        Intent intent = new Intent(MainActivity.this, PiFuSettingActivity.class);
                         startActivity(intent);
                         break;
                 }
             }
         });
         recyclerViewMenu.setAdapter(menuAdapter);
-
 
 
         musicEvent = new MessageEventTrigger() {
@@ -185,8 +185,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,musicEvent);
-        MessageManager.getInstance().registerMessageEvent(MessageTag.PI_FU_ID,piFuEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, musicEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.PI_FU_ID, piFuEvent);
 
         //播放暂停通知广播注册
         intentFilterPause = new IntentFilter();
@@ -236,12 +236,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_tab_1:
                 viewPager.setCurrentItem(0);
                 break;
@@ -249,11 +249,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.rl_player_mb:
-                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
+                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_serach:
-                intent = new Intent(MainActivity.this,SerachActivity.class);
+                intent = new Intent(MainActivity.this, SerachActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_player_pause:
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.iv_player_list:
                 PlayListDialog playListDialog = new PlayListDialog(MainActivity.this);
-                playListDialog.showAtLocation(rl,Gravity.BOTTOM,0,0);
+                playListDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
                 break;
         }
 
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static class NotificationPauseBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(MediaPlayerManager.getInstance().checkCanPlay()) {
+            if (MediaPlayerManager.getInstance().checkCanPlay()) {
                 MediaPlayerManager.getInstance().pauseAndPlay();
             }
         }
@@ -283,45 +283,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static class NotificationNextBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(MediaPlayerManager.getInstance().checkCanPlay()) {
+            if (MediaPlayerManager.getInstance().checkCanPlay()) {
                 MediaPlayerManager.getInstance().nextByUser();
             }
         }
     }
 
-    private void updateUi(MusicPlay musicPlay){
-        if(musicPlay.isQieHuan()) {
-            //设置歌曲名和歌手名
-            tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-            tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
+    private void updateUi(MusicPlay musicPlay) {
+        if (!musicPlay.isClear()) {
+            if (musicPlay.isQieHuan()) {
+                //设置歌曲名和歌手名
+                tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+                tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
 
-            //设置歌曲图片
-            Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
-            if (bitmap == null) {
-                //设置默认图片
-                ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
-                ivPlayerBg.setImageResource(R.mipmap.default_bg);
-            } else {
-                ivPlayerIcon.setImageBitmap(bitmap);
-                ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+                //设置歌曲图片
+                Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
+                if (bitmap == null) {
+                    //设置默认图片
+                    ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+                    ivPlayerBg.setImageResource(R.mipmap.default_bg);
+                } else {
+                    ivPlayerIcon.setImageBitmap(bitmap);
+                    ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
+                }
             }
-        }
 
-        //更新播放/暂停状态
-        if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
-            ivPlayerPause.setImageResource(R.mipmap.play);
+            //更新播放/暂停状态
+            if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
+                ivPlayerPause.setImageResource(R.mipmap.play);
+            } else {
+                ivPlayerPause.setImageResource(R.mipmap.pause);
+            }
+
+            //发送通知
+            musicNotification = new MusicNotification(this);
+            musicNotification.showNotification();
         } else {
+            tvMusicName.setText("歌曲名");
+            tvSingerName.setText("歌手名");
+            ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+            ivPlayerBg.setImageResource(R.mipmap.default_bg);
             ivPlayerPause.setImageResource(R.mipmap.pause);
+            musicNotification.cancelNotification();
         }
 
-        //发送通知
-        MusicNotification musicNotification = new MusicNotification(this);
-        musicNotification.showNotification();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             //返回桌面
             Intent home = new Intent(Intent.ACTION_MAIN);
             home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -332,8 +342,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-    private void updatePiFu(PiFu piFu){
-        if(piFu != null) {
+    private void updatePiFu(PiFu piFu) {
+        if (piFu != null) {
             if (piFu.isGuDinPiFu()) {
                 ivPiFu.setImageResource(piFu.getPiFuIconId());
             } else {

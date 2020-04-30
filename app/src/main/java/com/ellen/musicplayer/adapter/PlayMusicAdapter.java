@@ -45,7 +45,7 @@ public class PlayMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, PlayM
         musicViewHolder.tvPosition.setText(String.valueOf(position + 1));
         Music music = MediaPlayerManager.getInstance().currentOpenMusic();
         if (music != null) {
-            if (data.getPath().equals(MediaPlayerManager.getInstance().currentOpenMusic().getPath())) {
+            if (position == MediaPlayerManager.getInstance().getCurrentPlayPosition()) {
                 musicViewHolder.ivPlayStatus.setVisibility(View.VISIBLE);
                 musicViewHolder.tvPosition.setVisibility(View.GONE);
             } else {
