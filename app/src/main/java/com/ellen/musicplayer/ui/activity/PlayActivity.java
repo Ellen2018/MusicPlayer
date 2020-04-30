@@ -156,7 +156,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
             if (bitmap == null) {
                 //显示默认
-                ivMusicIcon.setImageResource(R.mipmap.play_default_bg);
+                ivMusicIcon.setImageResource(R.mipmap.default_music_icon);
                 ivBg.setImageResource(R.mipmap.play_default_bg);
             } else {
                 ivMusicIcon.setImageBitmap(bitmap);

@@ -117,7 +117,7 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        app:civ_border_color="#33000000"
+                        app:civ_border_color="#55333333"
                         app:civ_border_width="8dp"
                         android:src="@mipmap/default_music_icon" />
 
