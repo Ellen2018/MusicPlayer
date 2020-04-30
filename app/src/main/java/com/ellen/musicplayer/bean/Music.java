@@ -9,7 +9,7 @@ public class Music implements ArrangeInterface<Music> {
     /**
      * 1->按照歌手进行分类
      * 2->按照专辑分类
-     * 3->按照父目录分类
+     * 3->按照流派分类
      */
     private static int biJiao = 1;
 
@@ -58,7 +58,7 @@ public class Music implements ArrangeInterface<Music> {
      */
     private String fatherPath;
     /**
-     * 类别
+     * 类别:流派
      */
     private String type;
 
@@ -147,8 +147,12 @@ public class Music implements ArrangeInterface<Music> {
     public boolean identical(Music music) {
         if(biJiao == 1) {
             return this.getArtist().equals(music.getArtist());
-        }else {
+        }else if(biJiao == 2){
             return this.getAlbum().equals(music.getAlbum());
+        }else if(biJiao == 3){
+            return this.getType().equals(music.getType());
+        }else {
+            return this.getFatherPath().equals(music.getFatherPath());
         }
     }
 

@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ellen.library.library.runmode.RunMode;
+import com.ellen.library.library.serial.Receiver;
+import com.ellen.library.library.serial.Sender;
+import com.ellen.library.library.serial.commoninterface.sender.SenderController;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
@@ -31,32 +35,44 @@ public class DanQuFragment extends BaseFragment {
     private MusicAdapter musicAdapter;
     private ImageView ivDinWei;
     private BaseEvent baseEvent;
+    private List<Music> musicList;
 
     @Override
     protected void initData() {
-        //申请文件读写权限
-        permissionUtils = new PermissionUtils(getActivity());
-        permissionUtils.startCheckFileReadWritePermission(0, new PermissionUtils.PermissionCallback() {
-            @Override
-            public void success() {
-                //发送消息去扫描本地所有歌曲
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                final List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
-                musicAdapter = new MusicAdapter(getActivity(),recyclerView, musicList);
-                recyclerView.setAdapter(musicAdapter);
-                musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                        //开始播放
-                        MediaPlayerManager.getInstance().open(position, musicList);
-                    }
-                });
-            }
 
+        new Sender<List<Music>>(){
             @Override
-            public void failure() {
+            protected void handlerInstruction(SenderController<List<Music>> senderController) {
+                  musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
+                  senderController.sendMessageToNext(musicList);
             }
-        });
+        }.runOn(RunMode.NEW_THREAD)
+                .setReceiver(new Receiver() {
+                    @Override
+                    protected void handleMessage(Object message) {
+                        List<Music> musicList = (List<Music>) message;
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        musicAdapter = new MusicAdapter(getActivity(),recyclerView, musicList);
+                        recyclerView.setAdapter(musicAdapter);
+                        musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                                //开始播放
+                                MediaPlayerManager.getInstance().open(position, musicList);
+                            }
+                        });
+                    }
+
+                    @Override
+                    protected void handleErrMessage(Throwable throwable) {
+
+                    }
+
+                    @Override
+                    protected void complete() {
+
+                    }
+                }).runOn(RunMode.MAIN_THREAD).start();
 
         baseEvent = new MessageEventTrigger() {
             @Override

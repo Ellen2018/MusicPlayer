@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ import java.util.List;
 
 import gdut.bsx.share2.Share2;
 import gdut.bsx.share2.ShareContentType;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class MusicMessageDialog extends BaseBottomPopWindow {
 
@@ -109,6 +112,11 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
             }
         });
 
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        if(imm != null){
+            imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+        }
+
     }
 
     @Override
@@ -153,6 +161,5 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
 
     @Override
     protected void dismissBefore() {
-
     }
 }

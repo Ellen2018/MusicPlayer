@@ -27,12 +27,12 @@ public class LocalFragment extends BaseFragment {
         titles.add("单曲");
         titles.add("歌手");
         titles.add("专辑");
-        titles.add("流派");
+        //titles.add("流派");
         titles.add("文件夹");
         fragmentList.add(new DanQuFragment());
         fragmentList.add(new SingerFragment());
         fragmentList.add(new ZhuanJiFragment());
-        fragmentList.add(new LiuPaiFragment());
+        //fragmentList.add(new LiuPaiFragment());
         fragmentList.add(new FileFragment());
 
         viewPager.setAdapter(new BaseFragmentPagerAdapter(getFragmentManager()) {
