@@ -81,17 +81,18 @@ public class ContentProviderUtils {
             String name = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)); // 歌曲名
             String album = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)); // 专辑
             String artist = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)); // 作者
+            String type = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE));//类别
             long size = c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));// 大小
             int duration = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));// 时长
             int musicId = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));// 歌曲的id
             int albumId = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
             if (duration != 0) {
-                intoMusic.getMusic(path,name,album,artist,size,duration,musicId,albumId);
+                intoMusic.getMusic(path,name,album,artist,type,size,duration,musicId,albumId);
             }
         }
     }
 
     public interface IntoMusic{
-        void getMusic(String path,String name,String album,String artist,long size,int duration,int musicId,int albumId);
+        void getMusic(String path,String name,String album,String artist,String type,long size,int duration,int musicId,int albumId);
     }
 }

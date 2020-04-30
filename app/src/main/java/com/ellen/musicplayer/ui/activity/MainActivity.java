@@ -34,6 +34,7 @@ import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.message.PiFuMessage;
+import com.ellen.musicplayer.ui.fragment.DanQuFragment;
 import com.ellen.musicplayer.ui.fragment.LocalFragment;
 import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;

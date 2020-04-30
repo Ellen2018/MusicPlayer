@@ -341,7 +341,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
         private void rotate(){
             if(MediaPlayerManager.getInstance().checkCanPlay() && MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
-                jiaoDu = jiaoDu + 0.3f;
+                jiaoDu = jiaoDu + 0.25f;
                 getPlayActivity().ivMusicIcon.setPivotX(getPlayActivity().ivMusicIcon.getWidth() / 2);
                 getPlayActivity().ivMusicIcon.setPivotY(getPlayActivity().ivMusicIcon.getHeight() / 2);//支点在图片中心
                 getPlayActivity().ivMusicIcon.setRotation(jiaoDu);

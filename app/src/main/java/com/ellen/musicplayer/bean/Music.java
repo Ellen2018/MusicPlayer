@@ -58,16 +58,16 @@ public class Music implements ArrangeInterface<Music> {
      */
     private String fatherPath;
     /**
-     * 是否喜欢
+     * 类别
      */
-    private boolean isLike = false;
+    private String type;
 
-    public boolean isLike() {
-        return isLike;
+    public String getType() {
+        return type;
     }
 
-    public void setLike(boolean like) {
-        isLike = like;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getPath() {
