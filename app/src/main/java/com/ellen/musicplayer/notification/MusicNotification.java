@@ -2,6 +2,7 @@ package com.ellen.musicplayer.notification;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.widget.RemoteViews;
 
 import com.ellen.musicplayer.R;
@@ -30,8 +31,14 @@ public class MusicNotification extends BaseNotification {
 
     @Override
     protected void initView(RemoteViews remoteViews) {
-        remoteViews.setImageViewBitmap(R.id.iv_music_icon, MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(getContext()));
-        remoteViews.setImageViewBitmap(R.id.iv_bg, MediaPlayerManager.getInstance().getGaoShiBitmap(getContext()));
+        Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(getContext());
+        if(bitmap != null) {
+            remoteViews.setImageViewBitmap(R.id.iv_music_icon,bitmap );
+            remoteViews.setImageViewBitmap(R.id.iv_bg, MediaPlayerManager.getInstance().getGaoShiBitmap(getContext()));
+        }else {
+            remoteViews.setImageViewResource(R.id.iv_music_icon,R.mipmap.default_music_icon );
+            remoteViews.setImageViewResource(R.id.iv_bg,R.mipmap.default_bg);
+        }
         remoteViews.setTextViewText(R.id.tv_music_name, MediaPlayerManager.getInstance().currentOpenMusic().getName());
         remoteViews.setTextViewText(R.id.tv_singer_name, MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
 

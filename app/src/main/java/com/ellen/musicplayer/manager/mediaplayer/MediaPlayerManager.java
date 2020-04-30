@@ -199,7 +199,9 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (gaoShiBitmap != null && !gaoShiBitmap.isRecycled()) {
                 gaoShiBitmap.recycle();
             }
-            gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 25f);
+            if(bitmap != null) {
+                gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 25f);
+            }
             return bitmap;
         }
     }

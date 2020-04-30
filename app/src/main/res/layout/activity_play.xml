@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,13 +8,13 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/play_default_bg"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@mipmap/play_default_bg" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="#44000000" />
+        android:src="#99000000" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="22dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -89,190 +90,226 @@
 
         </LinearLayout>
 
-        <com.ellen.musicplayer.view.XCRoundRectImageView
-            android:id="@+id/iv_music_icon"
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_below="@id/ll_top"
-            android:src="@mipmap/play_default_bg"
-            android:layout_margin="40dp"
-            android:scaleType="centerCrop" />
-
-        <LinearLayout
-            android:id="@+id/ll_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="5dp" />
-
-                <ImageView
-                    android:id="@+id/iv_like"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:src="@mipmap/not_like" />
-
-                <ImageView
-                    android:id="@+id/iv_lin_shen"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:src="@mipmap/lin_shen" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    android:src="@mipmap/message" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="5dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_current_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="03:33"
-                    android:textColor="@color/white" />
-
-                <com.warkiz.widget.IndicatorSeekBar xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/seek_bar"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    app:isb_thumb_color="@color/white"
-                    app:isb_track_background_color="@color/decker_gary"
-                    app:isb_track_progress_color="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_all_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="02:33"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
+            android:layout_marginBottom="16dp">
 
             <RelativeLayout
+                android:id="@+id/rl_music_icon"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_top"
+                android:gravity="center"
+                app:layout_marginPercent="8%"
+                app:layout_heightPercent="44%">
+
+                <com.ellen.musicplayer.view.ZhengFangRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_music_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        app:civ_border_color="#33000000"
+                        app:civ_border_width="8dp"
+                        android:src="@mipmap/default_music_icon" />
+
+                </com.ellen.musicplayer.view.ZhengFangRelativeLayout>
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_music_icon"
+                app:layout_marginLeftPercent="8%"
+                app:layout_marginRightPercent="8%"
+                android:orientation="vertical"
+                app:layout_heightPercent="16%">
+
+                <TextView
+                    android:id="@+id/tv_music_name_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="歌曲名"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_singer_name_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:gravity="top|center_horizontal"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="歌手名"
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                app:layout_heightPercent="34%">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/iv_play_mode"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="16dp"
-                        android:src="@mipmap/playmode_xun_huan" />
+                        android:padding="8dp" />
 
                     <ImageView
-                        android:id="@+id/iv_play_pre"
+                        android:id="@+id/iv_like"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="16dp"
-                        android:src="@mipmap/play_pre" />
+                        android:padding="8dp"
+                        android:src="@mipmap/not_like" />
 
                     <ImageView
-                        android:id="@+id/iv_play_pause"
+                        android:id="@+id/iv_lin_shen"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@mipmap/play_pause" />
-
-
-                    <ImageView
-                        android:id="@+id/iv_play_next"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="16dp"
-                        android:src="@mipmap/play_next" />
+                        android:padding="8dp"
+                        android:src="@mipmap/lin_shen" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="16dp"
-                        android:src="@mipmap/play_play_list" />
+                        android:padding="8dp"
+                        android:src="@mipmap/message" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="8dp" />
 
                 </LinearLayout>
-            </RelativeLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/ll_bottom"
-            android:layout_below="@id/iv_music_icon"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_current_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="03:33"
+                        android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/tv_music_name_1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="歌曲名"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                    <com.warkiz.widget.IndicatorSeekBar xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        app:isb_thumb_color="@color/white"
+                        app:isb_track_background_color="@color/decker_gary"
+                        app:isb_track_progress_color="@color/white" />
 
-            <TextView
-                android:id="@+id/tv_singer_name_1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:gravity="top|center_horizontal"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="歌手名"
-                android:textColor="@color/gray" />
+                    <TextView
+                        android:id="@+id/tv_all_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="02:33"
+                        android:textColor="@color/white" />
 
-        </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_play_mode"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:src="@mipmap/playmode_xun_huan" />
+
+                        <ImageView
+                            android:id="@+id/iv_play_pre"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:src="@mipmap/play_pre" />
+
+                        <ImageView
+                            android:id="@+id/iv_play_pause"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:src="@mipmap/play_pause" />
+
+
+                        <ImageView
+                            android:id="@+id/iv_play_next"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:src="@mipmap/play_next" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="8dp"
+                            android:src="@mipmap/play_play_list" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
 
     </RelativeLayout>
 

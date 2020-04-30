@@ -22,7 +22,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music, BannerAdapter.BannerViewHolder> {
-    
+
     private Context context;
     private OnItemClickListener onItemClickListener;
 
@@ -46,7 +46,10 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
 
     @Override
     public void onBindView(BannerViewHolder holder, Music data, final int position, int size) {
-        Glide.with(context).load(MusicBitmap.getArtwork(context,data.getMusicId(),data.getAlbumId())).into(holder.imageView);
+        Glide.with(context)
+                .load(MusicBitmap.getArtwork(context,data.getMusicId(),data.getAlbumId()))
+                .error(R.mipmap.default_music_icon)
+                .into(holder.imageView);
         holder.tvMusicName.setText(data.getName());
         holder.tvSingerName.setText(data.getArtist());
         holder.tvProgress.setText((position+1)+"/"+(getItemCount()-2));

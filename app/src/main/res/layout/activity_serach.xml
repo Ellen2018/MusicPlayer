@@ -18,7 +18,7 @@
     <View
         android:id="@+id/view_top"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="22dp"
         android:background="#883e3e3e" />
 
     <RelativeLayout

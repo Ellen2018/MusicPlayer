@@ -41,7 +41,7 @@ public class XCRoundRectImageView extends androidx.appcompat.widget.AppCompatIma
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        super.onMeasure(heightMeasureSpec, heightMeasureSpec);
     }
 
     /**
