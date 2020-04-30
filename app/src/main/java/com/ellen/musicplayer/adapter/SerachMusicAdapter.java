@@ -1,7 +1,10 @@
 package com.ellen.musicplayer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +14,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
@@ -19,6 +23,7 @@ import java.util.List;
 public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, SerachMusicAdapter.MusicViewHolder> {
 
     private String serachTag = "";
+    private View parentView;
 
     public String getSerachTag() {
         return serachTag;
@@ -28,8 +33,9 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
         this.serachTag = serachTag;
     }
 
-    public SerachMusicAdapter(Context context, List<Music> dataList) {
-        super(context, dataList);
+    public SerachMusicAdapter(Activity activity, View parentView, List<Music> dataList) {
+        super(activity, dataList);
+        this.parentView = parentView;
     }
 
     @Override
@@ -80,12 +86,19 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
             musicViewHolder.ivPlayStatus.setVisibility(View.GONE);
             musicViewHolder.tvPosition.setVisibility(View.VISIBLE);
         }
+        musicViewHolder.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MusicMessageDialog musicMessageDialog = new MusicMessageDialog((Activity) getContext(),data);
+                musicMessageDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
+            }
+        });
     }
 
     static class MusicViewHolder extends BaseViewHolder {
 
         TextView tvMusicName, tvSingerName, tvAlbumName,tvPosition;
-        ImageView ivPlayStatus;
+        ImageView ivPlayStatus,ivMore;
 
         public MusicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +107,7 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
             tvPosition = findViewById(R.id.tv_position);
             tvAlbumName = findViewById(R.id.tv_album_name);
             ivPlayStatus = findViewById(R.id.iv_play_status);
+            ivMore = findViewById(R.id.iv_more);
         }
     }
 }

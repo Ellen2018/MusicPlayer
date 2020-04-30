@@ -84,7 +84,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         ivCancel.setOnClickListener(this);
         tvSerachNull = findViewById(R.id.tv_serach_null);
 
-        serachMusicAdapter = new SerachMusicAdapter(this,serachMusicLists = LocalSDMusicUtils.getLocalAllMusic(this));
+        serachMusicAdapter = new SerachMusicAdapter(this,recyclerView,serachMusicLists = LocalSDMusicUtils.getLocalAllMusic(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                 }
                 //进行搜索
                 serachMusicLists = LocalSDMusicUtils.serachMusics(SerachActivity.this,s.toString());
-                serachMusicAdapter = new SerachMusicAdapter(SerachActivity.this,serachMusicLists);
+                serachMusicAdapter = new SerachMusicAdapter(SerachActivity.this,recyclerView,serachMusicLists);
                 serachMusicAdapter.setSerachTag(s.toString());
                 recyclerView.setLayoutManager(new LinearLayoutManager(SerachActivity.this));
                 serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {

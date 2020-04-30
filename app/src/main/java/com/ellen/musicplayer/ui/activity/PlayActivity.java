@@ -3,8 +3,10 @@ package com.ellen.musicplayer.ui.activity;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.mediaplayer.PlayMode;
 import com.ellen.musicplayer.message.MusicPlay;
@@ -39,12 +42,13 @@ import gdut.bsx.share2.ShareContentType;
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMusicName, tvSingerName, tvMusicName1, tvSingerName1, tvAlbumName, tvAllTime, tvCurrentTime;
-    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike,ivLinShen;
+    private ImageView ivBack, ivShare, ivBg, ivMusicIcon, ivPre, ivNext, ivPause, ivPlayMode,ivLike,ivLinShen,ivMessage;
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
     private static final int UPDATE_TIME = 500;
     private PermissionUtils permissionUtils;
+    private RelativeLayout rl;
 
     @Override
     protected void setStatus() {
@@ -77,6 +81,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivLinShen = findViewById(R.id.iv_lin_shen);
         ivLike = findViewById(R.id.iv_like);
         ivBg = findViewById(R.id.iv_bg);
+        ivMessage = findViewById(R.id.iv_message);
+        rl = findViewById(R.id.rl);
         tvMusicName.setSelected(true);
         tvSingerName.setSelected(true);
         tvMusicName1.setSelected(true);
@@ -90,6 +96,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivPlayMode.setOnClickListener(this);
         ivLike.setOnClickListener(this);
         ivLinShen.setOnClickListener(this);
+        ivMessage.setOnClickListener(this);
 
         indicatorSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
@@ -273,6 +280,14 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                     }
                 }else {
                     ToastUtils.toast(this,"当前没有播放歌曲，喜欢失败!");
+                }
+                break;
+            case R.id.iv_message:
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    MusicMessageDialog musicMessageDialog = new MusicMessageDialog(this, MediaPlayerManager.getInstance().currentOpenMusic());
+                    musicMessageDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
+                }else {
+                    ToastUtils.toast(this,"当前没有播放歌曲!");
                 }
                 break;
         }

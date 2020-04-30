@@ -58,8 +58,10 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/iv_more"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/touch_bg"
             android:padding="15dp"
             android:src="@mipmap/more" />
 

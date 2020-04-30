@@ -32,4 +32,6 @@ public interface MediaPlayerInterface {
     MediaPlayer getMediaPlayer();
     PlayMode getPlayMode();
     void adjustPlayMode();
+
+    void addNextPlayMusic(Music music);
 }

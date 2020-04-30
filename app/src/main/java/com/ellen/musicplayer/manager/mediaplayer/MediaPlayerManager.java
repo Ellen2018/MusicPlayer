@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.ellen.musicplayer.KeyValueTag;
 import com.ellen.musicplayer.MessageTag;
@@ -16,6 +17,7 @@ import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediaPlayerManager implements MediaPlayerInterface {
@@ -28,6 +30,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
      * 播放列表
      */
     private List<Music> playList = null;
+    private List<Music> addMusicPlayList = null;
     /**
      * 记录播放的位置
      */
@@ -118,7 +121,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         sendMessage(true);
     }
 
-    private void sendMessage(boolean isQieHuan){
+    private void sendMessage(boolean isQieHuan) {
         MusicPlay musicPlay = new MusicPlay();
         musicPlay.setQieHuan(isQieHuan);
         musicPlay.setMusic(currentOpenMusic());
@@ -137,6 +140,13 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public void next() {
+        //先判断临时添加列表里是否有歌曲
+        if (addMusicPlayList != null && addMusicPlayList.size() > 0) {
+            playPosition++;
+            open(playPosition, playList);
+            addMusicPlayList.remove(0);
+            return;
+        }
         playPosition = getNextPostion(playPosition);
         open(playPosition, playList);
     }
@@ -199,7 +209,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             if (gaoShiBitmap != null && !gaoShiBitmap.isRecycled()) {
                 gaoShiBitmap.recycle();
             }
-            if(bitmap != null) {
+            if (bitmap != null) {
                 gaoShiBitmap = GaoShiUtils.blurBitmap(activity, bitmap, 25f);
             }
             return bitmap;
@@ -230,7 +240,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     @Override
     public PlayMode getPlayMode() {
-        if(playMode == null) {
+        if (playMode == null) {
             int playValue = musicMmkv.getValue(KeyValueTag.PLAY_MODE_KEY, 1);
             switch (playValue) {
                 case 1:
@@ -257,7 +267,22 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             playMode = PlayMode.XUN_HUAN;
         }
-        musicMmkv.save(KeyValueTag.PLAY_MODE_KEY,playMode.getValue());
+        musicMmkv.save(KeyValueTag.PLAY_MODE_KEY, playMode.getValue());
+    }
+
+    @Override
+    public void addNextPlayMusic(Music music) {
+        if (playList == null || playList.size() == 0) {
+            playList = new ArrayList<>();
+            playList.add(music);
+            open(0, playList);
+        } else {
+            playList.add(playPosition + 1, music);
+            if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
+                addMusicPlayList = new ArrayList<>();
+            }
+            addMusicPlayList.add(addMusicPlayList.size(), music);
+        }
     }
 
     public int getAllTime() {

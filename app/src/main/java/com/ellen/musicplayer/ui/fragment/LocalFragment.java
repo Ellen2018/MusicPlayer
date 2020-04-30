@@ -42,7 +42,7 @@ public class LocalFragment extends BaseFragment {
                 //发送消息去扫描本地所有歌曲
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 final List<Music> musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
-                musicAdapter = new MusicAdapter(getActivity(), musicList);
+                musicAdapter = new MusicAdapter(getActivity(),recyclerView, musicList);
                 recyclerView.setAdapter(musicAdapter);
                 musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                     @Override

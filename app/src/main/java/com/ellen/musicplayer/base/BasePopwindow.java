@@ -21,6 +21,17 @@ public abstract class BasePopwindow {
 
     public BasePopwindow(Activity activity){
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    protected String getTag(){
+        return getClass().getSimpleName();
+    }
+
+    protected void onResume(){}
+
+    protected void onstart(){}
+
+    private void showBefore(){
         mContentView = onCreateView();
         if(this instanceof ButterKnifeInterface){
             ButterKnifeInterface butterKnifeInterface = (ButterKnifeInterface) this;
@@ -45,19 +56,16 @@ public abstract class BasePopwindow {
                 if(onDismissListener != null){
                     onDismissListener.dissmiss();
                 }
+                //判断是否暗化
+                if(isSetShowBackgroundBlack()){
+                    //去掉暗色背景
+                    WindowManager.LayoutParams lp = activityWeakReference.get().getWindow().getAttributes();
+                    lp.alpha = 1.0f;
+                    activityWeakReference.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    activityWeakReference.get().getWindow().setAttributes(lp);
+                }
             }
         });
-    }
-
-    protected String getTag(){
-        return getClass().getSimpleName();
-    }
-
-    protected void onResume(){}
-
-    protected void onstart(){}
-
-    private void showBefore(){
         if(isSetShowBackgroundBlack()){
             WindowManager.LayoutParams lp = activityWeakReference.get().getWindow().getAttributes();
             lp.alpha = 0.3f;
