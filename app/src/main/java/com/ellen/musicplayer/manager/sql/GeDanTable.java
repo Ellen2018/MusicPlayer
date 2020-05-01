@@ -1,22 +1,19 @@
 package com.ellen.musicplayer.manager.sql;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.ellen.dhcsqlitelibrary.table.reflection.ZxyReflectionTable;
-import com.ellen.musicplayer.bean.LikeMusic;
-import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.sqlitecreate.createsql.helper.SQLFieldType;
 import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
-import com.google.gson.Gson;
 
-public class LikeMusicTable extends ZxyReflectionTable<LikeMusic> {
+public class GeDanTable extends ZxyReflectionTable<GeDan> {
 
-    public LikeMusicTable(SQLiteDatabase db, Class<? extends LikeMusic> dataClass) {
+    public GeDanTable(SQLiteDatabase db, Class<? extends GeDan> dataClass) {
         super(db, dataClass);
     }
 
-    public LikeMusicTable(SQLiteDatabase db, Class<? extends LikeMusic> dataClass, String autoTableName) {
+    public GeDanTable(SQLiteDatabase db, Class<? extends GeDan> dataClass, String autoTableName) {
         super(db, dataClass, autoTableName);
     }
 
@@ -46,15 +43,12 @@ public class LikeMusicTable extends ZxyReflectionTable<LikeMusic> {
     }
 
     @Override
-    protected <E> E setConversionValue(LikeMusic likeMusic, String classFieldName, Class typeClass) {
-        String json = new Gson().toJson(likeMusic.getMusic());
-        return (E) json;
+    protected <E> E setConversionValue(GeDan geDan, String classFieldName, Class typeClass) {
+        return null;
     }
 
     @Override
     protected <E> E resumeConversionObject(Object value, String classFieldName, Class typeClass) {
-        String json  = (String) value;
-        Music music = new Gson().fromJson(json, Music.class);
-        return (E) music;
+        return null;
     }
 }

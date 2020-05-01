@@ -21,13 +21,20 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <com.ellen.musicplayer.view.XCRoundRectImageView
-                android:id="@+id/iv_music_icon"
+            <RelativeLayout
                 android:layout_width="88dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/default_music_icon" />
+                android:layout_height="match_parent">
+
+                <com.ellen.musicplayer.view.XCRoundRectImageView
+                    android:id="@+id/iv_music_icon"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/default_music_icon" />
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="0dp"

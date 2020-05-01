@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.ui.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,6 +40,12 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handlerIntent(intent);
+    }
+
+    @Override
     protected void initView() {
         recyclerView = findViewById(R.id.recycler_view);
         rl = findViewById(R.id.rl);
@@ -50,9 +57,18 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
 
     @Override
     protected void initData() {
-        titileName = getIntent().getStringExtra(SORT_TITLE);
-        content = getIntent().getStringExtra(SORT_CONTENT);
-        musicList = (List<Music>) getIntent().getSerializableExtra(SORT_MUSIC_LIST);
+        handlerIntent(getIntent());
+    }
+
+    @Override
+    protected void destory() {
+
+    }
+
+    private void handlerIntent(Intent intent){
+        titileName = intent.getStringExtra(SORT_TITLE);
+        content = intent.getStringExtra(SORT_CONTENT);
+        musicList = (List<Music>) intent.getSerializableExtra(SORT_MUSIC_LIST);
         tvContent.setText(content);
         tvTitle.setText(titileName);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,11 +79,6 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
                 MediaPlayerManager.getInstance().open(position,musicList);
             }
         });
-    }
-
-    @Override
-    protected void destory() {
-
     }
 
     @Override

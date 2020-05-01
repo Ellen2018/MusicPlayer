@@ -76,8 +76,10 @@ public class LocalSDMusicUtils {
                     //然后再遍历之前的歌手集合
                     for (String name : strings) {
                         boolean isNew = true;
+                        Singer currentSinger = null;
                         for (Singer singer : singerList) {
                             if (name.equals(singer.getName())) {
+                                currentSinger = singer;
                                 singer.getMusicList().addAll(list);
                                 isNew = false;
                                 break;
@@ -88,6 +90,15 @@ public class LocalSDMusicUtils {
                             singer.setName(name);
                             singer.setMusicList(list);
                             singerList.add(singer);
+                            currentSinger = singer;
+                        }
+
+                        //修复bug
+                        for(int i=0;i<currentSinger.getMusicList().size();i++){
+                            if (!currentSinger.getMusicList().get(i).getArtist().contains(name)) {
+                                currentSinger.getMusicList().remove(i);
+                                i--;
+                            }
                         }
                     }
                 } else if (singerName.contains(" / ")) {
@@ -96,6 +107,7 @@ public class LocalSDMusicUtils {
                     //然后再遍历之前的歌手集合
                     for (String name : strings) {
                         boolean isNew = true;
+                        Singer currentSinger = null;
                         for (Singer singer : singerList) {
                             if (name.equals(singer.getName())) {
                                 singer.getMusicList().addAll(list);
@@ -108,6 +120,14 @@ public class LocalSDMusicUtils {
                             singer.setName(name);
                             singer.setMusicList(list);
                             singerList.add(singer);
+                        }
+
+                        //修复bug
+                        for(int i=0;i<currentSinger.getMusicList().size();i++){
+                            if (!currentSinger.getMusicList().get(i).getArtist().contains(name)) {
+                                currentSinger.getMusicList().remove(i);
+                                i--;
+                            }
                         }
                     }
                 } else {
@@ -220,6 +240,7 @@ public class LocalSDMusicUtils {
 
     /**
      * 查询歌手
+     *
      * @param context
      * @param singerName
      * @return
@@ -228,7 +249,7 @@ public class LocalSDMusicUtils {
         List<Singer> singerList = getArtist(context);
         Singer result = null;
         for (Singer singer : singerList) {
-            if(singer.getName().equals(singerName)){
+            if (singer.getName().equals(singerName)) {
                 result = singer;
                 break;
             }
@@ -238,6 +259,7 @@ public class LocalSDMusicUtils {
 
     /**
      * 查询专辑
+     *
      * @param context
      * @param zhuanJiName
      * @return
@@ -246,7 +268,7 @@ public class LocalSDMusicUtils {
         List<ZhuanJi> zhuanJiList = getAlbum(context);
         ZhuanJi result = null;
         for (ZhuanJi zhuanJi : zhuanJiList) {
-            if(zhuanJi.getName().equals(zhuanJiName)){
+            if (zhuanJi.getName().equals(zhuanJiName)) {
                 result = zhuanJi;
                 break;
             }
