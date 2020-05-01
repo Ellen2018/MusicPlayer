@@ -61,8 +61,10 @@ public class PlayMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, PlayM
         musicViewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 MediaPlayerManager.getInstance().deletePlayList(position);
                 notifyDataSetChanged();
+
             }
         });
     }
