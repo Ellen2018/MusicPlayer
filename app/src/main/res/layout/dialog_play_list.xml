@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:background="@color/cardview_dark_background">
+        android:background="@drawable/rectangle_blue_45">
 
         <RelativeLayout
             android:id="@+id/rl_top"

@@ -12,5 +12,7 @@
     <color name="menu_color">#883e3e3e</color>
     <color name="wu_se">#00000000</color>
     <color name="sai_zi_color">#88000000</color>
-    <color name="line_color">#88333333</color>
+    <color name="line_color">#55ffffff</color>
+
+    <color name="wang_yi_yun_dialog_bg_color">#232f49</color>
 </resources>
