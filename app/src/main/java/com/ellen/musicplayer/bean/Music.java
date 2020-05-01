@@ -3,8 +3,9 @@ package com.ellen.musicplayer.bean;
 import com.ellen.musicplayer.utils.collectionutil.ArrangeInterface;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Music implements ArrangeInterface<Music> {
+public class Music implements ArrangeInterface<Music>, Serializable {
 
     /**
      * 1->按照歌手进行分类

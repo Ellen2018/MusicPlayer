@@ -69,10 +69,53 @@ public class LocalSDMusicUtils {
             List<List<Music>> listList = CollectionUtils.arrange(musicList);
             singerList = new ArrayList<>();
             for (List<Music> list : listList) {
-                Singer singer = new Singer();
-                singer.setName(list.get(0).getArtist());
-                singer.setMusicList(list);
-                singerList.add(singer);
+                String singerName = list.get(0).getArtist();
+                if (singerName.contains("/")) {
+                    //说明有多个歌手，需要切割
+                    String[] strings = singerName.split("/");
+                    //然后再遍历之前的歌手集合
+                    for (String name : strings) {
+                        boolean isNew = true;
+                        for (Singer singer : singerList) {
+                            if (name.equals(singer.getName())) {
+                                singer.getMusicList().addAll(list);
+                                isNew = false;
+                                break;
+                            }
+                        }
+                        if (isNew) {
+                            Singer singer = new Singer();
+                            singer.setName(name);
+                            singer.setMusicList(list);
+                            singerList.add(singer);
+                        }
+                    }
+                } else if (singerName.contains(" / ")) {
+                    //说明有多个歌手，需要切割
+                    String[] strings = singerName.split(" / ");
+                    //然后再遍历之前的歌手集合
+                    for (String name : strings) {
+                        boolean isNew = true;
+                        for (Singer singer : singerList) {
+                            if (name.equals(singer.getName())) {
+                                singer.getMusicList().addAll(list);
+                                isNew = false;
+                                break;
+                            }
+                        }
+                        if (isNew) {
+                            Singer singer = new Singer();
+                            singer.setName(name);
+                            singer.setMusicList(list);
+                            singerList.add(singer);
+                        }
+                    }
+                } else {
+                    Singer singer = new Singer();
+                    singer.setName(singerName);
+                    singer.setMusicList(list);
+                    singerList.add(singer);
+                }
             }
             return singerList;
         } else {
@@ -136,11 +179,14 @@ public class LocalSDMusicUtils {
 
     /**
      * 获取歌曲文件夹集合
+     *
      * @param context
      * @return
      */
-    public static List<FileMusic> getFileMusics(Context context){
-        if(fileMusicList != null && fileMusicList.size() > 0){return fileMusicList;}
+    public static List<FileMusic> getFileMusics(Context context) {
+        if (fileMusicList != null && fileMusicList.size() > 0) {
+            return fileMusicList;
+        }
         Music.setBiJiao(4);
         List<Music> musicList = getLocalAllMusic(context);
         if (musicList != null && musicList.size() > 0) {
@@ -170,5 +216,41 @@ public class LocalSDMusicUtils {
             }
         }
         return serachMusics;
+    }
+
+    /**
+     * 查询歌手
+     * @param context
+     * @param singerName
+     * @return
+     */
+    public static Singer getSinger(Context context, String singerName) {
+        List<Singer> singerList = getArtist(context);
+        Singer result = null;
+        for (Singer singer : singerList) {
+            if(singer.getName().equals(singerName)){
+                result = singer;
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 查询专辑
+     * @param context
+     * @param zhuanJiName
+     * @return
+     */
+    public static ZhuanJi getZhuanJi(Context context, String zhuanJiName) {
+        List<ZhuanJi> zhuanJiList = getAlbum(context);
+        ZhuanJi result = null;
+        for (ZhuanJi zhuanJi : zhuanJiList) {
+            if(zhuanJi.getName().equals(zhuanJiName)){
+                result = zhuanJi;
+                break;
+            }
+        }
+        return result;
     }
 }

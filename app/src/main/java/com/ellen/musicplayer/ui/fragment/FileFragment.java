@@ -10,7 +10,10 @@ import com.ellen.library.library.serial.commoninterface.sender.SenderController;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.FileMusicAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.FileMusic;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 
 import java.util.List;
@@ -19,6 +22,7 @@ public class FileFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private List<FileMusic> fileMusicList;
+    private FileMusicAdapter fileMusicAdapter;
 
     @Override
     protected void initData() {
@@ -33,7 +37,14 @@ public class FileFragment extends BaseFragment {
                     @Override
                     protected void handleMessage(List<FileMusic> message) {
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        recyclerView.setAdapter(new FileMusicAdapter(getActivity(),recyclerView,message));
+                        recyclerView.setAdapter(fileMusicAdapter = new FileMusicAdapter(getActivity(),recyclerView,message));
+                        fileMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                                FileMusic fileMusic = fileMusicList.get(position);
+                                JumpSortUtils.jumpToSort(getActivity(),"文件夹",fileMusic.getName(),fileMusic.getMusicList());
+                            }
+                        });
                     }
 
                     @Override

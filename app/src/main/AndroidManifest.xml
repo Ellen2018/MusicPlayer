@@ -36,6 +36,10 @@
         <activity
             android:name=".ui.activity.PiFuSettingActivity"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".ui.activity.SortActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

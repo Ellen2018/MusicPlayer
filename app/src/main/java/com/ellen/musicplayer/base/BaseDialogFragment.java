@@ -37,7 +37,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         return mContentView;
     }
 
-    protected View findViewById(int id){
+    protected <T extends View> T findViewById(int id){
         return mContentView.findViewById(id);
     }
 

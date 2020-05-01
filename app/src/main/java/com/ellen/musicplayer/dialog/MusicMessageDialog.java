@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +22,11 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.MusicMessageMenu;
+import com.ellen.musicplayer.bean.Singer;
+import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.utils.JumpSortUtils;
+import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.UriUtils;
@@ -100,8 +105,26 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                                 .shareBySystem();
                         break;
                     case R.mipmap.menu_singer:
+                        //先判断歌手是否需要切割
+                        if(music.getArtist().contains("/")){
+                            String[] singerArray = music.getArtist().split("/");
+                            SelectorSingerDialog selectorSingerDialog = new SelectorSingerDialog(singerArray);
+                            FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
+                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"sdada");
+                        }else if(music.getArtist().contains(" / ")){
+                            String[] singerArray = music.getArtist().split(" / ");
+                            SelectorSingerDialog selectorSingerDialog = new SelectorSingerDialog(singerArray);
+                            FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
+                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"sdada");
+                        }else {
+                            //查询歌手列表
+                            Singer singer = LocalSDMusicUtils.getSinger(getActivity(), music.getArtist());
+                            JumpSortUtils.jumpToSort(getActivity(), "歌手", singer.getName(), singer.getMusicList());
+                        }
                         break;
                     case R.mipmap.menu_zhuan_ji:
+                        ZhuanJi zhuanJi = LocalSDMusicUtils.getZhuanJi(getActivity(),music.getAlbum());
+                        JumpSortUtils.jumpToSort(getActivity(),"专辑",zhuanJi.getName(),zhuanJi.getMusicList());
                         break;
                     case R.mipmap.menu_music_message:
                         break;

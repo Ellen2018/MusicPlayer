@@ -10,7 +10,10 @@ import com.ellen.library.library.serial.commoninterface.sender.SenderController;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.ZhuanJiAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.ZhuanJi;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 
 import java.util.List;
@@ -35,6 +38,13 @@ public class ZhuanJiFragment extends BaseFragment {
             protected void handleMessage(List<ZhuanJi> message) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(zhuanJiAdapter = new ZhuanJiAdapter(getActivity(),recyclerView,message));
+                zhuanJiAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                        ZhuanJi zhuanJi = zhuanJiList.get(position);
+                        JumpSortUtils.jumpToSort(getActivity(),"专辑",zhuanJi.getName(),zhuanJi.getMusicList());
+                    }
+                });
             }
 
             @Override

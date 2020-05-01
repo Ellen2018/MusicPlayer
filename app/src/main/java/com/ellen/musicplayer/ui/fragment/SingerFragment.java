@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.ui.fragment;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,8 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.Singer;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.ui.activity.SortActivity;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 
@@ -47,7 +50,11 @@ public class SingerFragment extends BaseFragment {
                         singerAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                                ToastUtils.toast(getActivity(),singerList.get(position).getName());
+                                JumpSortUtils.jumpToSort(
+                                        getActivity()
+                                        ,"歌手"
+                                        ,singerList.get(position).getName()
+                                        ,singerList.get(position).getMusicList());
                             }
                         });
                     }
