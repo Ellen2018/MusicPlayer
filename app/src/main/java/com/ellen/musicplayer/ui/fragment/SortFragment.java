@@ -166,7 +166,7 @@ public class SortFragment extends BaseFragment {
                 createGeDanDialog.show(getFragmentManager(),"");
             }
         });
-        geDanAdapter.addFooterView(view);
+        geDanAdapter.addHeaderView(view);
         geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
