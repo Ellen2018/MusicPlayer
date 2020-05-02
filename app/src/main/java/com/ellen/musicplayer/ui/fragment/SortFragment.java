@@ -113,7 +113,9 @@ public class SortFragment extends BaseFragment {
         nearEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
+
                updateNearUi();
+
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanBaseEvent);
