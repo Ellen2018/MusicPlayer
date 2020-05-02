@@ -2,6 +2,7 @@ package com.ellen.musicplayer.manager.sql;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.MediaStore;
 
 import com.ellen.musicplayer.SQLTag;
 import com.ellen.musicplayer.bean.GeDan;
@@ -287,4 +288,37 @@ public class SQLManager {
         return cursor.getCount() != 0;
     }
 
+    /**
+     * 判断最近列表是否已经存在该歌曲
+     * @param music
+     * @return
+     */
+    public boolean isContansNearMusic(Music music){
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("nearTag", WhereSymbolEnum.EQUAL, music.getWeiOneTag())
+                .createSQL();
+        String serachSQL = SerachTableData.getInstance()
+                .setTableName(SQLTag.NEAR_TABLE_NAME)
+                .createSQLAutoWhere(whererSqlWhere);
+        Cursor cursor = getNearMusicTable().serachBySQL(serachSQL);
+        if (cursor == null) {
+            return false;
+        }
+        return cursor.getCount() != 0;
+    }
+
+    public NearMusic getNearMusicByTag(String tag){
+        NearMusic result = null;
+        List<NearMusic> nearMusicList = getNearMusicTable().getAllDatas(null);
+        if(nearMusicList != null && nearMusicList.size() > 0){
+            for(NearMusic nearMusic : nearMusicList){
+                if(nearMusic.getNearTag().equals(tag)){
+                    result = nearMusic;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 }

@@ -1,7 +1,10 @@
 package com.ellen.musicplayer.bean;
 
+import com.ellen.dhcsqlitelibrary.table.reflection.Primarykey;
+
 public class NearMusic {
 
+    @Primarykey
     private String nearTag;
     private Music music;
     /**

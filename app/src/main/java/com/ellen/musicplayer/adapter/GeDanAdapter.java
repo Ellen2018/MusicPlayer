@@ -60,6 +60,8 @@ public class GeDanAdapter extends BaseSingleRecyclerViewAdapter<GeDan, GeDanAdap
                     .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
                     .error(R.mipmap.default_music_icon)
                     .into(geDanViewHolder.ivGeDanIcon);
+        }else {
+            geDanViewHolder.ivGeDanIcon.setImageResource(R.mipmap.default_music_icon);
         }
     }
 

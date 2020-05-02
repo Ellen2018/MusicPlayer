@@ -28,10 +28,12 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.dialog.CreateGeDanDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.GeDanTable;
+import com.ellen.musicplayer.manager.sql.NearMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
@@ -111,7 +113,7 @@ public class SortFragment extends BaseFragment {
         nearEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-
+               updateNearUi();
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanBaseEvent);
@@ -130,7 +132,9 @@ public class SortFragment extends BaseFragment {
         ivLikeIcon = view.findViewById(R.id.iv_like_icon);
         ivNearIcon = view.findViewById(R.id.iv_near_icon);
         tvLikeCount = view.findViewById(R.id.tv_like_count);
+        tvNearCount = view.findViewById(R.id.tv_near_count);
         updateLikeUi();
+        updateNearUi();
         llLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,5 +283,22 @@ public class SortFragment extends BaseFragment {
                     .into(ivLikeIcon);
         }
         tvLikeCount.setText(String.valueOf(geDanMusicList.size()));
+    }
+
+    private void updateNearUi(){
+        //更新图片
+        NearMusicTable nearMusicTable = SQLManager.getInstance().getNearMusicTable();
+        //获取最新喜欢的Music类
+        List<NearMusic> nearMusicList = nearMusicTable.getAllDatas(Order.getInstance(false)
+                .setFirstOrderFieldName("playTime")
+                .setIsDesc(true).createSQL());
+        if(nearMusicList != null && nearMusicList.size() > 0) {
+            Music music = nearMusicList.get(0).getMusic();
+            Glide.with(getContext())
+                    .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
+                    .error(R.mipmap.default_music_icon)
+                    .into(ivNearIcon);
+        }
+        tvNearCount.setText(String.valueOf(nearMusicList.size()));
     }
 }
