@@ -66,6 +66,7 @@ public class AddToGeDanDialog extends BaseBottomPopWindow {
                     if (!isLike) {
                         SQLManager.getInstance().addLikeMusic(musicList.get(position));
                         MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
+
                         ToastUtils.toast(getActivity(), "添加歌曲到我喜欢成功!");
                     } else {
                         ToastUtils.toast(getActivity(), "您已添加此歌曲为喜欢!");
