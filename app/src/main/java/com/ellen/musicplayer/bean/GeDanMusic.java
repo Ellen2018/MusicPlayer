@@ -1,11 +1,14 @@
 package com.ellen.musicplayer.bean;
 
+import com.ellen.dhcsqlitelibrary.table.reflection.Primarykey;
+
 public class GeDanMusic {
 
     /**
      * 喜欢的唯一标记，方便查询
      * 标记:MusicId_AlbumId
      */
+    @Primarykey
     private String likeTag;
     private Music music;
     private long likeTime;

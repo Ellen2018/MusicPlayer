@@ -8,16 +8,28 @@ import android.widget.TextView;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseDialogFragment;
+import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.message.GeDanMessage;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
+import java.util.List;
+
 public class CreateGeDanDialog extends BaseDialogFragment {
 
     private TextView tvOk,tvCancel;
     private EditText etGeDanName;
+    private List<Music> musicList;
+
+    public CreateGeDanDialog(){
+
+    }
+
+    public CreateGeDanDialog(List<Music> musicList) {
+        this.musicList = musicList;
+    }
 
     @Override
     protected void initData() {
@@ -37,7 +49,7 @@ public class CreateGeDanDialog extends BaseDialogFragment {
                if(TextUtils.isEmpty(geDanName)){
                    ToastUtils.toast(getActivity(),"歌单名不能为空!");
                }else {
-                   boolean isCreateSuccess = SQLManager.getInstance().createGeDan(geDanName);
+                   boolean isCreateSuccess = SQLManager.getInstance().createGeDan(geDanName,musicList);
                    if(isCreateSuccess){
                        ToastUtils.toast(getActivity(),"歌单《"+geDanName+"》创建成功!");
                        //发送歌单创建成功的消息

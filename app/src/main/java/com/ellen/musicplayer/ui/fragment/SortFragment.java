@@ -23,10 +23,14 @@ import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
+import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.dialog.CreateGeDanDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
+import com.ellen.musicplayer.manager.sql.GeDanTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.collectionutil.CollectionUtils;
@@ -163,6 +167,17 @@ public class SortFragment extends BaseFragment {
             }
         });
         geDanAdapter.addFooterView(view);
+        geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(geDanList.get(position));
+                List<Music> musicList = new ArrayList<>();
+                for(GeDanMusic geDanMusic:geDanMusicList){
+                    musicList.add(geDanMusic.getMusic());
+                }
+                JumpSortUtils.jumpToSort(getActivity(),"歌单",geDanList.get(position).getGeDanName(),musicList);
+            }
+        });
         recyclerViewGeDan.setAdapter(geDanAdapter);
     }
 

@@ -56,7 +56,7 @@ public class SingerAdapter extends BaseSingleRecyclerViewAdapter<Singer, SingerA
         singlerViewHolder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,"歌手",data.getName(),data.getMusicList());
+                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,parentView,"歌手",data.getName(),data.getMusicList());
                 leiBieDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });

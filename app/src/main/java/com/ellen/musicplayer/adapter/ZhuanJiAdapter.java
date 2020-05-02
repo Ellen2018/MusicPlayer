@@ -58,7 +58,7 @@ public class ZhuanJiAdapter extends BaseSingleRecyclerViewAdapter<ZhuanJi, Zhuan
         singlerViewHolder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,"专辑",data.getName(),data.getMusicList());
+                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,view,"专辑",data.getName(),data.getMusicList());
                 leiBieDialog.showAtLocation(view, Gravity.BOTTOM,0,0);
             }
         });

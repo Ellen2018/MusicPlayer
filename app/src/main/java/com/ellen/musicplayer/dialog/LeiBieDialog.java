@@ -3,6 +3,7 @@ package com.ellen.musicplayer.dialog;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeiBieDialog extends BaseBottomPopWindow {
@@ -24,12 +26,16 @@ public class LeiBieDialog extends BaseBottomPopWindow {
 
     private TextView tvLeiBieName,tvName;
     private LinearLayout llNextPlay,llAddToGeDan;
+    private View parentView;
 
-    public LeiBieDialog(Activity activity, String leiBieName, String name, List<Music> musicList) {
+
+
+    public LeiBieDialog(Activity activity, View parentView,String leiBieName, String name, List<Music> musicList) {
         super(activity);
         this.leiBieName = leiBieName;
         this.name = name;
         this.musicList = musicList;
+        this.parentView = parentView;
     }
 
     @Override
@@ -52,7 +58,8 @@ public class LeiBieDialog extends BaseBottomPopWindow {
         llAddToGeDan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.toast(getContext(),"添加到歌单:"+name);
+                AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(getActivity(),musicList);
+                addToGeDanDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
                 dismiss();
             }
         });

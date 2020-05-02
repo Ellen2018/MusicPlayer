@@ -2,6 +2,7 @@ package com.ellen.musicplayer.dialog;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,12 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
     private RecyclerView recyclerView;
     private List<MusicMessageMenu> musicMessageMenuList;
     private MusicMessageMenuAdapter musicMessageMenuAdapter;
+    private View parentView;
 
-    public MusicMessageDialog(Activity activity, Music music) {
+    public MusicMessageDialog(Activity activity,View parentView, Music music) {
         super(activity);
         this.music = music;
+        this.parentView = parentView;
     }
 
     @Override
@@ -94,6 +97,11 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                         MediaPlayerManager.getInstance().addNextPlayMusic(music);
                         break;
                     case R.mipmap.menu_add_gedan:
+                        //添加到歌单
+                        List<Music> musics = new ArrayList<>();
+                        musics.add(music);
+                        AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(getActivity(),musics);
+                        addToGeDanDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
                         break;
                     case R.mipmap.menu_share:
                         new Share2.Builder(getActivity())
@@ -110,12 +118,12 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                             String[] singerArray = music.getArtist().split("/");
                             SelectorSingerDialog selectorSingerDialog = new SelectorSingerDialog(singerArray);
                             FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
-                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"sdada");
+                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"");
                         }else if(music.getArtist().contains(" / ")){
                             String[] singerArray = music.getArtist().split(" / ");
                             SelectorSingerDialog selectorSingerDialog = new SelectorSingerDialog(singerArray);
                             FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
-                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"sdada");
+                            selectorSingerDialog.show(fragmentActivity.getSupportFragmentManager(),"");
                         }else {
                             //查询歌手列表
                             Singer singer = LocalSDMusicUtils.getSinger(getActivity(), music.getArtist());

@@ -53,7 +53,7 @@ public class FileMusicAdapter extends BaseSingleRecyclerViewAdapter<FileMusic, F
         singlerViewHolder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,"文件夹",data.getName(),data.getMusicList());
+                LeiBieDialog leiBieDialog = new LeiBieDialog(activity,parentView,"文件夹",data.getName(),data.getMusicList());
                 leiBieDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });

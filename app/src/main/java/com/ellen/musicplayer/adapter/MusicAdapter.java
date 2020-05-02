@@ -60,7 +60,7 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
         musicViewHolder.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MusicMessageDialog musicMessageDialog = new MusicMessageDialog((Activity) getContext(),data);
+                MusicMessageDialog musicMessageDialog = new MusicMessageDialog((Activity) getContext(),parentView,data);
                 musicMessageDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });

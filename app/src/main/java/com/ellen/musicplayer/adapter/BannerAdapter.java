@@ -71,7 +71,7 @@ public class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Music,
         holder.rlMusicMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MusicMessageDialog musicMessageDialog = new MusicMessageDialog(activity,data);
+                MusicMessageDialog musicMessageDialog = new MusicMessageDialog(activity,prentView,data);
                 musicMessageDialog.showAtLocation(prentView, Gravity.BOTTOM,0,0);
             }
         });
