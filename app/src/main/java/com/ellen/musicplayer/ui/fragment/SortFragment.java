@@ -116,9 +116,12 @@ public class SortFragment extends BaseFragment {
                updateNearUi();
             }
         };
+
+        //注册消息事件
         MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanBaseEvent);
         MessageManager.getInstance().registerMessageEvent(MessageTag.LIKE_ID,likeBaseEvent);
         MessageManager.getInstance().registerMessageEvent(MessageTag.NEAR_ID,nearEvent);
+
         suiJiMusicLists = SQLManager.getInstance().getMostMusic(getActivity(),SUI_JI_MUSIC_COUNT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         GeDanAdapter geDanAdapter = new GeDanAdapter(getActivity(), new ArrayList<GeDan>());
