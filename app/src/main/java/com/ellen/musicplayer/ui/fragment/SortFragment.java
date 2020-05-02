@@ -291,7 +291,7 @@ public class SortFragment extends BaseFragment {
     private void updateNearUi(){
         //更新图片
         NearMusicTable nearMusicTable = SQLManager.getInstance().getNearMusicTable();
-        //获取最新喜欢的Music类
+        //获取最近的NearMusic类
         List<NearMusic> nearMusicList = nearMusicTable.getAllDatas(Order.getInstance(false)
                 .setFirstOrderFieldName("playTime")
                 .setIsDesc(true).createSQL());
