@@ -9,12 +9,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.pifu.PiFuManager;
 
 import java.util.List;
 
@@ -32,7 +35,8 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
     private RecyclerView recyclerView;
     private RelativeLayout rl;
     private TextView tvTitle, tvContent;
-    private ImageView ivBack;
+    private ImageView ivBack,ivPiFu;
+    private PiFu currentPiFu;
 
     @Override
     protected int setLayoutId() {
@@ -52,12 +56,26 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
         tvTitle = findViewById(R.id.tv_title);
         tvContent = findViewById(R.id.tv_content);
         ivBack = findViewById(R.id.iv_back);
+        ivPiFu = findViewById(R.id.iv_pi_fu);
         ivBack.setOnClickListener(this);
     }
 
     @Override
     protected void initData() {
+        currentPiFu = PiFuManager.getInstance().getPiFu();
+        updatePiFu(currentPiFu);
         handlerIntent(getIntent());
+    }
+
+    private void updatePiFu(PiFu piFu) {
+        if (piFu != null) {
+            if (piFu.isGuDinPiFu()) {
+                ivPiFu.setImageResource(piFu.getPiFuIconId());
+            } else {
+                //使用Glide加载本地图片
+                Glide.with(SortActivity.this).load(piFu.getImagePath()).into(ivPiFu);
+            }
+        }
     }
 
     @Override

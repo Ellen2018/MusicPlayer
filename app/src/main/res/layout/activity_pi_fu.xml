@@ -19,14 +19,14 @@
         android:id="@+id/view_top"
         android:layout_width="match_parent"
         android:layout_height="22dp"
-        android:background="#883e3e3e" />
+        android:background="@color/wang_yi_yun_bar_bg_color" />
 
     <RelativeLayout
         android:id="@+id/rl_serach_top"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_below="@id/view_top"
-        android:background="#883e3e3e">
+        android:background="@color/wang_yi_yun_bar_bg_color">
 
         <ImageView
             android:id="@+id/iv_back"

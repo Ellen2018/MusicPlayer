@@ -6,14 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.BannerAdapter;
@@ -32,6 +35,7 @@ import com.ellen.musicplayer.manager.sql.GeDanTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
+import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.collectionutil.CollectionUtils;
 import com.ellen.sqlitecreate.createsql.order.Order;
@@ -72,7 +76,10 @@ public class SortFragment extends BaseFragment {
     private RecyclerView recyclerView,recyclerViewGeDan;
     private GeDanAdapter geDanAdapter;
     private ImageView ivGoTop;
-    private BaseEvent baseEvent;
+    private BaseEvent geDanBaseEvent,likeBaseEvent,nearEvent;
+    private LinearLayout llLike,llNear;
+    private ImageView ivLikeIcon,ivNearIcon;
+    private TextView tvLikeCount,tvNearCount;
     /**
      * 注意：这里设置过大会导致播放图片加载错位问题
      */
@@ -84,7 +91,7 @@ public class SortFragment extends BaseFragment {
                 .getAllDatas(Order.getInstance(false)
                         .setFirstOrderFieldName("geDanSqlTableName")
                         .setIsDesc(true).createSQL());
-        baseEvent = new MessageEventTrigger() {
+        geDanBaseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
                 geDanList = SQLManager.getInstance().getGeDanTable()
@@ -95,7 +102,21 @@ public class SortFragment extends BaseFragment {
                 geDanAdapter.notifyDataSetChanged();
             }
         };
-        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
+        likeBaseEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                     updateLikeUi();
+            }
+        };
+        nearEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanBaseEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.LIKE_ID,likeBaseEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.NEAR_ID,nearEvent);
         suiJiMusicLists = SQLManager.getInstance().getMostMusic(getActivity(),SUI_JI_MUSIC_COUNT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         GeDanAdapter geDanAdapter = new GeDanAdapter(getActivity(), new ArrayList<GeDan>());
@@ -104,6 +125,42 @@ public class SortFragment extends BaseFragment {
         geDanAdapter.addHeaderView(view);
         banner = view.findViewById(R.id.banner);
         recyclerViewGeDan = view.findViewById(R.id.recycler_view_ge_dan);
+        llLike = view.findViewById(R.id.ll_like);
+        llNear = view.findViewById(R.id.ll_near);
+        ivLikeIcon = view.findViewById(R.id.iv_like_icon);
+        ivNearIcon = view.findViewById(R.id.iv_near_icon);
+        tvLikeCount = view.findViewById(R.id.tv_like_count);
+        updateLikeUi();
+        llLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GeDanMusicTable geDanMusicTable = SQLManager.getInstance().getLikeGeDanMusicTable();
+                //获取最新喜欢的Music类
+                List<GeDanMusic> geDanMusicList = geDanMusicTable.getAllDatas(Order.getInstance(false)
+                        .setFirstOrderFieldName("likeTime")
+                        .setIsDesc(true).createSQL());
+
+                if(geDanMusicList != null && geDanMusicList.size() > 0){
+                    List<Music> musicList = new ArrayList<>();
+                    for(GeDanMusic geDanMusic:geDanMusicList){
+                        musicList.add(geDanMusic.getMusic());
+                    }
+                    JumpSortUtils.jumpToSort(getActivity(),"歌单","我喜欢",musicList);
+                }else {
+                    List<Music> musicList = new ArrayList<>();
+                    JumpSortUtils.jumpToSort(getActivity(),"歌单","我喜欢",musicList);
+                }
+            }
+        });
+
+        llNear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击最近
+                ToastUtils.toast(getActivity(),"最近");
+            }
+        });
+
         initBanner();
         geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -197,11 +254,30 @@ public class SortFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.GE_DAN_ID,geDanBaseEvent);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.LIKE_ID,likeBaseEvent);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.NEAR_ID,nearEvent);
     }
 
     @Override
     protected int setLayout() {
         return R.layout.fragment_my;
+    }
+
+    private void updateLikeUi(){
+        //更新图片
+        GeDanMusicTable geDanMusicTable = SQLManager.getInstance().getLikeGeDanMusicTable();
+        //获取最新喜欢的Music类
+        List<GeDanMusic> geDanMusicList = geDanMusicTable.getAllDatas(Order.getInstance(false)
+                .setFirstOrderFieldName("likeTime")
+                .setIsDesc(true).createSQL());
+        if(geDanMusicList != null && geDanMusicList.size() > 0) {
+            Music music = geDanMusicList.get(0).getMusic();
+            Glide.with(getContext())
+                    .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
+                    .error(R.mipmap.default_music_icon)
+                    .into(ivLikeIcon);
+        }
+        tvLikeCount.setText(String.valueOf(geDanMusicList.size()));
     }
 }

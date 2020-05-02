@@ -19,11 +19,11 @@ import java.util.List;
 
 public class CreateGeDanDialog extends BaseDialogFragment {
 
-    private TextView tvOk,tvCancel;
+    private TextView tvOk, tvCancel;
     private EditText etGeDanName;
     private List<Music> musicList;
 
-    public CreateGeDanDialog(){
+    public CreateGeDanDialog() {
 
     }
 
@@ -38,39 +38,43 @@ public class CreateGeDanDialog extends BaseDialogFragment {
 
     @Override
     protected void initView() {
-       etGeDanName = findViewById(R.id.et_ge_dan_name);
-       tvOk = findViewById(R.id.tv_ok);
-       tvCancel = findViewById(R.id.tv_cancel);
+        etGeDanName = findViewById(R.id.et_ge_dan_name);
+        tvOk = findViewById(R.id.tv_ok);
+        tvCancel = findViewById(R.id.tv_cancel);
 
-       tvOk.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               String geDanName = etGeDanName.getText().toString();
-               if(TextUtils.isEmpty(geDanName)){
-                   ToastUtils.toast(getActivity(),"歌单名不能为空!");
-               }else {
-                   boolean isCreateSuccess = SQLManager.getInstance().createGeDan(geDanName,musicList);
-                   if(isCreateSuccess){
-                       ToastUtils.toast(getActivity(),"歌单《"+geDanName+"》创建成功!");
-                       //发送歌单创建成功的消息
-                       SuperMessage superMessage = new SuperMessage(MessageTag.GE_DAN_ID);
-                       GeDanMessage geDanMessage = new GeDanMessage();
-                       superMessage.object = geDanMessage;
-                       MessageManager.getInstance().sendMainThreadMessage(superMessage);
-                       dismiss();
-                   }else {
-                       ToastUtils.toast(getActivity(),"已存在歌单"+geDanName+",创建失败!");
-                   }
-               }
-           }
-       });
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String geDanName = etGeDanName.getText().toString();
+                if (geDanName.equals("我喜欢")) {
+                    ToastUtils.toast(getActivity(), "已存在歌单" + geDanName + ",创建失败!");
+                    return;
+                }
+                if (TextUtils.isEmpty(geDanName)) {
+                    ToastUtils.toast(getActivity(), "歌单名不能为空!");
+                } else {
+                    boolean isCreateSuccess = SQLManager.getInstance().createGeDan(geDanName, musicList);
+                    if (isCreateSuccess) {
+                        ToastUtils.toast(getActivity(), "歌单《" + geDanName + "》创建成功!");
+                        //发送歌单创建成功的消息
+                        SuperMessage superMessage = new SuperMessage(MessageTag.GE_DAN_ID);
+                        GeDanMessage geDanMessage = new GeDanMessage();
+                        superMessage.object = geDanMessage;
+                        MessageManager.getInstance().sendMainThreadMessage(superMessage);
+                        dismiss();
+                    } else {
+                        ToastUtils.toast(getActivity(), "已存在歌单" + geDanName + ",创建失败!");
+                    }
+                }
+            }
+        });
 
-       tvCancel.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               dismiss();
-           }
-       });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     @Override

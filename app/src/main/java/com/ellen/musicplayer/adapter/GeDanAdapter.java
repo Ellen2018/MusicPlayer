@@ -15,8 +15,10 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.MusicBitmap;
+import com.ellen.sqlitecreate.createsql.order.Order;
 
 import org.w3c.dom.Text;
 
@@ -41,21 +43,31 @@ public class GeDanAdapter extends BaseSingleRecyclerViewAdapter<GeDan, GeDanAdap
     @Override
     protected void showData(GeDanViewHolder geDanViewHolder, GeDan data, int position) {
         List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(data);
-         geDanViewHolder.tvGeDanName.setText(data.getGeDanName());
-         geDanViewHolder.tvGeDanCount.setText(String.valueOf(geDanMusicList.size()));
-         if(geDanMusicList.size() > 0) {
-             Music music = geDanMusicList.get(0).getMusic();
-             Glide.with(getContext())
-                     .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
-                     .error(R.mipmap.default_music_icon)
-                     .into(geDanViewHolder.ivGeDanIcon);
-         }
+        if (data.getGeDanSqlTableName() == 0) {
+            GeDanMusicTable geDanMusicTable = SQLManager.getInstance().getLikeGeDanMusicTable();
+            //我喜欢
+            geDanMusicList =   geDanMusicTable.getAllDatas(Order.getInstance(false)
+                    .setFirstOrderFieldName("likeTime")
+                    .setIsDesc(true).createSQL());
+        }else {
+            geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(data);
+        }
+        geDanViewHolder.tvGeDanName.setText(data.getGeDanName());
+        geDanViewHolder.tvGeDanCount.setText(String.valueOf(geDanMusicList.size()));
+        if (geDanMusicList.size() > 0) {
+            Music music = geDanMusicList.get(0).getMusic();
+            Glide.with(getContext())
+                    .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
+                    .error(R.mipmap.default_music_icon)
+                    .into(geDanViewHolder.ivGeDanIcon);
+        }
     }
 
 
-    static class GeDanViewHolder extends BaseViewHolder{
-        TextView tvGeDanName,tvGeDanCount;
+    static class GeDanViewHolder extends BaseViewHolder {
+        TextView tvGeDanName, tvGeDanCount;
         ImageView ivGeDanIcon;
+
         public GeDanViewHolder(@NonNull View itemView) {
             super(itemView);
             tvGeDanName = findViewById(R.id.tv_ge_dan_name);

@@ -6,5 +6,7 @@ public interface MessageTag {
 
     String PI_FU_ID = "pi_fu";
     String GE_DAN_ID = "ge_dan";
+    String LIKE_ID = "like";
+    String NEAR_ID = "near";
 
 }

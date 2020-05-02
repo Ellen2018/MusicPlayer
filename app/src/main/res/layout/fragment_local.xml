@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:background="#883e3e3e"
+        android:background="@color/wang_yi_yun_bar_bg_color"
         android:layout_height="?actionBarSize">
 
         <com.google.android.material.tabs.TabLayout

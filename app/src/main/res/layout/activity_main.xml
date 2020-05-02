@@ -29,7 +29,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="22dp"
-            android:background="#883e3e3e" />
+            android:background="@color/wang_yi_yun_bar_bg_color"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:background="#883e3e3e">
+                android:background="@color/wang_yi_yun_bar_bg_color">
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -15,4 +15,6 @@
     <color name="line_color">#55ffffff</color>
 
     <color name="wang_yi_yun_dialog_bg_color">#232f49</color>
+    <color name="wang_yi_yun_bar_bg_color">#88232f49</color>
+    <color name="action_bar_bg_color">#883e3e3e</color>
 </resources>
