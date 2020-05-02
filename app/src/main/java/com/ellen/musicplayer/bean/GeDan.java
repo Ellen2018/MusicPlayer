@@ -5,8 +5,7 @@ import java.util.List;
 public class GeDan {
 
     private String geDanName;
-    private long createTime;
-    private List<Music> musicList;
+    private long geDanSqlTableName;
 
     public String getGeDanName() {
         return geDanName;
@@ -16,19 +15,11 @@ public class GeDan {
         this.geDanName = geDanName;
     }
 
-    public long getCreateTime() {
-        return createTime;
+    public long getGeDanSqlTableName() {
+        return geDanSqlTableName;
     }
 
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-
-    public List<Music> getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(List<Music> musicList) {
-        this.musicList = musicList;
+    public void setGeDanSqlTableName(long geDanSqlTableName) {
+        this.geDanSqlTableName = geDanSqlTableName;
     }
 }

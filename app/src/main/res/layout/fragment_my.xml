@@ -25,6 +25,7 @@
        android:layout_alignParentRight="true"
        android:layout_alignParentBottom="true"
        android:layout_marginRight="20dp"
+       android:visibility="gone"
        android:layout_marginBottom="20dp"
        android:padding="15dp"
        android:src="@mipmap/go_top" />

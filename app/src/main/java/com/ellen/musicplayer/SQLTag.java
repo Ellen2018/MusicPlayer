@@ -7,5 +7,6 @@ public interface SQLTag {
     String LIKE_TABLE_NAME = "like_table_name";
     String NEAR_TABLE_NAME = "near_table_name";
     String PIFU_TABLE_NAME = "pi_fu_table_name";
+    String GE_DAN_NAME = "ge_dan_name";
 
 }

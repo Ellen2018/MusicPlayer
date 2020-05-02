@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.ellen.musicplayer.SQLTag;
-import com.ellen.musicplayer.bean.LikeMusic;
+import com.ellen.musicplayer.bean.GeDan;
+import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.bean.PiFu;
@@ -22,9 +23,10 @@ public class SQLManager {
     private WeakReference<Context> contextWeakReference;
     private Library library;
     private static volatile SQLManager sqlManager;
-    private LikeMusicTable likeMusicTable;
+    private GeDanMusicTable likeGeDanMusicTable;
     private NearMusicTable nearMusicTable;
     private PiFuTable piFuTable;
+    private GeDanTable geDanTable;
 
     private SQLManager() {
     }
@@ -45,12 +47,20 @@ public class SQLManager {
         library = new Library(contextWeakReference.get(), SQLTag.LIBRARY_NAME, 1);
     }
 
-    public LikeMusicTable getLikeMusicTable() {
-        if (likeMusicTable == null) {
-            likeMusicTable = new LikeMusicTable(library.getWriteDataBase(), LikeMusic.class, SQLTag.LIKE_TABLE_NAME);
-            likeMusicTable.onCreateTableIfNotExits();
+    public GeDanTable getGeDanTable(){
+        if(geDanTable == null){
+            geDanTable = new GeDanTable(library.getWriteDataBase(), GeDan.class,SQLTag.GE_DAN_NAME);
+            geDanTable.onCreateTableIfNotExits();
         }
-        return likeMusicTable;
+        return geDanTable;
+    }
+
+    public GeDanMusicTable getLikeGeDanMusicTable() {
+        if (likeGeDanMusicTable == null) {
+            likeGeDanMusicTable = new GeDanMusicTable(library.getWriteDataBase(), GeDanMusic.class, SQLTag.LIKE_TABLE_NAME);
+            likeGeDanMusicTable.onCreateTableIfNotExits();
+        }
+        return likeGeDanMusicTable;
     }
 
     public NearMusicTable getNearMusicTable() {
@@ -83,7 +93,7 @@ public class SQLManager {
         String serachSQL = SerachTableData.getInstance()
                 .setTableName(SQLTag.LIKE_TABLE_NAME)
                 .createSQLAutoWhere(whererSqlWhere);
-        Cursor cursor = getLikeMusicTable().serachBySQL(serachSQL);
+        Cursor cursor = getLikeGeDanMusicTable().serachBySQL(serachSQL);
         if (cursor == null) {
             return false;
         }
@@ -96,11 +106,11 @@ public class SQLManager {
      * @param music
      */
     public void addLikeMusic(Music music) {
-        LikeMusic likeMusic = new LikeMusic();
+        GeDanMusic likeMusic = new GeDanMusic();
         likeMusic.setLikeTag(music.getWeiOneTag());
         likeMusic.setMusic(music);
         likeMusic.setLikeTime(System.currentTimeMillis());
-        getLikeMusicTable().saveData(likeMusic);
+        getLikeGeDanMusicTable().saveData(likeMusic);
     }
 
     /**
@@ -113,7 +123,7 @@ public class SQLManager {
                 .getInstance(false)
                 .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL, music.getWeiOneTag())
                 .createSQL();
-        getLikeMusicTable().delete(whererSqlWhere);
+        getLikeGeDanMusicTable().delete(whererSqlWhere);
     }
 
     /**
@@ -159,6 +169,60 @@ public class SQLManager {
             }
             return musicList1;
         }
+    }
+
+
+    /**
+     * 创建歌单
+     * @param geDanName 歌单名
+     * @return 歌单是否创建成功
+     */
+    public boolean createGeDan(String geDanName){
+        //先查询一下是否之前创建了此歌单
+        if(isCreateGeDan(geDanName)){
+            return false;
+        }else {
+            //添加数据到歌单管理表
+            GeDan geDan = new GeDan();
+            geDan.setGeDanName(geDanName);
+            geDan.setGeDanSqlTableName(System.currentTimeMillis());
+            getGeDanTable().saveData(geDan);
+
+            //开始创建歌单
+            String tableName = SQLTag.GE_DAN_NAME+"_"+geDan.getGeDanSqlTableName();
+            GeDanMusicTable geDanMusicTable = new GeDanMusicTable(library.getWriteDataBase(),GeDanMusic.class,tableName);
+            geDanMusicTable.onCreateTableIfNotExits();
+
+            return true;
+        }
+    }
+
+    public List<GeDanMusic> getGeDanMusicListByName(GeDan geDan){
+        String tableName = SQLTag.GE_DAN_NAME+"_"+geDan.getGeDanSqlTableName();
+        GeDanMusicTable geDanMusicTable = new GeDanMusicTable(library.getWriteDataBase(),GeDanMusic.class,tableName);
+        geDanMusicTable.onCreateTableIfNotExits();
+        return geDanMusicTable.getAllDatas(null);
+    }
+
+    /**
+     * 判断此歌曲是否为喜欢曲目
+     *
+     * @param geDanName
+     * @return
+     */
+    public boolean isCreateGeDan(String geDanName) {
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("geDanName", WhereSymbolEnum.EQUAL, geDanName)
+                .createSQL();
+        String serachSQL = SerachTableData.getInstance()
+                .setTableName(SQLTag.GE_DAN_NAME)
+                .createSQLAutoWhere(whererSqlWhere);
+        Cursor cursor = getGeDanTable().serachBySQL(serachSQL);
+        if (cursor == null) {
+            return false;
+        }
+        return cursor.getCount() != 0;
     }
 
 }

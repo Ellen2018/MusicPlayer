@@ -19,6 +19,7 @@ public class App extends BaseApplication {
         super.onCreate();
         SQLManager.getInstance().initLibrary(getApplicationContext());
         MMKV.initialize(App.this);
+        SQLManager.getInstance();
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {

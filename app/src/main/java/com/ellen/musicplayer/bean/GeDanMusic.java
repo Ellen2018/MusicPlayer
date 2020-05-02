@@ -1,6 +1,6 @@
 package com.ellen.musicplayer.bean;
 
-public class LikeMusic {
+public class GeDanMusic {
 
     /**
      * 喜欢的唯一标记，方便查询

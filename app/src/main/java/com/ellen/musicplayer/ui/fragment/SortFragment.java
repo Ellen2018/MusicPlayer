@@ -2,16 +2,19 @@ package com.ellen.musicplayer.ui.fragment;
 
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.BannerAdapter;
 import com.ellen.musicplayer.adapter.GeDanAdapter;
@@ -21,11 +24,17 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.CreateGeDanDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.collectionutil.CollectionUtils;
+import com.ellen.sqlitecreate.createsql.order.Order;
+import com.ellen.supermessagelibrary.BaseEvent;
+import com.ellen.supermessagelibrary.MessageEventTrigger;
+import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -56,9 +65,10 @@ public class SortFragment extends BaseFragment {
     private BannerAdapter bannerAdapter;
     private SmartRefreshLayout smartRefreshLayout;
 
-    private RecyclerView recyclerView,recyclerViewGeDan,recyclerViewMusicNote;
+    private RecyclerView recyclerView,recyclerViewGeDan;
     private GeDanAdapter geDanAdapter;
     private ImageView ivGoTop;
+    private BaseEvent baseEvent;
     /**
      * 注意：这里设置过大会导致播放图片加载错位问题
      */
@@ -66,16 +76,22 @@ public class SortFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        geDanList = new ArrayList<>();
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
-        geDanList.add(new GeDan());
+        geDanList = SQLManager.getInstance().getGeDanTable()
+                .getAllDatas(Order.getInstance(false)
+                        .setFirstOrderFieldName("geDanSqlTableName")
+                        .setIsDesc(true).createSQL());
+        baseEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                geDanList = SQLManager.getInstance().getGeDanTable()
+                        .getAllDatas( Order.getInstance(false)
+                                .setFirstOrderFieldName("geDanSqlTableName")
+                                .setIsDesc(true).createSQL());
+                geDanAdapter.setDataList(geDanList);
+                geDanAdapter.notifyDataSetChanged();
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
         suiJiMusicLists = SQLManager.getInstance().getMostMusic(getActivity(),SUI_JI_MUSIC_COUNT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         GeDanAdapter geDanAdapter = new GeDanAdapter(getActivity(), new ArrayList<GeDan>());
@@ -84,7 +100,6 @@ public class SortFragment extends BaseFragment {
         geDanAdapter.addHeaderView(view);
         banner = view.findViewById(R.id.banner);
         recyclerViewGeDan = view.findViewById(R.id.recycler_view_ge_dan);
-        recyclerViewMusicNote = view.findViewById(R.id.recycler_view_music_note);
         initBanner();
         geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -136,18 +151,19 @@ public class SortFragment extends BaseFragment {
         banner.start();
 
         //歌单设置
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerViewGeDan.setLayoutManager(linearLayoutManager);
-        GeDanAdapter geDanAdapter = new GeDanAdapter(getActivity(), geDanList);
+        GridLayoutManager gridLayoutManagerGeDan = new GridLayoutManager(getActivity(),2);
+        recyclerViewGeDan.setLayoutManager(gridLayoutManagerGeDan);
+        geDanAdapter = new GeDanAdapter(getActivity(), geDanList);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_create_ge_dan,null);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateGeDanDialog createGeDanDialog = new CreateGeDanDialog();
+                createGeDanDialog.show(getFragmentManager(),"");
+            }
+        });
+        geDanAdapter.addFooterView(view);
         recyclerViewGeDan.setAdapter(geDanAdapter);
-
-        //音乐日记
-        LinearLayoutManager linearLayoutManagerNote = new LinearLayoutManager(getActivity());
-        linearLayoutManagerNote.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerViewMusicNote.setLayoutManager(linearLayoutManagerNote);
-        GeDanAdapter geDanAdapterNote = new GeDanAdapter(getActivity(), geDanList);
-        recyclerViewMusicNote.setAdapter(geDanAdapterNote);
     }
 
     @Override
@@ -161,6 +177,12 @@ public class SortFragment extends BaseFragment {
                 recyclerView.scrollToPosition(0);
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
     }
 
     @Override
