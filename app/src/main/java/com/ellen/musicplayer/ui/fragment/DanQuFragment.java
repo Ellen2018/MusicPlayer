@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.ui.fragment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +20,8 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.ui.activity.MusicListActivity;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -59,6 +62,13 @@ public class DanQuFragment extends BaseFragment {
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                                 //开始播放
                                 MediaPlayerManager.getInstance().open(position, musicList);
+                            }
+                        });
+                        musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
+                                JumpSortUtils.jumpToMusicList(getActivity(),musicList);
+                                return true;
                             }
                         });
                     }

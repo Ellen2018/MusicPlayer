@@ -27,19 +27,19 @@ public class App extends BaseApplication {
             public void handleMessage(SuperMessage message) {
                 //存储最近播放的歌曲
                 MusicPlay musicPlay = (MusicPlay) message.object;
-                if(musicPlay.isQieHuan()) {
+                if (musicPlay.isQieHuan()) {
                     //此首歌是否已经存在于最近歌单中
-                    if(!SQLManager.getInstance().isContansNearMusic(musicPlay.getMusic())) {
+                    if (!SQLManager.getInstance().isContansNearMusic(musicPlay.getMusic())) {
                         NearMusic nearMusic = new NearMusic();
                         nearMusic.setMusic(musicPlay.getMusic());
                         nearMusic.setNearTag(musicPlay.getMusic().getWeiOneTag());
                         nearMusic.setPlayTime(System.currentTimeMillis());
                         nearMusic.setPlayTimes(1);
                         SQLManager.getInstance().getNearMusicTable().saveData(nearMusic);
-                    }else {
-                       NearMusic nearMusic = SQLManager.getInstance().getNearMusicByTag(musicPlay.getMusic().getWeiOneTag());
-                       nearMusic.setPlayTime(System.currentTimeMillis());
-                       nearMusic.setPlayTimes(nearMusic.getPlayTimes() + 1);
+                    } else {
+                        NearMusic nearMusic = SQLManager.getInstance().getNearMusicByTag(musicPlay.getMusic().getWeiOneTag());
+                        nearMusic.setPlayTime(System.currentTimeMillis());
+                        nearMusic.setPlayTimes(nearMusic.getPlayTimes() + 1);
                         SQLManager.getInstance().getNearMusicTable().update(nearMusic, Where
                                 .getInstance(false)
                                 .addAndWhereValue("nearTag", WhereSymbolEnum.EQUAL, musicPlay.getMusic().getWeiOneTag())
@@ -49,7 +49,7 @@ public class App extends BaseApplication {
                 }
             }
         };
-        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
     }
 
     @Override

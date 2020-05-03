@@ -15,4 +15,9 @@
         <!-- 指定消失的动画xml -->
     </style>
 
+    <style name="My_CheckBox" parent="@android:style/Widget.Material.CompoundButton.CheckBox">
+        <item name="android:colorControlActivated">@color/white</item>
+        <item name="android:colorControlNormal">@color/gray</item>
+    </style>
+
 </resources>

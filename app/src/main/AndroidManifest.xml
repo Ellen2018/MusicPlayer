@@ -40,6 +40,10 @@
         <activity
             android:name=".ui.activity.SortActivity"
             android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".ui.activity.MusicListActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
