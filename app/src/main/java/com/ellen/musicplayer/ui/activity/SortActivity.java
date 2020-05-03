@@ -121,6 +121,7 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_back:
+                
                 finish();
                 break;
         }
