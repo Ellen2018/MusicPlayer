@@ -21,7 +21,6 @@ import java.util.TreeMap;
 public class ManyChooseAdapter extends BaseSingleRecyclerViewAdapter<Music, ManyChooseAdapter.ManyChooseViewHolder> {
 
     private Map<Integer,Music> musicTreeMap;
-    private ChooseListener chooseListener;
 
     public Map<Integer, Music> getMusicTreeMap() {
         return musicTreeMap;
@@ -29,14 +28,6 @@ public class ManyChooseAdapter extends BaseSingleRecyclerViewAdapter<Music, Many
 
     public void setMusicTreeMap(Map<Integer, Music> musicTreeMap) {
         this.musicTreeMap = musicTreeMap;
-    }
-
-    public ChooseListener getChooseListener() {
-        return chooseListener;
-    }
-
-    public void setChooseListener(ChooseListener chooseListener) {
-        this.chooseListener = chooseListener;
     }
 
     public ManyChooseAdapter(Context context, List<Music> dataList) {
@@ -68,9 +59,6 @@ public class ManyChooseAdapter extends BaseSingleRecyclerViewAdapter<Music, Many
                 }else {
                     //没有选中
                     musicTreeMap.remove(position);
-                }
-                if(chooseListener != null){
-                    chooseListener.choose(musicTreeMap.size());
                 }
             }
         });

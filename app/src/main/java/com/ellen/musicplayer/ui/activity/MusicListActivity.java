@@ -12,13 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.ManyChooseAdapter;
 import com.ellen.musicplayer.adapter.MusicAdapter;
+import com.ellen.musicplayer.base.BasePopwindow;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
+import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.dialog.AddToGeDanDialog;
 import com.ellen.musicplayer.dialog.LeiBieDialog;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MusicListActivity extends BaseMediaPlayerActivity implements View.OnClickListener {
 
@@ -29,7 +35,7 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
     private RecyclerView recyclerView;
     private RelativeLayout rl;
     private ManyChooseAdapter manyChooseAdapter;
-    private TextView tvAllChoose, tvChooseCount,tvChooseOk;
+    private TextView tvAllChoose, tvAddTo,tvChooseCount,tvNextPlay,tvFanXuan;
     private boolean isAllChoose = false;
 
     @Override
@@ -49,10 +55,14 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
         recyclerView = findViewById(R.id.recycler_view);
         tvAllChoose = findViewById(R.id.tv_all_choose);
         tvChooseCount = findViewById(R.id.tv_choose_count);
-        tvChooseOk = findViewById(R.id.tv_choose_ok);
+        tvNextPlay = findViewById(R.id.tv_next_play);
+        tvFanXuan = findViewById(R.id.tv_fan_choose);
+        tvAddTo = findViewById(R.id.tv_add_to);
         rl = findViewById(R.id.rl);
         tvAllChoose.setOnClickListener(this);
-        tvChooseOk.setOnClickListener(this);
+        tvNextPlay.setOnClickListener(this);
+        tvFanXuan.setOnClickListener(this);
+        tvAddTo.setOnClickListener(this);
     }
 
     @Override
@@ -60,18 +70,20 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
         musicList = (List<Music>) getIntent().getSerializableExtra(MUSIC_ACTIVITY_MUSIC_LIST);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(manyChooseAdapter = new ManyChooseAdapter(this, musicList));
-        manyChooseAdapter.setChooseListener(new ManyChooseAdapter.ChooseListener() {
+
+        manyChooseAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void choose(int size) {
-                if (size == 0) {
-                    tvChooseCount.setText("多重选择");
-                } else {
-                    tvChooseCount.setText("已经选择" + size + "项");
+            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                if(manyChooseAdapter.getMusicTreeMap().containsKey(position)){
+                    //移除
+                    manyChooseAdapter.getMusicTreeMap().remove(position);
+                }else {
+                    //添加
+                    manyChooseAdapter.getMusicTreeMap().put(position, musicList.get(position));
                 }
-                if(size < musicList.size()){
-                    isAllChoose = false;
-                    tvAllChoose.setText("全选");
-                }
+                isAllChoose = false;
+                tvAllChoose.setText("全选");
+                manyChooseAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -105,17 +117,53 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                 }
                 manyChooseAdapter.notifyDataSetChanged();
                 break;
-            case R.id.tv_choose_ok:
-                List<Music> musicList = new ArrayList<>();
+            case R.id.tv_next_play:
+                List<Music> chooseMusicList = new ArrayList<>();
                 for(Map.Entry<Integer, Music> entry : manyChooseAdapter.getMusicTreeMap().entrySet()){
                     Integer mapKey = entry.getKey();
                     Music mapValue = entry.getValue();
-                    musicList.add(mapValue);
+                    chooseMusicList.add(mapValue);
                 }
-                int size = manyChooseAdapter.getMusicTreeMap().size();
-                LeiBieDialog leiBieDialog = new LeiBieDialog(this,rl,"多重选择"
-                        ,"已经选择" + size + "项",musicList);
-                leiBieDialog.showAtLocation(rl, Gravity.BOTTOM,0,0);
+                if(chooseMusicList.size() > 0) {
+                    MediaPlayerManager.getInstance().addNextPlayMusics(chooseMusicList);
+                    finish();
+                }else {
+                    ToastUtils.toast(this,"当前没有选择任何歌曲!");
+                }
+                break;
+            case R.id.tv_add_to:
+                chooseMusicList = new ArrayList<>();
+                for(Map.Entry<Integer, Music> entry : manyChooseAdapter.getMusicTreeMap().entrySet()){
+                    Integer mapKey = entry.getKey();
+                    Music mapValue = entry.getValue();
+                    chooseMusicList.add(mapValue);
+                }
+                if(chooseMusicList.size() > 0) {
+                    AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(MusicListActivity.this, chooseMusicList);
+                    addToGeDanDialog.setOnDismissListener(new BasePopwindow.OnDismissListener() {
+                        @Override
+                        public void dissmiss() {
+                            finish();
+                        }
+                    });
+                    addToGeDanDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
+                }else {
+                    ToastUtils.toast(this,"当前没有选择任何歌曲!");
+                }
+                break;
+            case R.id.tv_fan_choose:
+                Map<Integer,Music> musicMap = manyChooseAdapter.getMusicTreeMap();
+                Map<Integer,Music> newMusicMap = new TreeMap<>();
+                //反选
+                for(int i=0;i<musicList.size();i++){
+                    if(!musicMap.containsKey(i)){
+                        newMusicMap.put(i,musicList.get(i));
+                    }
+                }
+                manyChooseAdapter.setMusicTreeMap(newMusicMap);
+                manyChooseAdapter.notifyDataSetChanged();
+                isAllChoose = false;
+                tvAllChoose.setText("全选");
                 break;
         }
     }

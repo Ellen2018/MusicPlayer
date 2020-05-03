@@ -18,6 +18,7 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
+import com.ellen.musicplayer.utils.JumpSortUtils;
 
 import java.util.List;
 
@@ -95,6 +96,13 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
             @Override
             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                 MediaPlayerManager.getInstance().open(position,musicList);
+            }
+        });
+        musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
+                JumpSortUtils.jumpToMusicList(SortActivity.this,musicList);
+                return true;
             }
         });
     }
