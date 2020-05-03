@@ -102,6 +102,8 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                         musics.add(music);
                         AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(getActivity(),musics);
                         addToGeDanDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
+                        //临时退出暗化
+                        isCanCelAnHua = true;
                         break;
                     case R.mipmap.menu_share:
                         new Share2.Builder(getActivity())

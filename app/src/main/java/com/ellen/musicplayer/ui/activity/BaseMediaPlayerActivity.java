@@ -113,6 +113,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     protected void updatePlayerMianUi(MusicPlay musicPlay) {
         if (musicPlay != null && musicPlay.isClear()) {
             //恢复至默认
+            rlMainBan.setVisibility(View.GONE);
             ivMusicIcon.setImageResource(R.mipmap.default_music_icon);
             ivBg.setImageResource(R.mipmap.default_bg);
             tvSingerName.setText("歌手名");
@@ -158,5 +159,10 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
                 Glide.with(this).load(piFu.getImagePath()).into(ivPiFuIcon);
             }
         }
+    }
+
+    @Override
+    protected Boolean isSetVerticalScreen() {
+        return true;
     }
 }

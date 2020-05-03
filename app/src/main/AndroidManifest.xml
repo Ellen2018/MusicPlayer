@@ -48,6 +48,10 @@
         <activity
             android:name=".ui.activity.NearMusicActivity"
             android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".ui.activity.GeDanManagerActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

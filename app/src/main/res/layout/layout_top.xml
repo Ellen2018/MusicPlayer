@@ -134,11 +134,15 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_ge_dan_manager"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
+                android:background="@drawable/touch_bg"
                 android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="管理歌单"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />

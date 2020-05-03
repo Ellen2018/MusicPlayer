@@ -62,8 +62,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/touch_bg"
-            android:padding="15dp"
-            android:src="@mipmap/menu_delete" />
+            android:padding="8dp"
+            android:src="@mipmap/cancel" />
 
     </LinearLayout>
 

@@ -14,6 +14,7 @@ import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
 import com.ellen.sqlitecreate.createsql.order.Order;
 import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
+import com.ellen.sqlitecreate.createsql.update.UpdateTableDataRow;
 import com.ellen.sqlitecreate.createsql.where.Where;
 
 import java.lang.ref.WeakReference;
@@ -321,4 +322,32 @@ public class SQLManager {
         }
         return result;
     }
+
+    public void deleteGeDan(GeDan geDan){
+        //删除歌单对应的表
+        String tableName = SQLTag.GE_DAN_NAME + "_" + geDan.getGeDanSqlTableName();
+        getGeDanTable().deleteTable(tableName);
+
+        //清理歌单管理表中的数据
+        String whereSQL = Where.getInstance(false)
+                .addAndWhereValue("geDanName",WhereSymbolEnum.EQUAL,geDan.getGeDanName())
+                .createSQL();
+        getGeDanTable().delete(whereSQL);
+    }
+
+    public boolean isContansGeDanName(String geDanName){
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("geDanName", WhereSymbolEnum.EQUAL, geDanName)
+                .createSQL();
+        String serachSQL = SerachTableData.getInstance()
+                .setTableName(SQLTag.GE_DAN_NAME)
+                .createSQLAutoWhere(whererSqlWhere);
+        Cursor cursor = getGeDanTable().serachBySQL(serachSQL);
+        if (cursor == null) {
+            return false;
+        }
+        return cursor.getCount() != 0;
+    }
+
 }

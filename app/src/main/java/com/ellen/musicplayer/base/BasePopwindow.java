@@ -18,6 +18,7 @@ public abstract class BasePopwindow {
     //dismiss事件触发
     private OnDismissListener onDismissListener;
     protected View mContentView;
+    protected boolean isCanCelAnHua = false;
 
     public BasePopwindow(Activity activity){
         activityWeakReference = new WeakReference<>(activity);
@@ -58,7 +59,7 @@ public abstract class BasePopwindow {
                     onDismissListener.dissmiss();
                 }
                 //判断是否暗化
-                if(isSetShowBackgroundBlack()){
+                if(isSetShowBackgroundBlack() && !isCanCelAnHua){
                     //去掉暗色背景
                     WindowManager.LayoutParams lp = activityWeakReference.get().getWindow().getAttributes();
                     lp.alpha = 1.0f;
@@ -111,7 +112,7 @@ public abstract class BasePopwindow {
             butterKnifeInterface.unBindButterKnife();
         }
         //如果设置了背景暗化，那么这里去除背景暗化
-        if(isSetShowBackgroundBlack()){
+        if(isSetShowBackgroundBlack() && !isCanCelAnHua){
             //去掉暗色背景
             WindowManager.LayoutParams lp = activityWeakReference.get().getWindow().getAttributes();
             lp.alpha = 1.0f;

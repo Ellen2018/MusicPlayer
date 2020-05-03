@@ -1,9 +1,11 @@
 package com.ellen.musicplayer.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +33,13 @@ import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.dialog.CreateGeDanDialog;
+import com.ellen.musicplayer.dialog.GeDanManagerDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.GeDanTable;
 import com.ellen.musicplayer.manager.sql.NearMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
+import com.ellen.musicplayer.ui.activity.GeDanManagerActivity;
 import com.ellen.musicplayer.ui.activity.NearMusicActivity;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
@@ -83,7 +87,7 @@ public class SortFragment extends BaseFragment {
     private BaseEvent geDanBaseEvent,likeBaseEvent,nearEvent;
     private LinearLayout llLike,llNear;
     private ImageView ivLikeIcon,ivNearIcon;
-    private TextView tvLikeCount,tvNearCount;
+    private TextView tvLikeCount,tvNearCount,tvGeDanManager;
     /**
      * 注意：这里设置过大会导致播放图片加载错位问题
      */
@@ -138,6 +142,14 @@ public class SortFragment extends BaseFragment {
         ivNearIcon = view.findViewById(R.id.iv_near_icon);
         tvLikeCount = view.findViewById(R.id.tv_like_count);
         tvNearCount = view.findViewById(R.id.tv_near_count);
+        tvGeDanManager = view.findViewById(R.id.tv_ge_dan_manager);
+        tvGeDanManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GeDanManagerActivity.class);
+                startActivity(intent);
+            }
+        });
         updateLikeUi();
         updateNearUi();
         llLike.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +255,14 @@ public class SortFragment extends BaseFragment {
                     musicList.add(geDanMusic.getMusic());
                 }
                 JumpSortUtils.jumpToSort(getActivity(),"歌单",geDanList.get(position).getGeDanName(),musicList);
+            }
+        });
+        geDanAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
+                GeDanManagerDialog geDanManagerDialog = new GeDanManagerDialog((Activity) getContext(),geDanList.get(position));
+                geDanManagerDialog.showAtLocation(recyclerView, Gravity.BOTTOM,0,0);
+                return true;
             }
         });
         recyclerViewGeDan.setAdapter(geDanAdapter);
