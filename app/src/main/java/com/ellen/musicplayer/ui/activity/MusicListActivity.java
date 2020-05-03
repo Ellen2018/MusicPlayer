@@ -84,6 +84,11 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                 isAllChoose = false;
                 tvAllChoose.setText("全选");
                 manyChooseAdapter.notifyDataSetChanged();
+                if(manyChooseAdapter.getMusicTreeMap().size() > 0){
+                    tvChooseCount.setText("已经选择"+manyChooseAdapter.getMusicTreeMap().size()+"项");
+                }else {
+                    tvChooseCount.setText("多重选择");
+                }
             }
         });
     }
