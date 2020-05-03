@@ -87,9 +87,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ivMessage = findViewById(R.id.iv_message);
         rl = findViewById(R.id.rl);
         tvMusicName.setSelected(true);
-        tvSingerName.setSelected(true);
+        //tvSingerName.setSelected(true);
         tvMusicName1.setSelected(true);
-        tvSingerName1.setSelected(true);
+        //tvSingerName1.setSelected(true);
         tvAlbumName.setSelected(true);
         ivBack.setOnClickListener(this);
         ivShare.setOnClickListener(this);

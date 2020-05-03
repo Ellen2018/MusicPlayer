@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updatePiFu(PiFuManager.getInstance().getPiFu());
         //走马灯设置
         tvMusicName.setSelected(true);
-        tvSingerName.setSelected(true);
+        //tvSingerName.setSelected(true);
         permissionUtils = new PermissionUtils(this);
         permissionUtils.startCheckFileReadWritePermission(0, new PermissionUtils.PermissionCallback() {
             @Override

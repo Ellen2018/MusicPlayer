@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.GeDanTable;
 import com.ellen.musicplayer.manager.sql.NearMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
+import com.ellen.musicplayer.ui.activity.NearMusicActivity;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
@@ -164,7 +166,8 @@ public class SortFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 //点击最近
-                ToastUtils.toast(getActivity(),"最近");
+                Intent intent = new Intent(getActivity(), NearMusicActivity.class);
+                startActivity(intent);
             }
         });
 

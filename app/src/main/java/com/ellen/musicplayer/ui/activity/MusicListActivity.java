@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.ManyChooseAdapter;
 import com.ellen.musicplayer.adapter.MusicAdapter;
@@ -16,6 +17,7 @@ import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.dialog.AddToGeDanDialog;
 import com.ellen.musicplayer.dialog.LeiBieDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
@@ -172,4 +174,5 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                 break;
         }
     }
+
 }

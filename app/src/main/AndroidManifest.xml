@@ -44,6 +44,10 @@
         <activity
             android:name=".ui.activity.MusicListActivity"
             android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".ui.activity.NearMusicActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

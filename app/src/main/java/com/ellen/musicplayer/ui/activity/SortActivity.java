@@ -57,14 +57,11 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
         tvTitle = findViewById(R.id.tv_title);
         tvContent = findViewById(R.id.tv_content);
         ivBack = findViewById(R.id.iv_back);
-        ivPiFu = findViewById(R.id.iv_pi_fu);
         ivBack.setOnClickListener(this);
     }
 
     @Override
     protected void initData() {
-        currentPiFu = PiFuManager.getInstance().getPiFu();
-        updatePiFu(currentPiFu);
         handlerIntent(getIntent());
     }
 

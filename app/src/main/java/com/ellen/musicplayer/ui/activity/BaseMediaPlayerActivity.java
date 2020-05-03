@@ -12,12 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -34,6 +37,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     protected TextView tvMusicName, tvSingerName;
     protected BaseEvent baseEvent;
     protected RelativeLayout rlMainBan;
+    protected ImageView ivPiFuIcon;
 
     @Override
     protected void setStatus() {
@@ -53,6 +57,8 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         ivPause = findViewById(R.id.iv_player_pause);
         ivPlayList = findViewById(R.id.iv_player_list);
         ivBg = findViewById(R.id.iv_player_bg);
+        ivPiFuIcon = findViewById(R.id.iv_pi_fu_icon);
+        tvMusicName.setSelected(true);
 
         rlMainBan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +104,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
 
         updatePlayerMianUi(null);
+        updatePiFu(PiFuManager.getInstance().getPiFu());
     }
 
 
@@ -140,5 +147,16 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
 
         }
 
+    }
+
+    private void updatePiFu(PiFu piFu) {
+        if (piFu != null) {
+            if (piFu.isGuDinPiFu()) {
+                ivPiFuIcon.setImageResource(piFu.getPiFuIconId());
+            } else {
+                //使用Glide加载本地图片
+                Glide.with(this).load(piFu.getImagePath()).into(ivPiFuIcon);
+            }
+        }
     }
 }
