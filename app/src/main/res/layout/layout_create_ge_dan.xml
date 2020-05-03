@@ -9,11 +9,13 @@
         android:background="@drawable/touch_bg"
         android:orientation="horizontal">
 
-        <com.ellen.musicplayer.view.YuanJiaoImageView
+        <ImageView
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_margin="10dp"
-            android:src="@mipmap/default_music_icon" />
+            android:padding="20dp"
+            android:background="@color/decker_gary"
+            android:src="@mipmap/add_pi_fu" />
 
         <TextView
             android:layout_width="match_parent"

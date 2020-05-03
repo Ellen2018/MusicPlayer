@@ -48,7 +48,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private BaseEvent baseEvent;
     private IndicatorSeekBar indicatorSeekBar;
     private TimeHandler timeHandler;
-    private static final int UPDATE_TIME = 42;
+    private static final int UPDATE_TIME = 35;//42效果挺好的
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
 
@@ -90,7 +90,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         //tvSingerName.setSelected(true);
         tvMusicName1.setSelected(true);
         //tvSingerName1.setSelected(true);
-        tvAlbumName.setSelected(true);
+        //tvAlbumName.setSelected(true);
         ivBack.setOnClickListener(this);
         ivShare.setOnClickListener(this);
         ivPre.setOnClickListener(this);
