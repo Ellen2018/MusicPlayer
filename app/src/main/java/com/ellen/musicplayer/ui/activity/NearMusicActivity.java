@@ -19,7 +19,7 @@ import java.util.List;
 public class NearMusicActivity extends BaseMediaPlayerActivity {
 
     private TabLayout tabLayout;
-    private String[] titles = {"本周","所有"};
+    private String[] titles = {"最近","排行"};
     private ViewPager viewPager;
     private List<Fragment> fragmentList;
     private ImageView ivBack;
