@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -91,8 +92,19 @@
             android:visibility="gone"
             android:layout_height="200dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/wang_yi_yun_bar_bg_color"
+            app:tabIndicatorColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
+            app:tabIndicatorFullWidth="false"
+            app:tabTextColor="@color/gray" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_below="@id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

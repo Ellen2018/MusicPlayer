@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -12,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
@@ -22,20 +26,31 @@ import com.ellen.musicplayer.adapter.SerachMusicAdapter;
 import com.ellen.musicplayer.base.BaseActivity;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
+import com.ellen.musicplayer.base.adapter.viewpager.BaseFragmentPagerAdapter;
+import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.bean.SerachBean;
+import com.ellen.musicplayer.bean.Singer;
+import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.message.PiFuMessage;
+import com.ellen.musicplayer.ui.fragment.DanQuFragment;
+import com.ellen.musicplayer.ui.fragment.GeDanFragment;
+import com.ellen.musicplayer.ui.fragment.SingerFragment;
+import com.ellen.musicplayer.ui.fragment.ZhuanJiFragment;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
+import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SerachActivity extends BaseActivity implements View.OnClickListener {
@@ -46,15 +61,24 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
     private RelativeLayout rlPlayerMb;
     private BaseEvent baseEvent;
 
-    private RecyclerView recyclerView;
-
     private ImageView ivBack,ivCancel;
     private EditText editText;
     private TextView tvSerachNull;
+    private TabLayout tabLayout;
 
-    private List<Music> serachMusicLists;
-    private SerachMusicAdapter serachMusicAdapter;
+    private ViewPager viewPager;
     private RelativeLayout rl;
+    private List<Fragment> fragmentList;
+    private String[] titles = {"单曲","歌手","专辑","歌单"};
+    private BaseFragmentPagerAdapter baseFragmentPagerAdapter;
+    private DanQuFragment danQuFragment;
+    private SingerFragment singerFragment;
+    private ZhuanJiFragment zhuanJiFragment;
+    private GeDanFragment geDanFragment;
+    private List<Music> serachMusicList;
+    private List<Singer>  serachSingerList;
+    private List<ZhuanJi>  serachZhuanJiList;
+    private List<GeDan>  serachGeDanList;
 
     @Override
     protected void setStatus() {
@@ -81,22 +105,53 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         rl = findViewById(R.id.rl);
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
-        recyclerView = findViewById(R.id.recycler_view);
+        viewPager = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
         editText = findViewById(R.id.edit_text);
         ivCancel = findViewById(R.id.iv_cancel);
         ivCancel.setOnClickListener(this);
         ivPlayerList.setOnClickListener(this);
         tvSerachNull = findViewById(R.id.tv_serach_null);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(danQuFragment = new DanQuFragment(serachMusicList = LocalSDMusicUtils.serachMusics(SerachActivity.this,"")));
+        fragmentList.add(singerFragment = new SingerFragment(serachSingerList = LocalSDMusicUtils.serachSigers(SerachActivity.this,"")));
+        fragmentList.add(zhuanJiFragment = new ZhuanJiFragment(serachZhuanJiList = LocalSDMusicUtils.serachZhuanJis(SerachActivity.this,"")));
+        fragmentList.add(geDanFragment = new GeDanFragment());
 
-        serachMusicAdapter = new SerachMusicAdapter(this,recyclerView,serachMusicLists = LocalSDMusicUtils.getLocalAllMusic(this));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+        viewPager.setAdapter(baseFragmentPagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                MediaPlayerManager.getInstance().open(position,serachMusicLists);
+            protected int getFragmentPagerSize() {
+                return fragmentList.size();
+            }
+
+            @Override
+            protected Fragment getFragment(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                String resultString = "";
+                switch (position){
+                    case 0:
+                        resultString = titles[position]+"("+serachMusicList.size()+")";
+                        break;
+                    case 1:
+                        resultString = titles[position]+"("+serachSingerList.size()+")";
+                        break;
+                    case 2:
+                        resultString = titles[position]+"("+serachZhuanJiList.size()+")";
+                        break;
+                    case 3:
+                        resultString = titles[position]+"("+serachMusicList.size()+")";
+                        break;
+                }
+                return resultString;
             }
         });
-        recyclerView.setAdapter(serachMusicAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -106,30 +161,22 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(TextUtils.isEmpty(s.toString())){
+                String serachString = s.toString();
+                if(TextUtils.isEmpty(serachString)){
                     ivCancel.setVisibility(View.GONE);
                 }else {
                     ivCancel.setVisibility(View.VISIBLE);
                 }
-                //进行搜索
-                serachMusicLists = LocalSDMusicUtils.serachMusics(SerachActivity.this,s.toString());
-                serachMusicAdapter = new SerachMusicAdapter(SerachActivity.this,recyclerView,serachMusicLists);
-                serachMusicAdapter.setSerachTag(s.toString());
-                recyclerView.setLayoutManager(new LinearLayoutManager(SerachActivity.this));
-                serachMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                        MediaPlayerManager.getInstance().open(position,serachMusicLists);
-                    }
-                });
-                recyclerView.setAdapter(serachMusicAdapter);
-                if(serachMusicLists != null && serachMusicLists.size() == 0){
-                   recyclerView.setVisibility(View.GONE);
-                   tvSerachNull.setVisibility(View.VISIBLE);
-                }else {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    tvSerachNull.setVisibility(View.GONE);
-                }
+
+                serachMusicList = LocalSDMusicUtils.serachMusics(SerachActivity.this,serachString);
+                danQuFragment.setMusicList(serachMusicList);
+
+                serachSingerList = LocalSDMusicUtils.serachSigers(SerachActivity.this,serachString);
+                singerFragment.setSingerList(serachSingerList);
+
+                serachZhuanJiList = LocalSDMusicUtils.serachZhuanJis(SerachActivity.this,serachString);
+                zhuanJiFragment.setZhuanJiList(serachZhuanJiList);
+                baseFragmentPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -174,7 +221,6 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
             ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
             ivPlayerBg.setImageResource(R.mipmap.default_bg);
             ivPlayerPause.setImageResource(R.mipmap.pause);
-            serachMusicAdapter.notifyDataSetChanged();
         }else {
             if (musicPlay.isQieHuan()) {
                 //设置歌曲名和歌手名
@@ -191,8 +237,6 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                     ivPlayerIcon.setImageBitmap(bitmap);
                     ivPlayerBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
                 }
-
-                serachMusicAdapter.notifyDataSetChanged();
             }
 
             //更新播放/暂停状态

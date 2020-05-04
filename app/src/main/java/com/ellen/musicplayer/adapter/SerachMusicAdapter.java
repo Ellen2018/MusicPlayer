@@ -61,15 +61,9 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
             }else {
                 musicViewHolder.tvSingerName.setText(data.getArtist());
             }
-            if(data.getAlbum().contains(serachTag)) {
-                musicViewHolder.tvAlbumName.setText(ZhuoSeUtils.getSpannable(data.getAlbum(), serachTag));
-            }else {
-                musicViewHolder.tvAlbumName.setText(data.getAlbum());
-            }
         }else {
             musicViewHolder.tvMusicName.setText(data.getName());
             musicViewHolder.tvSingerName.setText(data.getArtist());
-            musicViewHolder.tvAlbumName.setText(data.getAlbum());
         }
 
         musicViewHolder.tvPosition.setText(String.valueOf(position + 1));
@@ -97,7 +91,7 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
 
     static class MusicViewHolder extends BaseViewHolder {
 
-        TextView tvMusicName, tvSingerName, tvAlbumName,tvPosition;
+        TextView tvMusicName, tvSingerName,tvPosition;
         ImageView ivPlayStatus,ivMore;
 
         public MusicViewHolder(@NonNull View itemView) {
@@ -105,7 +99,6 @@ public class SerachMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, Ser
             tvMusicName = findViewById(R.id.tv_music_name);
             tvSingerName = findViewById(R.id.tv_singer_name);
             tvPosition = findViewById(R.id.tv_position);
-            tvAlbumName = findViewById(R.id.tv_album_name);
             ivPlayStatus = findViewById(R.id.iv_play_status);
             ivMore = findViewById(R.id.iv_more);
         }

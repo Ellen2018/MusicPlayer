@@ -53,8 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_below="@id/ll_top"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:background="@color/wang_yi_yun_bar_bg_color"
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/white"

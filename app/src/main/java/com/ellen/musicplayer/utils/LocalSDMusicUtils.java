@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ellen.musicplayer.bean.FileMusic;
 import com.ellen.musicplayer.bean.LiuPai;
 import com.ellen.musicplayer.bean.Music;
+import com.ellen.musicplayer.bean.SerachBean;
 import com.ellen.musicplayer.bean.Singer;
 import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.utils.collectionutil.CollectionUtils;
@@ -212,17 +213,55 @@ public class LocalSDMusicUtils {
 
     }
 
+    /**
+     * 搜索音乐
+     * @param context
+     * @param serachString
+     * @return
+     */
     public static List<Music> serachMusics(Context context, String serachString) {
         List<Music> musicList = getLocalAllMusic(context);
         List<Music> serachMusics = new ArrayList<>();
         for (Music music : musicList) {
-            if (music.getName().contains(serachString)
-                    || music.getArtist().contains(serachString)
-                    || music.getAlbum().contains(serachString)) {
+            if (music.getName().contains(serachString) || music.getArtist().contains(serachString)) {
                 serachMusics.add(music);
             }
         }
         return serachMusics;
+    }
+
+    /**
+     * 搜索歌手
+     * @param context
+     * @param serachString
+     * @return
+     */
+    public static List<Singer> serachSigers(Context context, String serachString) {
+        List<Singer> singerList = getArtist(context);
+        List<Singer> serachSingers = new ArrayList<>();
+        for (Singer singer : singerList) {
+            if (singer.getName().contains(serachString)) {
+                serachSingers.add(singer);
+            }
+        }
+        return serachSingers;
+    }
+
+    /**
+     * 搜索歌手
+     * @param context
+     * @param serachString
+     * @return
+     */
+    public static List<ZhuanJi> serachZhuanJis(Context context, String serachString) {
+        List<ZhuanJi> zhuanJiList = getAlbum(context);
+        List<ZhuanJi> serachZhuanJis = new ArrayList<>();
+        for (ZhuanJi zhuanJi : zhuanJiList) {
+            if (zhuanJi.getName().contains(serachString)) {
+                serachZhuanJis.add(zhuanJi);
+            }
+        }
+        return serachZhuanJis;
     }
 
     /**

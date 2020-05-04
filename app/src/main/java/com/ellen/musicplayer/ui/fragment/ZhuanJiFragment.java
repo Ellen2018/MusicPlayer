@@ -12,6 +12,7 @@ import com.ellen.musicplayer.adapter.ZhuanJiAdapter;
 import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
+import com.ellen.musicplayer.bean.Singer;
 import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
@@ -24,12 +25,25 @@ public class ZhuanJiFragment extends BaseFragment {
     private List<ZhuanJi> zhuanJiList;
     private ZhuanJiAdapter zhuanJiAdapter;
 
+    public ZhuanJiFragment(List<ZhuanJi> zhuanJiList) {
+        this.zhuanJiList = zhuanJiList;
+    }
+
+    public void setZhuanJiList(List<ZhuanJi> zhuanJiList) {
+        this.zhuanJiList.clear();
+        this.zhuanJiList.addAll(zhuanJiList);
+        if(zhuanJiAdapter !=  null)
+        zhuanJiAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void initData() {
         new Sender<List<ZhuanJi>>(){
             @Override
             protected void handlerInstruction(SenderController<List<ZhuanJi>> senderController) {
-                zhuanJiList = LocalSDMusicUtils.getAlbum(getContext());
+                if(zhuanJiList == null) {
+                    zhuanJiList = LocalSDMusicUtils.getAlbum(getContext());
+                }
                 senderController.sendMessageToNext(zhuanJiList);
             }
         }.runOn(RunMode.NEW_THREAD)

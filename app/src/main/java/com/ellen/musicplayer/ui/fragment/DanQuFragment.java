@@ -40,14 +40,26 @@ public class DanQuFragment extends BaseFragment {
     private BaseEvent baseEvent;
     private List<Music> musicList;
 
+    public DanQuFragment(List<Music> musicList) {
+        this.musicList = musicList;
+    }
+
+    public void setMusicList(List<Music> musicList) {
+        this.musicList.clear();
+        this.musicList.addAll(musicList);
+        if(musicAdapter !=  null)
+        musicAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void initData() {
 
-        new Sender<List<Music>>(){
+        new Sender<List<Music>>() {
             @Override
             protected void handlerInstruction(SenderController<List<Music>> senderController) {
-                  musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
-                  senderController.sendMessageToNext(musicList);
+                if (musicList == null)
+                    musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
+                senderController.sendMessageToNext(musicList);
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver() {
@@ -55,7 +67,7 @@ public class DanQuFragment extends BaseFragment {
                     protected void handleMessage(Object message) {
                         List<Music> musicList = (List<Music>) message;
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        musicAdapter = new MusicAdapter(getActivity(),recyclerView, musicList);
+                        musicAdapter = new MusicAdapter(getActivity(), recyclerView, musicList);
                         musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
@@ -66,7 +78,7 @@ public class DanQuFragment extends BaseFragment {
                         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
                             @Override
                             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                                JumpSortUtils.jumpToMusicList(getActivity(),musicList);
+                                JumpSortUtils.jumpToMusicList(getActivity(), musicList);
                                 return true;
                             }
                         });
@@ -90,7 +102,7 @@ public class DanQuFragment extends BaseFragment {
                 musicAdapter.notifyDataSetChanged();
             }
         };
-        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
+        MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
     }
 
     @Override
@@ -115,7 +127,7 @@ public class DanQuFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID,baseEvent);
+        MessageManager.getInstance().unRegisterMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
     }
 
     @Override

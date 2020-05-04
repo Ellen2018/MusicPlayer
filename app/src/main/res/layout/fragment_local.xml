@@ -7,18 +7,17 @@
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:background="@color/wang_yi_yun_bar_bg_color"
         android:layout_height="?actionBarSize">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             app:tabIndicatorColor="@color/white"
+            android:background="@color/wang_yi_yun_bar_bg_color"
             app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/gray" />
+            app:tabIndicatorFullWidth="false"
+            app:tabTextColor="@color/gray"  />
 
     </RelativeLayout>
 

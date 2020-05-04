@@ -32,11 +32,23 @@ public class SingerFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private SingerAdapter singerAdapter;
 
+    public SingerFragment(List<Singer> singerList) {
+        this.singerList = singerList;
+    }
+
+    public void setSingerList(List<Singer> singerList) {
+        this.singerList.clear();
+        this.singerList.addAll(singerList);
+        if(singerAdapter !=  null)
+        singerAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void initData() {
         new Sender<List<Singer>>(){
             @Override
             protected void handlerInstruction(SenderController<List<Singer>> senderController) {
+                if(singerList == null)
                 singerList = LocalSDMusicUtils.getArtist(getActivity());
                 senderController.sendMessageToNext(singerList);
             }
