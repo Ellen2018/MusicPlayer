@@ -86,7 +86,7 @@ public class ContentProviderUtils {
             int duration = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));// 时长
             int musicId = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));// 歌曲的id
             int albumId = c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-            if (duration != 0) {
+            if (duration > 1000 && size > 0) {
                 intoMusic.getMusic(path,name,album,artist,type,size,duration,musicId,albumId);
             }
         }

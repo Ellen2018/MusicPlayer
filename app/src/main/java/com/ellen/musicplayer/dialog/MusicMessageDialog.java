@@ -140,6 +140,9 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                         JumpSortUtils.jumpToSort(getActivity(),"专辑",zhuanJi.getName(),zhuanJi.getMusicList());
                         break;
                     case R.mipmap.menu_music_message:
+                        MusicLocalMessageDilaog musicLocalMessageDilaog = new MusicLocalMessageDilaog(getActivity(),music);
+                        musicLocalMessageDilaog.showAtLocation(parentView,Gravity.BOTTOM,0,0);
+                        isCanCelAnHua = true;
                         break;
                     case R.mipmap.menu_delete:
                         if(deleteInterface != null){

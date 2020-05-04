@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:background="@drawable/rectangle_blue_45_ur">
+
+        <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.ellen.musicplayer.view.YuanJiaoImageView
+                    android:id="@+id/iv_music_icon"
+                    android:layout_width="88dp"
+                    android:src="@mipmap/default_music_icon"
+                    android:layout_margin="10dp"
+                    android:layout_height="88dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_music_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:gravity="center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="歌单"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_singer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:gravity="top"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:paddingTop="3dp"
+                    android:singleLine="true"
+                    android:text="周杰伦"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_below="@id/ll_top"
+            android:background="@color/line_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_top"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_file_name"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@drawable/touch_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="88dp"
+                    android:layout_height="?actionBarSize"
+                    android:text="文件名称:"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_file_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="hhh"
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@drawable/touch_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="88dp"
+                    android:layout_height="?actionBarSize"
+                    android:text="播放时长:"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_player_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="hhh"
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@drawable/touch_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="88dp"
+                    android:layout_height="?actionBarSize"
+                    android:text="文件大小:"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_file_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="hhh"
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@drawable/touch_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="88dp"
+                    android:layout_height="?actionBarSize"
+                    android:text="文件路径:"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_file_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="hhh"
+                    android:textColor="@color/gray" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
