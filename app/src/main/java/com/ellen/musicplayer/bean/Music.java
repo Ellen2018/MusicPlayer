@@ -1,11 +1,12 @@
 package com.ellen.musicplayer.bean;
 
 import com.ellen.musicplayer.utils.collectionutil.ArrangeInterface;
+import com.ellen.musicplayer.utils.collectionutil.CompareableInterface;
 
 import java.io.File;
 import java.io.Serializable;
 
-public class Music implements ArrangeInterface<Music>, Serializable {
+public class Music implements ArrangeInterface<Music>, Serializable, CompareableInterface<Music> {
 
     /**
      * 1->按照歌手进行分类
@@ -13,6 +14,10 @@ public class Music implements ArrangeInterface<Music>, Serializable {
      * 3->按照流派分类
      */
     private static int biJiao = 1;
+    /**
+     * 1.比较歌名
+     */
+    private static int sortTag = 1;
 
     public static int getBiJiao() {
         return biJiao;
@@ -62,6 +67,33 @@ public class Music implements ArrangeInterface<Music>, Serializable {
      * 类别:流派
      */
     private String type;
+    private String pyName;
+    private String pySingerName;
+    private String pyAlbumName;
+
+    public String getPyName() {
+        return pyName;
+    }
+
+    public void setPyName(String pyName) {
+        this.pyName = pyName;
+    }
+
+    public String getPySingerName() {
+        return pySingerName;
+    }
+
+    public void setPySingerName(String pySingerName) {
+        this.pySingerName = pySingerName;
+    }
+
+    public String getPyAlbumName() {
+        return pyAlbumName;
+    }
+
+    public void setPyAlbumName(String pyAlbumName) {
+        this.pyAlbumName = pyAlbumName;
+    }
 
     public String getType() {
         return type;
@@ -146,22 +178,54 @@ public class Music implements ArrangeInterface<Music>, Serializable {
 
     @Override
     public boolean identical(Music music) {
-        if(biJiao == 1) {
+        if (biJiao == 1) {
             return this.getArtist().equals(music.getArtist());
-        }else if(biJiao == 2){
+        } else if (biJiao == 2) {
             return this.getAlbum().equals(music.getAlbum());
-        }else if(biJiao == 3){
+        } else if (biJiao == 3) {
             return this.getType().equals(music.getType());
-        }else {
+        } else {
             return this.getFatherPath().equals(music.getFatherPath());
         }
     }
 
     /**
      * 歌曲的唯一标识
+     *
      * @return
      */
-    public String getWeiOneTag(){
-        return this.getMusicId()+"_"+this.getAlbumId();
+    public String getWeiOneTag() {
+        return this.getMusicId() + "_" + this.getAlbumId();
+    }
+
+    @Override
+    public int compareTo(Music music) {
+
+        String str1 = music.getPyName();
+        String str2 = this.getPyName();
+
+        int length = str1.length() >= str2.length() ? str2.length() : str1.length();
+
+        int result = 0;
+
+        for (int i = 0; i < length; i++) {
+            char c1 = str2.charAt(i);
+            char c2 = str1.charAt(i);
+            //转成小写
+            if (c1 >= 65 && c1 <= 90) {
+                c1 = (char) (c1 + 32);
+            }
+            if (c2 >= 65 && c2 <= 90) {
+                c2 = (char) (c2 + 32);
+            }
+            result = c1 - c2;
+            if (result != 0) {
+                break;
+            }
+        }
+        if (result == 0) {
+            result = str2.length() - str1.length();
+        }
+        return result;
     }
 }

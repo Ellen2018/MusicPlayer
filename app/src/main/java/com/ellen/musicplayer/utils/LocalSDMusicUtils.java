@@ -1,6 +1,7 @@
 package com.ellen.musicplayer.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ellen.musicplayer.bean.FileMusic;
 import com.ellen.musicplayer.bean.LiuPai;
@@ -10,7 +11,9 @@ import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.utils.collectionutil.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LocalSDMusicUtils {
 
@@ -46,11 +49,32 @@ public class LocalSDMusicUtils {
                 music.setDuration(duration);
                 music.setMusicId(musicId);
                 music.setAlbumId(albumId);
+                String pyName = PinYinUtil.getPingYin(name);
+                //方便排序
+                if (!PinYinUtil.isFirstZiMuShuZi(pyName)) {
+                    music.setPyName("~" + pyName);
+                } else {
+                    music.setPyName(pyName);
+                }
+                String pySingerName = PinYinUtil.getPingYin(artist);
+                //方便排序
+                if (!PinYinUtil.isFirstZiMuShuZi(pySingerName)) {
+                    music.setPySingerName("~" + pySingerName);
+                } else {
+                    music.setPySingerName(pySingerName);
+                }
+                String pyAlbumName = PinYinUtil.getPingYin(album);
+                //方便排序
+                if (!PinYinUtil.isFirstZiMuShuZi(pyAlbumName)) {
+                    music.setPyAlbumName("~" + pyAlbumName);
+                } else {
+                    music.setPyAlbumName(pyAlbumName);
+                }
                 musicList.add(music);
             }
         });
 
-        return musicList;
+        return musicList = CollectionUtils.sort(musicList);
     }
 
     /**
@@ -68,76 +92,38 @@ public class LocalSDMusicUtils {
         if (musicList != null && musicList.size() > 0) {
             List<List<Music>> listList = CollectionUtils.arrange(musicList);
             singerList = new ArrayList<>();
-            for (List<Music> list : listList) {
-                String singerName = list.get(0).getArtist();
-                if (singerName.contains("/")) {
-                    //说明有多个歌手，需要切割
-                    String[] strings = singerName.split("/");
-                    //然后再遍历之前的歌手集合
-                    for (String name : strings) {
-                        boolean isNew = true;
-                        Singer currentSinger = null;
-                        for (Singer singer : singerList) {
-                            if (name.equals(singer.getName())) {
-                                currentSinger = singer;
-                                singer.getMusicList().addAll(list);
-                                isNew = false;
-                                break;
-                            }
-                        }
-                        if (isNew) {
-                            Singer singer = new Singer();
-                            singer.setName(name);
-                            singer.setMusicList(list);
-                            singerList.add(singer);
-                            currentSinger = singer;
-                        }
-
-                        //修复bug
-                        for(int i=0;i<currentSinger.getMusicList().size();i++){
-                            if (!currentSinger.getMusicList().get(i).getArtist().contains(name)) {
-                                currentSinger.getMusicList().remove(i);
-                                i--;
-                            }
-                        }
-                    }
-                } else if (singerName.contains(" / ")) {
-                    //说明有多个歌手，需要切割
-                    String[] strings = singerName.split(" / ");
-                    //然后再遍历之前的歌手集合
-                    for (String name : strings) {
-                        boolean isNew = true;
-                        Singer currentSinger = null;
-                        for (Singer singer : singerList) {
-                            if (name.equals(singer.getName())) {
-                                singer.getMusicList().addAll(list);
-                                isNew = false;
-                                break;
-                            }
-                        }
-                        if (isNew) {
-                            Singer singer = new Singer();
-                            singer.setName(name);
-                            singer.setMusicList(list);
-                            singerList.add(singer);
-                        }
-
-                        //修复bug
-                        for(int i=0;i<currentSinger.getMusicList().size();i++){
-                            if (!currentSinger.getMusicList().get(i).getArtist().contains(name)) {
-                                currentSinger.getMusicList().remove(i);
-                                i--;
-                            }
-                        }
-                    }
-                } else {
-                    Singer singer = new Singer();
-                    singer.setName(singerName);
-                    singer.setMusicList(list);
-                    singerList.add(singer);
-                }
+            Set<String> singerSet = new HashSet<>();
+            for(List<Music> list : listList){
+               String singerName = list.get(0).getArtist();
+               if(singerName.contains("/")){
+                   String[] strings = singerName.split("/");
+                   for(String s:strings){
+                       singerSet.add(s);
+                   }
+               }else {
+                   singerSet.add(singerName);
+               }
             }
-            return singerList;
+            for(String s:singerSet){
+                Singer singer = new Singer();
+                singer.setName(s);
+                String pySingerName = PinYinUtil.getPingYin(s);
+                //方便排序
+                if (!PinYinUtil.isFirstZiMuShuZi(pySingerName)) {
+                    singer.setPyName("~" + pySingerName);
+                } else {
+                    singer.setPyName(pySingerName);
+                }
+                singer.setMusicList(new ArrayList<>());
+                for(Music music:musicList){
+                    if(music.getArtist().contains(s)){
+                        singer.getMusicList().add(music);
+                    }
+                }
+                singerList.add(singer);
+            }
+
+            return singerList = CollectionUtils.sort(singerList);
         } else {
             return null;
         }
@@ -161,10 +147,11 @@ public class LocalSDMusicUtils {
             for (List<Music> list : listList) {
                 ZhuanJi zhuanJi = new ZhuanJi();
                 zhuanJi.setName(list.get(0).getAlbum());
+                zhuanJi.setPyAlbumName(list.get(0).getPyAlbumName());
                 zhuanJi.setMusicList(list);
                 zhuanJiList.add(zhuanJi);
             }
-            return zhuanJiList;
+            return zhuanJiList = CollectionUtils.sort(zhuanJiList);
         } else {
 
             return null;

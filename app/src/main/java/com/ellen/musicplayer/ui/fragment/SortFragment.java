@@ -221,7 +221,7 @@ public class SortFragment extends BaseFragment {
         banner.start();
 
         //歌单设置
-        GridLayoutManager gridLayoutManagerGeDan = new GridLayoutManager(getActivity(),2);
+        GridLayoutManager gridLayoutManagerGeDan = new GridLayoutManager(getActivity(),1);
         recyclerViewGeDan.setLayoutManager(gridLayoutManagerGeDan);
         geDanAdapter = new GeDanAdapter(getActivity(), geDanList);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_create_ge_dan,null);
