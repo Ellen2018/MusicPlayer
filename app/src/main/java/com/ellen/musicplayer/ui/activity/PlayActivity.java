@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
@@ -51,6 +52,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private static final int UPDATE_TIME = 35;//42效果挺好的
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
+    private BaseEvent playModeEvent;
 
     @Override
     protected void setStatus() {
@@ -124,6 +126,26 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initData() {
+        playModeEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                //更新播放模式
+                PlayMode playMode = MediaPlayerManager.getInstance().getPlayMode();
+                if (playMode == PlayMode.XUN_HUAN) {
+                    ivPlayMode.setImageResource(R.mipmap.playmode_xun_huan);
+                } else if (playMode == PlayMode.SUI_JI) {
+                    ivPlayMode.setImageResource(R.mipmap.playmode_sui_ji);
+                } else {
+                    ivPlayMode.setImageResource(R.mipmap.playmode_dan_qu);
+                }
+            }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return PlayActivity.this;
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.PLAY_MODE_ID,playModeEvent);
         timeHandler = new TimeHandler(this);
         MusicPlay musicPlay = null;
         if (MediaPlayerManager.getInstance().checkCanPlay()) {

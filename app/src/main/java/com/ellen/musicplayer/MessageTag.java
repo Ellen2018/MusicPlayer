@@ -8,5 +8,6 @@ public interface MessageTag {
     String GE_DAN_ID = "ge_dan";
     String LIKE_ID = "like";
     String NEAR_ID = "near";
+    String PLAY_MODE_ID = "play_mode_id";
 
 }
