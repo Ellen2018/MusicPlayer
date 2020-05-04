@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -36,6 +37,7 @@ import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
+import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.musicplayer.message.PiFuMessage;
 import com.ellen.musicplayer.ui.fragment.DanQuFragment;
@@ -44,6 +46,9 @@ import com.ellen.musicplayer.ui.fragment.SingerFragment;
 import com.ellen.musicplayer.ui.fragment.ZhuanJiFragment;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
+import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
+import com.ellen.sqlitecreate.createsql.order.Order;
+import com.ellen.sqlitecreate.createsql.where.Where;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
@@ -79,6 +84,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
     private List<Singer>  serachSingerList;
     private List<ZhuanJi>  serachZhuanJiList;
     private List<GeDan>  serachGeDanList;
+    private BaseEvent geDanEvent = null;
 
     @Override
     protected void setStatus() {
@@ -116,7 +122,10 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
         fragmentList.add(danQuFragment = new DanQuFragment(serachMusicList = LocalSDMusicUtils.serachMusics(SerachActivity.this,"")));
         fragmentList.add(singerFragment = new SingerFragment(serachSingerList = LocalSDMusicUtils.serachSigers(SerachActivity.this,"")));
         fragmentList.add(zhuanJiFragment = new ZhuanJiFragment(serachZhuanJiList = LocalSDMusicUtils.serachZhuanJis(SerachActivity.this,"")));
-        fragmentList.add(geDanFragment = new GeDanFragment());
+        fragmentList.add(geDanFragment = new GeDanFragment(serachGeDanList = SQLManager.getInstance().getGeDanTable()
+                .getAllDatas(Order.getInstance(false)
+                        .setFirstOrderFieldName("geDanSqlTableName")
+                        .setIsDesc(true).createSQL())));
 
         viewPager.setAdapter(baseFragmentPagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -144,7 +153,7 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                         resultString = titles[position]+"("+serachZhuanJiList.size()+")";
                         break;
                     case 3:
-                        resultString = titles[position]+"("+serachMusicList.size()+")";
+                        resultString = titles[position]+"("+geDanFragment.getGeDanList().size()+")";
                         break;
                 }
                 return resultString;
@@ -169,13 +178,15 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
                 }
 
                 serachMusicList = LocalSDMusicUtils.serachMusics(SerachActivity.this,serachString);
-                danQuFragment.setMusicList(serachMusicList);
+                danQuFragment.setMusicList(serachString,serachMusicList);
 
                 serachSingerList = LocalSDMusicUtils.serachSigers(SerachActivity.this,serachString);
-                singerFragment.setSingerList(serachSingerList);
+                singerFragment.setSingerList(serachString,serachSingerList);
 
                 serachZhuanJiList = LocalSDMusicUtils.serachZhuanJis(SerachActivity.this,serachString);
-                zhuanJiFragment.setZhuanJiList(serachZhuanJiList);
+                zhuanJiFragment.setZhuanJiList(serachString,serachZhuanJiList);
+
+                geDanFragment.setGeDanList(serachString);
                 baseFragmentPagerAdapter.notifyDataSetChanged();
             }
 
@@ -188,6 +199,19 @@ public class SerachActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initData() {
+        geDanEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                //这里无法及时更新数目，咋解决啊
+                baseFragmentPagerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return SerachActivity.this;
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanEvent);
         if(MediaPlayerManager.getInstance().checkCanPlay()) {
             MusicPlay musicPlay = new MusicPlay();
             musicPlay.setMusic(MediaPlayerManager.getInstance().currentOpenMusic());

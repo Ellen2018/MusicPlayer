@@ -2,6 +2,7 @@ package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
+import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
 import java.util.List;
 
@@ -23,6 +25,11 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
 
     private View parentView;
     private DeleteCallback deleteCallback;
+    private String serachTag;
+
+    public void setSerachTag(String serachTag) {
+        this.serachTag = serachTag;
+    }
 
     public DeleteCallback getDeleteCallback() {
         return deleteCallback;
@@ -49,8 +56,21 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
 
     @Override
     protected void showData(final MusicViewHolder musicViewHolder, Music data, final int position) {
-        musicViewHolder.tvMusicName.setText(data.getName());
-        musicViewHolder.tvSingerName.setText(data.getArtist());
+        if(TextUtils.isEmpty(serachTag)) {
+            musicViewHolder.tvMusicName.setText(data.getName());
+            musicViewHolder.tvSingerName.setText(data.getArtist());
+        }else {
+            if(data.getName().contains(serachTag)) {
+                musicViewHolder.tvMusicName.setText(ZhuoSeUtils.getSpannable(data.getName(), serachTag));
+            }else {
+                musicViewHolder.tvMusicName.setText(data.getName());
+            }
+            if(data.getArtist().contains(serachTag)) {
+                musicViewHolder.tvSingerName.setText(ZhuoSeUtils.getSpannable(data.getArtist(), serachTag));
+            }else {
+                musicViewHolder.tvSingerName.setText(data.getArtist());
+            }
+        }
         musicViewHolder.tvPosition.setText(String.valueOf(position + 1));
         Music music = MediaPlayerManager.getInstance().currentOpenMusic();
         if (music != null) {

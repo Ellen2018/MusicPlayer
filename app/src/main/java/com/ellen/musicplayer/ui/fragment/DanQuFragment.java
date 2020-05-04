@@ -39,16 +39,19 @@ public class DanQuFragment extends BaseFragment {
     private ImageView ivDinWei;
     private BaseEvent baseEvent;
     private List<Music> musicList;
+    private String serachTag = null;
 
     public DanQuFragment(List<Music> musicList) {
         this.musicList = musicList;
     }
 
-    public void setMusicList(List<Music> musicList) {
+    public void setMusicList(String serachTag,List<Music> musicList) {
         this.musicList.clear();
         this.musicList.addAll(musicList);
-        if(musicAdapter !=  null)
-        musicAdapter.notifyDataSetChanged();
+        if(musicAdapter !=  null) {
+            musicAdapter.setSerachTag(serachTag);
+            musicAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

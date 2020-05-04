@@ -2,6 +2,7 @@ package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.ellen.musicplayer.bean.ZhuanJi;
 import com.ellen.musicplayer.dialog.LeiBieDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
 import com.ellen.musicplayer.utils.ToastUtils;
+import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
 import java.util.List;
 
@@ -28,8 +30,17 @@ public class ZhuanJiAdapter extends BaseSingleRecyclerViewAdapter<ZhuanJi, Zhuan
 
     private Activity activity;
     private View view;
+    private String serachTag;
 
-    public ZhuanJiAdapter(Activity activity,View view, List<ZhuanJi> dataList) {
+    public String getSerachTag() {
+        return serachTag;
+    }
+
+    public void setSerachTag(String serachTag) {
+        this.serachTag = serachTag;
+    }
+
+    public ZhuanJiAdapter(Activity activity, View view, List<ZhuanJi> dataList) {
         super(activity, dataList);
         this.activity = activity;
         this.view = view;
@@ -47,7 +58,15 @@ public class ZhuanJiAdapter extends BaseSingleRecyclerViewAdapter<ZhuanJi, Zhuan
 
     @Override
     protected void showData(ZhuanJiViewHolder singlerViewHolder, ZhuanJi data, int position) {
-        singlerViewHolder.tvZhuanJiName.setText(data.getName());
+        if(TextUtils.isEmpty(serachTag)){
+            singlerViewHolder.tvZhuanJiName.setText(data.getName());
+        }else {
+            if(data.getName().contains(serachTag)){
+                singlerViewHolder.tvZhuanJiName.setText(ZhuoSeUtils.getSpannable(data.getName(),serachTag));
+            }else {
+                singlerViewHolder.tvZhuanJiName.setText(data.getName());
+            }
+        }
         singlerViewHolder.tvSize.setText(String.valueOf(data.getMusicList().size()));
         Music music = data.getMusicList().get(0);
         Glide.with(getContext())

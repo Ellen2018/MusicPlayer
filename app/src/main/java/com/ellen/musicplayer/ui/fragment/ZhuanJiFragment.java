@@ -29,11 +29,13 @@ public class ZhuanJiFragment extends BaseFragment {
         this.zhuanJiList = zhuanJiList;
     }
 
-    public void setZhuanJiList(List<ZhuanJi> zhuanJiList) {
+    public void setZhuanJiList(String serachTag,List<ZhuanJi> zhuanJiList) {
         this.zhuanJiList.clear();
         this.zhuanJiList.addAll(zhuanJiList);
-        if(zhuanJiAdapter !=  null)
-        zhuanJiAdapter.notifyDataSetChanged();
+        if(zhuanJiAdapter !=  null) {
+            zhuanJiAdapter.setSerachTag(serachTag);
+            zhuanJiAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

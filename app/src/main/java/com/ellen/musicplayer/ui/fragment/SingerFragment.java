@@ -36,11 +36,13 @@ public class SingerFragment extends BaseFragment {
         this.singerList = singerList;
     }
 
-    public void setSingerList(List<Singer> singerList) {
+    public void setSingerList(String serachTag,List<Singer> singerList) {
         this.singerList.clear();
         this.singerList.addAll(singerList);
-        if(singerAdapter !=  null)
-        singerAdapter.notifyDataSetChanged();
+        if(singerAdapter !=  null) {
+            singerAdapter.setSerachTag(serachTag);
+            singerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
