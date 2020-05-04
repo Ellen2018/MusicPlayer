@@ -40,6 +40,7 @@ import com.ellen.musicplayer.manager.sql.GeDanTable;
 import com.ellen.musicplayer.manager.sql.NearMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.ui.activity.GeDanManagerActivity;
+import com.ellen.musicplayer.ui.activity.LikeActivity;
 import com.ellen.musicplayer.ui.activity.NearMusicActivity;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
@@ -155,22 +156,8 @@ public class SortFragment extends BaseFragment {
         llLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GeDanMusicTable geDanMusicTable = SQLManager.getInstance().getLikeGeDanMusicTable();
-                //获取最新喜欢的Music类
-                List<GeDanMusic> geDanMusicList = geDanMusicTable.getAllDatas(Order.getInstance(false)
-                        .setFirstOrderFieldName("likeTime")
-                        .setIsDesc(true).createSQL());
-
-                if(geDanMusicList != null && geDanMusicList.size() > 0){
-                    List<Music> musicList = new ArrayList<>();
-                    for(GeDanMusic geDanMusic:geDanMusicList){
-                        musicList.add(geDanMusic.getMusic());
-                    }
-                    JumpSortUtils.jumpToSort(getActivity(),"歌单","我喜欢",musicList);
-                }else {
-                    List<Music> musicList = new ArrayList<>();
-                    JumpSortUtils.jumpToSort(getActivity(),"歌单","我喜欢",musicList);
-                }
+               Intent intent = new Intent(getActivity(), LikeActivity.class);
+               startActivity(intent);
             }
         });
 

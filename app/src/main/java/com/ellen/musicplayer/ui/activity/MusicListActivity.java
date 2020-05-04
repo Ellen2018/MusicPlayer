@@ -86,16 +86,26 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                 isAllChoose = false;
                 tvAllChoose.setText("全选");
                 manyChooseAdapter.notifyDataSetChanged();
-                if(manyChooseAdapter.getMusicTreeMap().size() > 0){
-                    tvChooseCount.setText("已经选择"+manyChooseAdapter.getMusicTreeMap().size()+"项");
-                }else {
-                    tvChooseCount.setText("多重选择");
-                }
+                updateCount();
+            }
+        });
+        manyChooseAdapter.setChooseListener(new ManyChooseAdapter.ChooseListener() {
+            @Override
+            public void choose(int size) {
+                updateCount();
             }
         });
     }
 
-    @Override
+    private void updateCount(){
+        if(manyChooseAdapter.getMusicTreeMap().size() > 0){
+            tvChooseCount.setText("已经选择"+manyChooseAdapter.getMusicTreeMap().size()+"项");
+        }else {
+            tvChooseCount.setText("多重选择");
+        }
+    }
+
+  @Override
     protected void destory() {
 
     }
@@ -123,6 +133,7 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                     tvAllChoose.setText("全选");
                 }
                 manyChooseAdapter.notifyDataSetChanged();
+                updateCount();
                 break;
             case R.id.tv_next_play:
                 List<Music> chooseMusicList = new ArrayList<>();
@@ -171,6 +182,7 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                 manyChooseAdapter.notifyDataSetChanged();
                 isAllChoose = false;
                 tvAllChoose.setText("全选");
+                updateCount();
                 break;
         }
     }

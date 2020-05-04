@@ -41,6 +41,7 @@
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:layout_margin="10dp"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/default_music_icon" />
 
                 <LinearLayout
@@ -85,6 +86,7 @@
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:layout_margin="10dp"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/default_music_icon" />
 
                 <LinearLayout

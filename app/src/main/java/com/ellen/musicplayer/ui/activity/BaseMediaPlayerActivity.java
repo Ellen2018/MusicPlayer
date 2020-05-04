@@ -38,11 +38,23 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     protected BaseEvent baseEvent;
     protected RelativeLayout rlMainBan;
     protected ImageView ivPiFuIcon;
+    private  BaseEvent baseEventLike,baseEventGeDan;
 
     @Override
     protected void setStatus() {
         StatusUtils.setNoActionBar(this);
         StatusUtils.setTranslucentStatus(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(baseEventLike != null){
+            MessageManager.getInstance().unRegisterMessageEvent(MessageTag.LIKE_ID,baseEventLike);
+        }
+        if(baseEventGeDan != null){
+            MessageManager.getInstance().unRegisterMessageEvent(MessageTag.GE_DAN_ID,baseEventGeDan);
+        }
     }
 
     @Override
@@ -164,5 +176,15 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     @Override
     protected Boolean isSetVerticalScreen() {
         return true;
+    }
+
+    protected void registerLike(BaseEvent baseEvent){
+        this.baseEventLike = baseEvent;
+        MessageManager.getInstance().registerMessageEvent(MessageTag.LIKE_ID,baseEvent);
+    }
+
+    protected void registerGeDan(BaseEvent baseEvent){
+        this.baseEventGeDan = baseEvent;
+        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
     }
 }

@@ -13,6 +13,7 @@
             android:id="@+id/iv_ge_dan_icon"
             android:layout_width="66dp"
             android:layout_height="66dp"
+            android:scaleType="centerCrop"
             android:layout_margin="10dp"
             android:src="@mipmap/default_music_icon" />
 

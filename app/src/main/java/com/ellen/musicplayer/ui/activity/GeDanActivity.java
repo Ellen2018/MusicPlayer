@@ -17,14 +17,11 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
-import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.utils.JumpSortUtils;
-import com.ellen.supermessagelibrary.MessageEventTrigger;
-import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.List;
 
-public class SortActivity extends BaseMediaPlayerActivity implements View.OnClickListener {
+public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnClickListener {
 
     public static String SORT_TITLE = "sort_title";
     public static String SORT_CONTENT = "sort_content";
@@ -73,7 +70,7 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
                 ivPiFu.setImageResource(piFu.getPiFuIconId());
             } else {
                 //使用Glide加载本地图片
-                Glide.with(SortActivity.this).load(piFu.getImagePath()).into(ivPiFu);
+                Glide.with(GeDanActivity.this).load(piFu.getImagePath()).into(ivPiFu);
             }
         }
     }
@@ -100,7 +97,7 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                JumpSortUtils.jumpToMusicList(SortActivity.this,musicList);
+                JumpSortUtils.jumpToMusicList(GeDanActivity.this,musicList);
                 return true;
             }
         });
