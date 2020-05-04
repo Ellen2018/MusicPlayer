@@ -39,7 +39,6 @@ public class DanQuFragment extends BaseFragment {
     private ImageView ivDinWei;
     private BaseEvent baseEvent;
     private List<Music> musicList;
-    private String serachTag = null;
 
     public DanQuFragment(List<Music> musicList) {
         this.musicList = musicList;
