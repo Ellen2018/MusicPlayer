@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.ui.activity.MusicListActivity;
+import com.ellen.musicplayer.ui.activity.ManyChooseActivity;
 import com.ellen.musicplayer.ui.activity.SortActivity;
 
 import java.io.Serializable;
@@ -24,9 +24,9 @@ public class JumpSortUtils {
     }
 
     public static void jumpToMusicList(Context context, List<Music> musicList){
-        Intent intent = new Intent(context, MusicListActivity.class);
+        Intent intent = new Intent(context, ManyChooseActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MusicListActivity.MUSIC_ACTIVITY_MUSIC_LIST, (Serializable) musicList);
+        bundle.putSerializable(ManyChooseActivity.MUSIC_ACTIVITY_MUSIC_LIST, (Serializable) musicList);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

@@ -17,6 +17,7 @@ import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
+import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.message.GeDanMessage;
@@ -25,6 +26,7 @@ import com.ellen.sqlitecreate.createsql.order.Order;
 import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddToGeDanDialog extends BaseBottomPopWindow {
@@ -52,27 +54,28 @@ public class AddToGeDanDialog extends BaseBottomPopWindow {
                 .getAllDatas(Order.getInstance(false)
                         .setFirstOrderFieldName("geDanSqlTableName")
                         .setIsDesc(true).createSQL());
-        if (musicList.size() == 1) {
-            GeDan geDan = new GeDan();
-            geDan.setGeDanName("我喜欢");
-            geDanList.add(0, geDan);
-        }
+
+        GeDan geDan = new GeDan();
+        geDan.setGeDanName("我喜欢");
+        geDanList.add(0, geDan);
+
         recyclerView.setAdapter(geDanAdapter = new GeDanAdapter(getActivity(), geDanList));
         geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                if (musicList.size() == 1 && position == 0) {
+                if (position == 0) {
                     //我喜欢
-                    boolean isLike = SQLManager.getInstance().isLikeMusic(musicList.get(0));
-                    if (!isLike) {
-                        SQLManager.getInstance().addLikeMusic(musicList.get(position));
-                        MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
-
-                        ToastUtils.toast(getActivity(), "添加歌曲到我喜欢成功!");
-                    } else {
-
-                        ToastUtils.toast(getActivity(), "您已添加此歌曲为喜欢!");
+                    List<GeDanMusic> geDanMusicList = new ArrayList<>();
+                    for(Music music:musicList){
+                        GeDanMusic geDanMusic = new GeDanMusic();
+                        geDanMusic.setLikeTag(music.getWeiOneTag());
+                        geDanMusic.setMusic(music);
+                        geDanMusic.setLikeTime(System.currentTimeMillis());
+                        geDanMusicList.add(geDanMusic);
                     }
+                    SQLManager.getInstance().getLikeGeDanMusicTable().saveData(geDanMusicList);
+                    ToastUtils.toast(getActivity(), "添加歌曲到<我喜欢>成功!");
+                    MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
                 } else {
                     //添加数据到歌单
                     SQLManager.getInstance().addMusicsToGeDan(musicList, geDanList.get(position));

@@ -1,5 +1,6 @@
 package com.ellen.musicplayer.bean;
 
+import com.ellen.dhcsqlitelibrary.table.reflection.Primarykey;
 import com.ellen.musicplayer.utils.collectionutil.ArrangeInterface;
 import com.ellen.musicplayer.utils.collectionutil.CompareableInterface;
 
@@ -30,6 +31,7 @@ public class Music implements ArrangeInterface<Music>, Serializable, Compareable
     /**
      * 歌曲本地路径
      */
+    @Primarykey
     private String path;
     /**
      * 歌曲名

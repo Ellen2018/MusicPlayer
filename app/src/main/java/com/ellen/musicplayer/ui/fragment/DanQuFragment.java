@@ -1,6 +1,5 @@
 package com.ellen.musicplayer.ui.fragment;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,7 +19,6 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
-import com.ellen.musicplayer.ui.activity.MusicListActivity;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.PermissionUtils;

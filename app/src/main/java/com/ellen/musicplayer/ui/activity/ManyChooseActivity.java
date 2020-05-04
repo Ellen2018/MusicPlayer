@@ -9,17 +9,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.ManyChooseAdapter;
-import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.dialog.AddToGeDanDialog;
-import com.ellen.musicplayer.dialog.LeiBieDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ToastUtils;
 
@@ -28,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MusicListActivity extends BaseMediaPlayerActivity implements View.OnClickListener {
+public class ManyChooseActivity extends BaseMediaPlayerActivity implements View.OnClickListener {
 
     public static String MUSIC_ACTIVITY_MUSIC_LIST = "music_list";
 
@@ -157,11 +153,11 @@ public class MusicListActivity extends BaseMediaPlayerActivity implements View.O
                     chooseMusicList.add(mapValue);
                 }
                 if(chooseMusicList.size() > 0) {
-                    AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(MusicListActivity.this, chooseMusicList);
+                    AddToGeDanDialog addToGeDanDialog = new AddToGeDanDialog(ManyChooseActivity.this, chooseMusicList);
                     addToGeDanDialog.setOnDismissListener(new BasePopwindow.OnDismissListener() {
                         @Override
                         public void dissmiss() {
-                            finish();
+
                         }
                     });
                     addToGeDanDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);

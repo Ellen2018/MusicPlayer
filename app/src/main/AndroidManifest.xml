@@ -42,7 +42,7 @@
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".ui.activity.MusicListActivity"
+            android:name=".ui.activity.ManyChooseActivity"
             android:launchMode="singleTask"/>
 
         <activity
