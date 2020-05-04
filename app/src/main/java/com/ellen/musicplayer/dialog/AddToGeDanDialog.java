@@ -73,6 +73,7 @@ public class AddToGeDanDialog extends BaseBottomPopWindow {
                         geDanMusic.setLikeTime(System.currentTimeMillis());
                         geDanMusicList.add(geDanMusic);
                     }
+
                     SQLManager.getInstance().getLikeGeDanMusicTable().saveData(geDanMusicList);
                     ToastUtils.toast(getActivity(), "添加歌曲到<我喜欢>成功!");
                     MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
