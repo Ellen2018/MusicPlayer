@@ -22,6 +22,15 @@ public class PlayMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, PlayM
 
 
     private View parentView;
+    private DeleteCallbck deleteCallbck;
+
+    public DeleteCallbck getDeleteCallbck() {
+        return deleteCallbck;
+    }
+
+    public void setDeleteCallbck(DeleteCallbck deleteCallbck) {
+        this.deleteCallbck = deleteCallbck;
+    }
 
     public PlayMusicAdapter(Activity activity, View parentView, List<Music> dataList) {
         super(activity, dataList);
@@ -64,6 +73,7 @@ public class PlayMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, PlayM
 
                 MediaPlayerManager.getInstance().deletePlayList(position);
                 notifyDataSetChanged();
+                deleteCallbck.delete(getDataList().size());
 
             }
         });
@@ -82,5 +92,9 @@ public class PlayMusicAdapter extends BaseSingleRecyclerViewAdapter<Music, PlayM
             ivPlayStatus = findViewById(R.id.iv_play_status);
             ivDelete = findViewById(R.id.iv_delete);
         }
+    }
+
+    public interface DeleteCallbck{
+        void delete(int size);
     }
 }

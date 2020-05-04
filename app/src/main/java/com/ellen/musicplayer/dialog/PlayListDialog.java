@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -99,6 +100,16 @@ public class PlayListDialog extends BaseBottomPopWindow {
                 MediaPlayerManager.getInstance().open(position, MediaPlayerManager.getInstance().getPlayList());
             }
         });
+        playMusicAdapter.setDeleteCallbck(new PlayMusicAdapter.DeleteCallbck() {
+            @Override
+            public void delete(int size) {
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    tvCount.setText("("+MediaPlayerManager.getInstance().getPlayList().size()+")");
+                }else {
+                    tvCount.setText("(0)");
+                }
+            }
+        });
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
@@ -111,9 +122,21 @@ public class PlayListDialog extends BaseBottomPopWindow {
         ivClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaPlayerManager.getInstance().clearPlayList();
-                playMusicAdapter.notifyDataSetChanged();
-                dismiss();
+                CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog("清空列表", "是否清空播放列表？", new CommonOkCancelDialog.Callback() {
+                    @Override
+                    public void ok() {
+                        MediaPlayerManager.getInstance().clearPlayList();
+                        playMusicAdapter.notifyDataSetChanged();
+                        dismiss();
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+                });
+                FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
+                commonOkCancelDialog.show(fragmentActivity.getSupportFragmentManager(),"");
             }
         });
         return view;
