@@ -71,7 +71,11 @@ public class AddToGeDanDialog extends BaseBottomPopWindow {
                         geDanMusic.setLikeTag(music.getWeiOneTag());
                         geDanMusic.setMusic(music);
                         geDanMusic.setLikeTime(System.currentTimeMillis());
-                        geDanMusicList.add(geDanMusic);
+
+                        //判断喜欢歌单里是否存在此歌曲
+                        if(!SQLManager.getInstance().isLikeMusic(music)){
+                            geDanMusicList.add(geDanMusic);
+                        }
                     }
 
                     SQLManager.getInstance().getLikeGeDanMusicTable().saveData(geDanMusicList);

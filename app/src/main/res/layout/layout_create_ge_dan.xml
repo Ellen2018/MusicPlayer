@@ -14,7 +14,7 @@
             android:layout_height="66dp"
             android:layout_margin="10dp"
             android:padding="20dp"
-            android:background="@color/gray"
+            android:background="@drawable/rectangle_gary_45_udlr"
             android:src="@mipmap/add_pi_fu" />
 
         <TextView
