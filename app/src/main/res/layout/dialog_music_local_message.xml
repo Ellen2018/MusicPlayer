@@ -6,34 +6,37 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:background="@drawable/rectangle_blue_45_ur">
+        android:background="@drawable/rectangle_blue_45_ur"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="88dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="88dp"
+                android:layout_height="match_parent">
+
+                <com.ellen.musicplayer.view.XCRoundRectImageView
+                    android:id="@+id/iv_music_icon"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/default_music_icon" />
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <com.ellen.musicplayer.view.YuanJiaoImageView
-                    android:id="@+id/iv_music_icon"
-                    android:layout_width="88dp"
-                    android:src="@mipmap/default_music_icon"
-                    android:layout_margin="10dp"
-                    android:layout_height="88dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_music_name"
@@ -44,7 +47,7 @@
                     android:gravity="center_vertical"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
-                    android:text="歌单"
+                    android:text="歌曲名"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -58,11 +61,9 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:paddingTop="3dp"
                     android:singleLine="true"
-                    android:text="周杰伦"
+                    android:text="歌曲名"
                     android:textColor="@color/gray"
                     android:textSize="14sp" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -90,10 +91,10 @@
                 <TextView
                     android:layout_width="88dp"
                     android:layout_height="?actionBarSize"
-                    android:text="文件名称:"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="文件名称:"
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_file_name"
@@ -114,10 +115,10 @@
                 <TextView
                     android:layout_width="88dp"
                     android:layout_height="?actionBarSize"
-                    android:text="播放时长:"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="播放时长:"
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_player_time"
@@ -138,10 +139,10 @@
                 <TextView
                     android:layout_width="88dp"
                     android:layout_height="?actionBarSize"
-                    android:text="文件大小:"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="文件大小:"
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_file_size"
@@ -162,10 +163,10 @@
                 <TextView
                     android:layout_width="88dp"
                     android:layout_height="?actionBarSize"
-                    android:text="文件路径:"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="文件路径:"
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_file_path"
