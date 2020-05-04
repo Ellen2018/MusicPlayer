@@ -51,6 +51,7 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
     private List<MusicMessageMenu> musicMessageMenuList;
     private MusicMessageMenuAdapter musicMessageMenuAdapter;
     private View parentView;
+    private MusicMessageDialog.DeleteInterface deleteInterface;
 
     public MusicMessageDialog(Activity activity,View parentView, Music music) {
         super(activity);
@@ -86,7 +87,9 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_singer,"歌手: ",music.getArtist()));
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_zhuan_ji,"专辑: ",music.getAlbum()));
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_music_message,"歌曲信息",""));
-        musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_delete,"删除",""));
+        if(deleteInterface != null) {
+            musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_delete, "删除", ""));
+        }
         recyclerView.setAdapter(musicMessageMenuAdapter = new MusicMessageMenuAdapter(getActivity(),musicMessageMenuList));
         musicMessageMenuAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -139,13 +142,25 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
                     case R.mipmap.menu_music_message:
                         break;
                     case R.mipmap.menu_delete:
+                        if(deleteInterface != null){
+                            deleteInterface.delete();
+                        }
                         break;
                 }
                 dismiss();
             }
         });
+    }
 
+    public DeleteInterface getDeleteInterface() {
+        return deleteInterface;
+    }
 
+    public void setDeleteInterface(DeleteInterface deleteInterface) {
+        this.deleteInterface = deleteInterface;
+    }
 
+    public interface DeleteInterface{
+        void delete();
     }
 }

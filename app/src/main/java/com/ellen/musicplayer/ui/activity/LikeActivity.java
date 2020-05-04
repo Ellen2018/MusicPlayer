@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
@@ -17,12 +18,15 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.dialog.CommonOkCancelDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.JumpSortUtils;
+import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.sqlitecreate.createsql.order.Order;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
+import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.ArrayList;
@@ -95,13 +99,42 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
             musicList = new ArrayList<>();
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(musicAdapter = new MusicAdapter(this, rl, musicList));
+        musicAdapter = new MusicAdapter(this, rl, musicList);
         musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                 MediaPlayerManager.getInstance().open(position, musicList);
             }
         });
+        musicAdapter.setDeleteCallback(new MusicAdapter.DeleteCallback() {
+            @Override
+            public void delelte(Music music) {
+                CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog("移除歌曲", "确定从<我喜欢>列表中移除此歌曲？", new CommonOkCancelDialog.Callback() {
+                    @Override
+                    public void ok() {
+                        //从喜欢列表中删除该歌曲
+                        SQLManager.getInstance().removeLikeMusic(music);
+                        MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
+                        ToastUtils.toast(LikeActivity.this,"从<我喜欢>列表中移除此歌曲成功!");
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+                });
+                commonOkCancelDialog.show(getSupportFragmentManager(),"");
+
+            }
+        });
+        musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
+                JumpSortUtils.jumpToMusicList(LikeActivity.this,musicList);
+                return true;
+            }
+        });
+        recyclerView.setAdapter(musicAdapter);
     }
 
 

@@ -26,6 +26,15 @@ public class GeDanManagerDialog extends BaseBottomPopWindow {
     private GeDan geDan;
     private TextView tvGeDanName;
     private LinearLayout llNextPlay, llBianJi, llDelete;
+    private MusicMessageDialog.DeleteInterface deleteInterface;
+
+    public MusicMessageDialog.DeleteInterface getDeleteInterface() {
+        return deleteInterface;
+    }
+
+    public void setDeleteInterface(MusicMessageDialog.DeleteInterface deleteInterface) {
+        this.deleteInterface = deleteInterface;
+    }
 
     public GeDanManagerDialog(Activity activity, GeDan geDan) {
         super(activity);
@@ -68,8 +77,20 @@ public class GeDanManagerDialog extends BaseBottomPopWindow {
         llDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SQLManager.getInstance().deleteGeDan(geDan);
-                MessageManager.getInstance().sendMainThreadMessage(MessageTag.GE_DAN_ID);
+                CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog("删除歌单", "确定删除歌单:" + geDan.getGeDanName(), new CommonOkCancelDialog.Callback() {
+                    @Override
+                    public void ok() {
+                        SQLManager.getInstance().deleteGeDan(geDan);
+                        MessageManager.getInstance().sendMainThreadMessage(MessageTag.GE_DAN_ID);
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+                });
+                FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
+                commonOkCancelDialog.show(fragmentActivity.getSupportFragmentManager(),"");
                 dismiss();
             }
         });

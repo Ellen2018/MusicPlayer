@@ -22,8 +22,17 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
 
 
     private View parentView;
+    private DeleteCallback deleteCallback;
 
-    public MusicAdapter(Activity activity, View parentView,List<Music> dataList) {
+    public DeleteCallback getDeleteCallback() {
+        return deleteCallback;
+    }
+
+    public void setDeleteCallback(DeleteCallback deleteCallback) {
+        this.deleteCallback = deleteCallback;
+    }
+
+    public MusicAdapter(Activity activity, View parentView, List<Music> dataList) {
         super(activity, dataList);
         this.parentView = parentView;
     }
@@ -61,6 +70,14 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
             @Override
             public void onClick(View v) {
                 MusicMessageDialog musicMessageDialog = new MusicMessageDialog((Activity) getContext(),parentView,data);
+                if(deleteCallback != null) {
+                    musicMessageDialog.setDeleteInterface(new MusicMessageDialog.DeleteInterface() {
+                        @Override
+                        public void delete() {
+                            deleteCallback.delelte(data);
+                        }
+                    });
+                }
                 musicMessageDialog.showAtLocation(parentView, Gravity.BOTTOM,0,0);
             }
         });
@@ -79,5 +96,9 @@ public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdap
             ivPlayStatus = findViewById(R.id.iv_play_status);
             ivMore = findViewById(R.id.iv_more);
         }
+    }
+
+    public interface DeleteCallback{
+        void delelte(Music music);
     }
 }

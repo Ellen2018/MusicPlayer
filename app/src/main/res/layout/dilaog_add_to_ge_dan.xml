@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@drawable/rectangle_blue_45"
+        android:background="@drawable/rectangle_blue_45_ur"
         android:layout_height="500dp">
 
         <TextView

@@ -56,7 +56,6 @@ public class DanQuFragment extends BaseFragment {
                         List<Music> musicList = (List<Music>) message;
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         musicAdapter = new MusicAdapter(getActivity(),recyclerView, musicList);
-                        recyclerView.setAdapter(musicAdapter);
                         musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
@@ -71,6 +70,7 @@ public class DanQuFragment extends BaseFragment {
                                 return true;
                             }
                         });
+                        recyclerView.setAdapter(musicAdapter);
                     }
 
                     @Override

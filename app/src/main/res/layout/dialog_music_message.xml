@@ -5,13 +5,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp">
-
-        <com.ellen.musicplayer.view.YuanJiaoImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rectangle_blue_45"
-            android:gravity="center" />
+        android:background="@drawable/rectangle_blue_45_ur"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/ll_top"
@@ -82,7 +78,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/ll_top" />
 
     </RelativeLayout>
