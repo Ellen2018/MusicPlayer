@@ -31,13 +31,13 @@
             android:layout_height="22dp"
             android:background="@color/wang_yi_yun_bar_bg_color"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:paddingTop="22dp">
 
             <RelativeLayout
+                android:id="@+id/rl_top"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/wang_yi_yun_bar_bg_color">
@@ -95,24 +95,21 @@
 
             </RelativeLayout>
 
-            <View
+            <include
+                android:id="@+id/layou_player"
+                layout="@layout/layout_player"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="0.2dp"
-                android:background="@color/gray"
-                android:visibility="gone" />
+                android:layout_height="wrap_content" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:layout_below="@id/rl_top"
+                android:layout_above="@id/layou_player"/>
 
-            <include
-                layout="@layout/layout_player"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 

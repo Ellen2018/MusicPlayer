@@ -133,6 +133,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         } else {
             if (musicPlay == null || musicPlay.isQieHuan()) {
                 if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    rlMainBan.setVisibility(View.VISIBLE);
                     //设置歌曲名和歌手名
                     tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
                     tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());

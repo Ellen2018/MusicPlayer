@@ -289,12 +289,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateUi(MusicPlay musicPlay) {
-        if (!musicPlay.isClear()) {
+        if (musicPlay != null) {
+            if(musicPlay.isClear()){
+                rlPlayerMb.setVisibility(View.GONE);
+                tvMusicName.setText("歌曲名");
+                tvSingerName.setText("歌手名");
+                ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);
+                ivPlayerBg.setImageResource(R.mipmap.default_bg);
+                ivPlayerPause.setImageResource(R.mipmap.pause);
+                musicNotification.cancelNotification();
+                return;
+            }
+            rlPlayerMb.setVisibility(View.VISIBLE);
+            //设置歌曲名和歌手名
+            tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
+            tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
             if (musicPlay.isQieHuan()) {
-                //设置歌曲名和歌手名
-                tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
-                tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());
-
                 //设置歌曲图片
                 Bitmap bitmap = MediaPlayerManager.getInstance().getCurrentOpenMusicBitmap(this);
                 if (bitmap == null) {
@@ -314,10 +324,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ivPlayerPause.setImageResource(R.mipmap.pause);
             }
 
+            rlPlayerMb.setVisibility(View.VISIBLE);
             //发送通知
             musicNotification = new MusicNotification(this);
             musicNotification.showNotification();
         } else {
+            rlPlayerMb.setVisibility(View.GONE);
             tvMusicName.setText("歌曲名");
             tvSingerName.setText("歌手名");
             ivPlayerIcon.setImageResource(R.mipmap.default_music_icon);

@@ -72,7 +72,7 @@
         android:id="@+id/layout_player"
         layout="@layout/layout_player"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
     <RelativeLayout
