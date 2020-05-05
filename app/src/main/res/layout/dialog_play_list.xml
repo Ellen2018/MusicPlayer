@@ -112,6 +112,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:text="收藏全部"
+                            android:layout_marginRight="8dp"
                             android:textColor="@color/white" />
 
                     </LinearLayout>
