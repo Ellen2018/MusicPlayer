@@ -133,6 +133,7 @@ public class PlayListDialog extends BaseBottomPopWindow {
                         @Override
                         public void ok() {
                             MediaPlayerManager.getInstance().clearPlayList();
+                            playMusicAdapter.notifyDataSetChanged();
                             dismiss();
                         }
 

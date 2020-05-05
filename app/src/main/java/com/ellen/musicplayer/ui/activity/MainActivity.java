@@ -31,6 +31,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
 import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.ui.dialog.DinShiDialog;
 import com.ellen.musicplayer.ui.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
 import com.ellen.musicplayer.message.MusicPlay;
@@ -40,7 +41,6 @@ import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.PermissionUtils;
-import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -155,8 +155,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);
                         break;
                     case R.mipmap.din_shi:
-                        intent = new Intent(MainActivity.this, TestActivty.class);
-                        startActivity(intent);
+                        DinShiDialog dinShiDialog = new DinShiDialog();
+                        dinShiDialog.show(getSupportFragmentManager(),"");
+                        drawerLayout.closeDrawers();
                         break;
                 }
             }

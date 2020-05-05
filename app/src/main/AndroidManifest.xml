@@ -62,7 +62,7 @@
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".ui.activity.TestActivty"
+            android:name=".ui.activity.DinShiActivity"
             android:launchMode="singleTask"/>
     </application>
 

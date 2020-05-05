@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.ellen.musicplayer.R;
 
-public class TestActivty extends BaseMediaPlayerActivity {
+public class DinShiActivity extends BaseMediaPlayerActivity {
 
     private TextView tvTest;
 
