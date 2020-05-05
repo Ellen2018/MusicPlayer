@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicAdapter;
@@ -17,8 +16,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.bean.PiFu;
-import com.ellen.musicplayer.dialog.CommonOkCancelDialog;
+import com.ellen.musicplayer.ui.dialog.CommonOkCancelDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;

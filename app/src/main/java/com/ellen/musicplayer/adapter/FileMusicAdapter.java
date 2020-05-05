@@ -1,25 +1,19 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.FileMusic;
-import com.ellen.musicplayer.bean.LiuPai;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.dialog.LeiBieDialog;
-import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.utils.ToastUtils;
+import com.ellen.musicplayer.ui.dialog.LeiBieDialog;
 
 import java.util.List;
 

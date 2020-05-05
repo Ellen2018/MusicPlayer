@@ -1,19 +1,16 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 
 import java.util.List;

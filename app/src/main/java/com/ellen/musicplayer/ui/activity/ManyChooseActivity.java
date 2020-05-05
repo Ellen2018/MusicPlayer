@@ -15,7 +15,7 @@ import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.dialog.AddToGeDanDialog;
+import com.ellen.musicplayer.ui.dialog.AddToGeDanDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ToastUtils;
 

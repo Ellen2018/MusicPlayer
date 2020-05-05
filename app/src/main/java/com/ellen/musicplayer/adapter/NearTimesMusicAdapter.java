@@ -14,7 +14,7 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAda
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.NearMusic;
-import com.ellen.musicplayer.dialog.MusicMessageDialog;
+import com.ellen.musicplayer.ui.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

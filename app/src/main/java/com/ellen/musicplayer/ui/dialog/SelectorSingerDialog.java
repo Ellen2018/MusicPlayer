@@ -1,8 +1,5 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

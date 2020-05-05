@@ -1,62 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/wang_yi_yun_dialog_bg_color">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_blue_45_udlr"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:layout_height="?actionBarSize"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:text="新建歌单"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+    <RelativeLayout
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/gray"
+        android:textSize="16sp">
 
         <EditText
             android:id="@+id/et_ge_dan_name"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="@null"
             android:hint="请输入歌单名(不超过15个字)"
+            android:maxLength="15"
             android:textColor="@color/white"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp" />
+            android:textColorHint="@color/gray" />
 
-        <RelativeLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize">
+            android:layout_height="0.3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white" />
 
-            <TextView
-                android:id="@+id/tv_ok"
-                android:layout_width="?actionBarSize"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/touch_bg"
-                android:gravity="center"
-                android:text="确定"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_cancel"
-                android:layout_width="?actionBarSize"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/tv_ok"
-                android:background="@drawable/touch_bg"
-                android:gravity="center"
-                android:text="取消"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp">
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/touch_bg"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="确定"
+            android:textColor="@color/white" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_ok"
+            android:background="@drawable/touch_bg"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="取消"
+            android:textColor="@color/white" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

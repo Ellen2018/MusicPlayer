@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
 import android.view.Gravity;
@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
-import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.adapter.PlayMusicAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
-import com.ellen.musicplayer.manager.mediaplayer.PlayMode;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -122,21 +120,25 @@ public class PlayListDialog extends BaseBottomPopWindow {
         ivClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog("清空列表", "是否清空播放列表？", new CommonOkCancelDialog.Callback() {
-                    @Override
-                    public void ok() {
-                        MediaPlayerManager.getInstance().clearPlayList();
-                        playMusicAdapter.notifyDataSetChanged();
-                        dismiss();
-                    }
+                if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                    CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog("清空列表", "是否清空播放列表？", new CommonOkCancelDialog.Callback() {
+                        @Override
+                        public void ok() {
+                            MediaPlayerManager.getInstance().clearPlayList();
+                            playMusicAdapter.notifyDataSetChanged();
+                            dismiss();
+                        }
 
-                    @Override
-                    public void cancel() {
+                        @Override
+                        public void cancel() {
 
-                    }
-                });
-                FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
-                commonOkCancelDialog.show(fragmentActivity.getSupportFragmentManager(),"");
+                        }
+                    });
+                    FragmentActivity fragmentActivity = (FragmentActivity) getActivity();
+                    commonOkCancelDialog.show(fragmentActivity.getSupportFragmentManager(), "");
+                }else {
+                    ToastUtils.toast(getActivity(),"播放列表已经为空!");
+                }
             }
         });
         return view;

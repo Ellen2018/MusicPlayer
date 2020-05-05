@@ -1,14 +1,11 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.dialog.MusicMessageDialog;
+import com.ellen.musicplayer.ui.dialog.MusicMessageDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.view.YuanJiaoImageView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

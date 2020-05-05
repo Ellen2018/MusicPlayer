@@ -28,6 +28,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp">
 
         <TextView

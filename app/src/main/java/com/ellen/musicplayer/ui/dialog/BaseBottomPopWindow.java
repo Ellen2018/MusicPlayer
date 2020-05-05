@@ -1,8 +1,7 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;

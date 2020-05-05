@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -144,6 +144,6 @@ public class CreateGeDanDialog extends BaseDialogFragment {
 
     @Override
     protected Boolean setWinowTransparent() {
-        return false;
+        return true;
     }
 }

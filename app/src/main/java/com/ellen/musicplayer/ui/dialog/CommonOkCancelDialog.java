@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.view.View;
 import android.widget.TextView;

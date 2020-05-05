@@ -1,9 +1,8 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
-import com.ellen.musicplayer.SQLTag;
 import com.ellen.musicplayer.adapter.GeDanAdapter;
-import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;

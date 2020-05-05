@@ -1,7 +1,6 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,13 +15,9 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.GeDan;
 import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
-import com.ellen.musicplayer.dialog.GeDanManagerDialog;
-import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
+import com.ellen.musicplayer.ui.dialog.GeDanManagerDialog;
 import com.ellen.musicplayer.manager.sql.SQLManager;
-import com.ellen.musicplayer.ui.activity.GeDanManagerActivity;
 import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.utils.ToastUtils;
-import com.ellen.sqlitecreate.createsql.order.Order;
 
 import java.util.List;
 

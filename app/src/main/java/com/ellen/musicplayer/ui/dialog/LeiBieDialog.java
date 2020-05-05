@@ -1,21 +1,16 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
-import com.ellen.musicplayer.utils.ToastUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LeiBieDialog extends BaseBottomPopWindow {

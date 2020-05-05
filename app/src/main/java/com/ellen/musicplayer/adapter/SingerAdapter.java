@@ -1,7 +1,6 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -17,9 +16,8 @@ import com.ellen.musicplayer.base.adapter.recyclerview.BaseSingleRecyclerViewAda
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.bean.Singer;
-import com.ellen.musicplayer.dialog.LeiBieDialog;
+import com.ellen.musicplayer.ui.dialog.LeiBieDialog;
 import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
 import java.util.List;

@@ -1,14 +1,10 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -18,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MusicMessageMenuAdapter;
-import com.ellen.musicplayer.base.BasePopwindow;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
 import com.ellen.musicplayer.bean.Music;
@@ -29,7 +24,6 @@ import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.ellen.musicplayer.utils.MusicBitmap;
-import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.UriUtils;
 
 import java.io.File;
@@ -38,8 +32,6 @@ import java.util.List;
 
 import gdut.bsx.share2.Share2;
 import gdut.bsx.share2.ShareContentType;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class MusicMessageDialog extends BaseBottomPopWindow {
 

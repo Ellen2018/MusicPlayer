@@ -1,4 +1,4 @@
-package com.ellen.musicplayer.dialog;
+package com.ellen.musicplayer.ui.dialog;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import com.ellen.musicplayer.bean.GeDanMusic;
 import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.SQLManager;
-import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.supermessagelibrary.MessageManager;
 
 import java.util.ArrayList;
