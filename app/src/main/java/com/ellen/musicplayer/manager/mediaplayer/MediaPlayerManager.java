@@ -340,7 +340,9 @@ public class MediaPlayerManager implements MediaPlayerInterface {
                 this.playPosition = 0;
             }
             playList.remove(position);
-            open(playPosition, playList);
+            if(playList != null && playList.size() > 0) {
+                open(playPosition, playList);
+            }
         } else if (playPosition < position) {
             //不需要作任何调整
             playList.remove(position);
@@ -348,7 +350,9 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             playPosition--;
             playList.remove(position);
         }
-
+        if(playList == null || playList.size() == 0){
+           clearPlayList();
+        }
     }
 
     @Override

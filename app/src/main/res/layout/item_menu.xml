@@ -19,13 +19,20 @@
 
         <TextView
             android:id="@+id/tv_menu_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="菜单"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="?actionBarSize"
+            android:text="00:32"
+            android:textColor="@color/white"
+            android:layout_height="?actionBarSize"/>
 
     </LinearLayout>
 

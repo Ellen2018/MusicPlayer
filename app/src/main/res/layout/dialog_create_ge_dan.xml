@@ -12,6 +12,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
+        android:text="新建歌单"
         android:textColor="@color/white"
         android:textSize="22sp" />
 

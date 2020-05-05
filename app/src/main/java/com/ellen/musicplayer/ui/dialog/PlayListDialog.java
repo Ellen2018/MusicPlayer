@@ -111,7 +111,13 @@ public class PlayListDialog extends BaseBottomPopWindow {
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
-                playMusicAdapter.notifyDataSetChanged();
+                if(MediaPlayerManager.getInstance().getPlayList() == null
+                        || MediaPlayerManager.getInstance().getPlayList().size() == 0){
+                    playMusicAdapter.notifyDataSetChanged();
+                    dismiss();
+                }else {
+                    playMusicAdapter.notifyDataSetChanged();
+                }
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);

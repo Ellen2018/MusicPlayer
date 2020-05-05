@@ -200,6 +200,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             indicatorSeekBar.setOnSeekChangeListener(null);
             tvCurrentTime.setText("00:00");
             tvAllTime.setText("00:00");
+            finish();
             return;
         }
 

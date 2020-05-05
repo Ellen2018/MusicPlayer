@@ -40,6 +40,7 @@ import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.PermissionUtils;
+import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         List<Menu> menus = new ArrayList<>();
         menus.add(new Menu(R.mipmap.pi_fu, "皮肤"));
+        menus.add(new Menu(R.mipmap.din_shi, "定时"));
         MenuAdapter menuAdapter = new MenuAdapter(this, menus);
         menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
             @Override
@@ -151,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.mipmap.pi_fu:
                         Intent intent = new Intent(MainActivity.this, PiFuSettingActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.mipmap.din_shi:
+                        ToastUtils.toast(MainActivity.this,"定时");
                         break;
                 }
             }
