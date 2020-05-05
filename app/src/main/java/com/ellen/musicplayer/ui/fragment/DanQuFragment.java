@@ -38,19 +38,6 @@ public class DanQuFragment extends BaseFragment {
     private BaseEvent baseEvent;
     private List<Music> musicList;
 
-    public DanQuFragment(List<Music> musicList) {
-        this.musicList = musicList;
-    }
-
-    public void setMusicList(String serachTag,List<Music> musicList) {
-        this.musicList.clear();
-        this.musicList.addAll(musicList);
-        if(musicAdapter !=  null) {
-            musicAdapter.setSerachTag(serachTag);
-            musicAdapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     protected void initData() {
 
@@ -108,20 +95,6 @@ public class DanQuFragment extends BaseFragment {
     @Override
     protected void initView() {
         recyclerView = findViewById(R.id.recycler_view);
-        ivDinWei = findViewById(R.id.iv_din_wei);
-        ivDinWei.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //进行定位
-                for (int i = 0; i < musicAdapter.getDataList().size(); i++) {
-                    if (musicAdapter.getDataList().get(i).getPath()
-                            .equals(MediaPlayerManager.getInstance().currentOpenMusic().getPath())) {
-                        recyclerView.scrollToPosition(i);
-                        break;
-                    }
-                }
-            }
-        });
     }
 
     @Override

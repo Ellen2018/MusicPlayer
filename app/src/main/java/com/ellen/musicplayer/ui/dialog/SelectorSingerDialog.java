@@ -61,6 +61,6 @@ public class SelectorSingerDialog extends BaseDialogFragment {
 
     @Override
     protected Boolean setWinowTransparent() {
-        return false;
+        return true;
     }
 }

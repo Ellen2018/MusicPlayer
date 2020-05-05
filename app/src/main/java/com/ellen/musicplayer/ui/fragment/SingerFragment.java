@@ -32,19 +32,6 @@ public class SingerFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private SingerAdapter singerAdapter;
 
-    public SingerFragment(List<Singer> singerList) {
-        this.singerList = singerList;
-    }
-
-    public void setSingerList(String serachTag,List<Singer> singerList) {
-        this.singerList.clear();
-        this.singerList.addAll(singerList);
-        if(singerAdapter !=  null) {
-            singerAdapter.setSerachTag(serachTag);
-            singerAdapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     protected void initData() {
         new Sender<List<Singer>>(){

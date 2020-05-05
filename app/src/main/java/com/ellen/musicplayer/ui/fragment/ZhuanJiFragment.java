@@ -25,19 +25,6 @@ public class ZhuanJiFragment extends BaseFragment {
     private List<ZhuanJi> zhuanJiList;
     private ZhuanJiAdapter zhuanJiAdapter;
 
-    public ZhuanJiFragment(List<ZhuanJi> zhuanJiList) {
-        this.zhuanJiList = zhuanJiList;
-    }
-
-    public void setZhuanJiList(String serachTag,List<ZhuanJi> zhuanJiList) {
-        this.zhuanJiList.clear();
-        this.zhuanJiList.addAll(zhuanJiList);
-        if(zhuanJiAdapter !=  null) {
-            zhuanJiAdapter.setSerachTag(serachTag);
-            zhuanJiAdapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     protected void initData() {
         new Sender<List<ZhuanJi>>(){

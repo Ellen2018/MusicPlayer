@@ -30,9 +30,9 @@ public class LocalFragment extends BaseFragment {
         titles.add("专辑");
         //titles.add("流派");
         titles.add("文件夹");
-        fragmentList.add(new DanQuFragment(null));
-        fragmentList.add(new SingerFragment(null));
-        fragmentList.add(new ZhuanJiFragment(null));
+        fragmentList.add(new DanQuFragment());
+        fragmentList.add(new SingerFragment());
+        fragmentList.add(new ZhuanJiFragment());
         //fragmentList.add(new LiuPaiFragment());
         fragmentList.add(new FileFragment());
 
