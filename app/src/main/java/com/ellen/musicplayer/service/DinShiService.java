@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ellen.musicplayer.MessageTag;
+import com.ellen.musicplayer.bean.DinShiBean;
 import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.lang.ref.WeakReference;
 import java.util.Timer;
@@ -50,12 +52,19 @@ public class DinShiService extends Service implements DinShiInterface {
             public void run() {
                 if (System.currentTimeMillis() >= closeTime) {
                     competeDinShiTask();
+                }else {
+                    SuperMessage superMessage = new SuperMessage(MessageTag.DIN_SHI_COMPLETE);
+                    DinShiBean dinShiBean = new DinShiBean();
+                    dinShiBean.setComplete(false);
+                    dinShiBean.setTime(closeTime - System.currentTimeMillis());
+                    superMessage.object = dinShiBean;
+                    MessageManager.getInstance().sendMainThreadMessage(superMessage);
                 }
             }
         };
         //793063 -> 856064
         // 定义每次执行的间隔时间
-        long intevalPeriod = 50;
+        long intevalPeriod = 200;
         // schedules the task to be run in an interval
         // 安排任务在一段时间内运行
         startTime = System.currentTimeMillis();
@@ -71,8 +80,17 @@ public class DinShiService extends Service implements DinShiInterface {
 
     @Override
     public void competeDinShiTask() {
-        MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.DIN_SHI_COMPLETE);
+        SuperMessage superMessage = new SuperMessage(MessageTag.DIN_SHI_COMPLETE);
+        DinShiBean dinShiBean = new DinShiBean();
+        dinShiBean.setComplete(true);
+        superMessage.object = dinShiBean;
+        MessageManager.getInstance().sendMainThreadMessage(superMessage);
         cancelDinShiTask();
+    }
+
+    @Override
+    public void resetTask(int m) {
+        closeTime = System.currentTimeMillis() + m * 60 * 1000;
     }
 
 
@@ -97,6 +115,11 @@ public class DinShiService extends Service implements DinShiInterface {
         @Override
         public void competeDinShiTask() {
             dinShiServiceWeakReference.get().competeDinShiTask();
+        }
+
+        @Override
+        public void resetTask(int m) {
+            dinShiServiceWeakReference.get().resetTask(m);
         }
     }
 

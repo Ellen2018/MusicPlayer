@@ -26,10 +26,86 @@
             android:layout_height="match_parent"
             android:src="#88000000" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_menu"
+        <TextView
+            android:id="@+id/tv_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tv_bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_pi_fu"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:background="@drawable/touch_bg">
+
+                    <ImageView
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:padding="15dp"
+                        android:src="@mipmap/pi_fu" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:text="皮肤"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_din_Shi"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:background="@drawable/touch_bg">
+
+                    <ImageView
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:padding="15dp"
+                        android:src="@mipmap/din_shi" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="定时"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_din_shi_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="00:00"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
 
     </RelativeLayout>

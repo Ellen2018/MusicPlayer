@@ -27,6 +27,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import com.ellen.musicplayer.App;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
+import com.ellen.musicplayer.bean.DinShiBean;
 import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.service.DinShiService;
@@ -49,6 +51,7 @@ import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.PermissionUtils;
+import com.ellen.musicplayer.utils.TimeUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView ivPlayerBg, ivPlayerPause, ivPlayerList;
     private IntentFilter intentFilterPause, intentFilterNext;
     private RelativeLayout rlPlayerMb;
-    private RecyclerView recyclerViewMenu;
     private ImageView ivPiFu;
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BaseEvent dinShiBaseEvent;
     private MyServiceConncetion myServiceConncetion;
     private Handler handler = new Handler();
+    private TextView tvDinShiTime;
+    private LinearLayout llPiFu,llDinShi;
 
     /**
      * 取代EventBus
@@ -102,38 +106,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dinShiBaseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
+                DinShiBean dinShiBean = (DinShiBean) message.object;
+                if(dinShiBean.isComplete()) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvDinShiTime.setVisibility(View.GONE);
+                            App app = (App) getApplication();
+                            CloseAppDialog closeAppDialog = new CloseAppDialog(System.currentTimeMillis(), new CloseAppDialog.Callback() {
+                                @Override
+                                public void ok() {
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        App app = (App) getApplication();
-                        CloseAppDialog closeAppDialog = new CloseAppDialog(System.currentTimeMillis(),new CloseAppDialog.Callback(){
-                            @Override
-                            public void ok() {
-
-                            }
-
-                            @Override
-                            public void stop() {
-                                if(MediaPlayerManager.getInstance().checkCanPlay()){
-                                   MediaPlayerManager.getInstance().pause();
                                 }
 
-                            }
+                                @Override
+                                public void stop() {
+                                    if (MediaPlayerManager.getInstance().checkCanPlay()) {
+                                        MediaPlayerManager.getInstance().pause();
+                                    }
 
-                            @Override
-                            public void cancel() {
-                                ToastUtils.toast(app.getActivity(),"退出定时停止播放成功!");
+                                }
+
+                                @Override
+                                public void cancel() {
+                                    ToastUtils.toast(app.getActivity(), "退出定时停止播放成功!");
+                                }
+                            });
+                            AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
+                            closeAppDialog.show(appCompatActivity.getSupportFragmentManager(), "");
+                            if (myServiceConncetion != null) {
+                                unbindService(myServiceConncetion);
+                                myServiceConncetion = null;
                             }
-                        });
-                        AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
-                        closeAppDialog.show(appCompatActivity.getSupportFragmentManager(),"");
-                        if(myServiceConncetion != null) {
-                            unbindService(myServiceConncetion);
                         }
-                    }
-                });
-
+                    });
+                }else {
+                    tvDinShiTime.setVisibility(View.VISIBLE);
+                    tvDinShiTime.setText(TimeUtils.format((dinShiBean.getTime())));
+                }
             }
 
             @Override
@@ -198,33 +208,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
-        List<Menu> menus = new ArrayList<>();
-        menus.add(new Menu(R.mipmap.pi_fu, "皮肤"));
-        menus.add(new Menu(R.mipmap.din_shi, "定时"));
-        MenuAdapter menuAdapter = new MenuAdapter(this, menus);
-        menuAdapter.setMenuClickListener(new MenuAdapter.MenuClickListener() {
-            @Override
-            public void onClick(Menu menu) {
-                drawerLayout.closeDrawers();
-                switch (menu.getIconId()) {
-                    case R.mipmap.pi_fu:
-                        Intent intent = new Intent(MainActivity.this, PiFuSettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.mipmap.din_shi:
-                        //直接进行倒计时
-                        myServiceConncetion = new MyServiceConncetion();
-                        intent = new Intent(MainActivity.this,DinShiService.class);
-                        bindService(intent,myServiceConncetion,Context.BIND_AUTO_CREATE);
-                        drawerLayout.closeDrawers();
-                        break;
-                }
-            }
-        });
-        recyclerViewMenu.setAdapter(menuAdapter);
-
-
         musicEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
@@ -281,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayerPause = findViewById(R.id.iv_player_pause);
         ivPlayerList = findViewById(R.id.iv_player_list);
         rlPlayerMb = findViewById(R.id.rl_player_mb);
-        recyclerViewMenu = findViewById(R.id.recycler_view_menu);
+        tvDinShiTime = findViewById(R.id.tv_din_shi_time);
+        llPiFu = findViewById(R.id.ll_pi_fu);
+        llDinShi = findViewById(R.id.ll_din_Shi);
         rl = findViewById(R.id.rl);
         ivPiFu = findViewById(R.id.iv_pi_fu);
         tvTabOne.setOnClickListener(this);
@@ -290,6 +275,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivSerach.setOnClickListener(this);
         ivPlayerPause.setOnClickListener(this);
         ivPlayerList.setOnClickListener(this);
+        llPiFu.setOnClickListener(this);
+        llDinShi.setOnClickListener(this);
 
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,6 +319,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.iv_player_list:
                 PlayListDialog playListDialog = new PlayListDialog(MainActivity.this);
                 playListDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.ll_pi_fu:
+                intent = new Intent(this,PiFuSettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_din_Shi:
+                DinShiDialog dinShiDialog = new DinShiDialog(new DinShiDialog.ChooseTime() {
+                    @Override
+                    public void time(int m) {
+                        if(m == 0){
+                            if(myServiceConncetion != null) {
+                                myServiceConncetion.dinShiBinder.cancelDinShiTask();
+                                unbindService(myServiceConncetion);
+                                myServiceConncetion = null;
+                            }
+                            tvDinShiTime.setVisibility(View.GONE);
+                            return;
+                        }
+                        if(myServiceConncetion == null) {
+                            myServiceConncetion = new MyServiceConncetion(m);
+                            Intent intent = new Intent(MainActivity.this, DinShiService.class);
+                            bindService(intent, myServiceConncetion, Context.BIND_AUTO_CREATE);
+                        }else {
+                            //重新计时
+                            myServiceConncetion.dinShiBinder.resetTask(m);
+                        }
+                    }
+                });
+                dinShiDialog.show(getSupportFragmentManager(),"");
+                drawerLayout.closeDrawers();
                 break;
         }
 
@@ -438,11 +455,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static class MyServiceConncetion implements ServiceConnection{
 
         private DinShiService.DinShiBinder dinShiBinder;
+        private int m;
+
+        public MyServiceConncetion(int m) {
+            this.m = m;
+        }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             dinShiBinder = (DinShiService.DinShiBinder) service;
-            dinShiBinder.startDinShiTask(1);
+            dinShiBinder.startDinShiTask(m);
         }
 
         @Override

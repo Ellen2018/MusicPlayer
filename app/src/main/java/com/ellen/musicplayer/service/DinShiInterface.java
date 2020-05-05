@@ -17,4 +17,10 @@ public interface DinShiInterface {
      */
     void competeDinShiTask();
 
+    /**
+     * 重新开启任务
+     * @param m
+     */
+    void resetTask(int m);
+
 }
