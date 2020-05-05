@@ -113,28 +113,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             tvDinShiTime.setVisibility(View.GONE);
                             App app = (App) getApplication();
-                            CloseAppDialog closeAppDialog = new CloseAppDialog(System.currentTimeMillis(), new CloseAppDialog.Callback() {
-                                @Override
-                                public void ok() {
+                            if(app.isAppActive()) {
+                                CloseAppDialog closeAppDialog = new CloseAppDialog(System.currentTimeMillis(), new CloseAppDialog.Callback() {
+                                    @Override
+                                    public void ok() {
 
-                                }
-
-                                @Override
-                                public void stop() {
-                                    if (MediaPlayerManager.getInstance().checkCanPlay()) {
-                                        MediaPlayerManager.getInstance().pause();
                                     }
 
-                                }
+                                    @Override
+                                    public void stop() {
+                                        if (MediaPlayerManager.getInstance().checkCanPlay()) {
+                                            MediaPlayerManager.getInstance().pause();
+                                        }
 
-                                @Override
-                                public void cancel() {
-                                    ToastUtils.toast(app.getActivity(), "退出定时停止播放成功!");
+                                    }
+
+                                    @Override
+                                    public void cancel() {
+                                        ToastUtils.toast(app.getActivity(), "退出定时停止播放成功!");
+                                    }
+                                });
+                                AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
+                                closeAppDialog.show(appCompatActivity.getSupportFragmentManager(), "");
+                            }else {
+                                if (MediaPlayerManager.getInstance().checkCanPlay()) {
+                                    MediaPlayerManager.getInstance().pause();
                                 }
-                            });
-                            
-                            AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
-                            closeAppDialog.show(appCompatActivity.getSupportFragmentManager(), "");
+                            }
                             if (myServiceConncetion != null) {
                                 unbindService(myServiceConncetion);
                                 myServiceConncetion = null;

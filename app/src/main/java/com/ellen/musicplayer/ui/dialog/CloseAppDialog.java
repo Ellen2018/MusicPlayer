@@ -65,7 +65,7 @@ public class CloseAppDialog extends BaseDialogFragment {
 
     private void updateTimeUi(){
         int s = TIME - (int) ((System.currentTimeMillis() - startTime)/1000);
-        String content = "还有:"+s+"秒后停止播放";
+        String content = "还有 : "+s+"秒后停止播放";
         tvContent.setText(ZhuoSeUtils.getSpannable(content,String.valueOf(s)));
     }
 

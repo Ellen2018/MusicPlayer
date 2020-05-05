@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ellen.musicplayer.base.AppLifeListener;
 import com.ellen.musicplayer.base.BaseApplication;
 import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.manager.sql.SQLManager;
@@ -24,9 +25,14 @@ public class App extends Application {
 
     private BaseEvent baseEvent;
     private Activity activity;
+    private boolean isAppActive = true;
 
     public Activity getActivity() {
         return activity;
+    }
+
+    public boolean isAppActive() {
+        return isAppActive;
     }
 
     @Override
@@ -38,12 +44,12 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-                App.this.activity = activity;
+
             }
 
             @Override
             public void onActivityStarted(@NonNull Activity activity) {
-
+                App.this.activity = activity;
             }
 
             @Override
@@ -69,6 +75,22 @@ public class App extends Application {
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
 
+            }
+        });
+        registerActivityLifecycleCallbacks(new AppLifeListener() {
+            @Override
+            protected void onFirstStartUp() {
+                isAppActive = true;
+            }
+
+            @Override
+            protected void onSwitchBack() {
+              isAppActive = false;
+            }
+
+            @Override
+            protected void onSwitchLife() {
+              isAppActive = true;
             }
         });
         baseEvent = new MessageEventTrigger() {
