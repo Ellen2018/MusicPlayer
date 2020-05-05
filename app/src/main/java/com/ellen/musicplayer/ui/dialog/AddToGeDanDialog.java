@@ -76,7 +76,7 @@ public class AddToGeDanDialog extends BaseBottomPopWindow {
                     }
                     SQLManager.getInstance().getLikeGeDanMusicTable().saveData(geDanMusicList);
                     ToastUtils.toast(getActivity(), "添加歌曲到<我喜欢>成功!");
-                    MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
+                    MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.LIKE_ID);
                 } else {
                     //添加数据到歌单
                     SQLManager.getInstance().addMusicsToGeDan(musicList, geDanList.get(position));

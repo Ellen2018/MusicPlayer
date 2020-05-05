@@ -4,18 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_pi_fu_icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/pi_fu_0" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@color/pi_fu_zz_color" />
-
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
@@ -57,17 +45,9 @@
     </LinearLayout>
 
 
-    <include
-        android:id="@+id/layout_player"
-        layout="@layout/layout_player"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/layout_player"
         android:layout_below="@id/ll_top">
 
         <LinearLayout

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,12 +38,23 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     protected BaseEvent baseEvent;
     protected RelativeLayout rlMainBan;
     protected ImageView ivPiFuIcon;
+    private RelativeLayout rlContentView;
+    private  View contentView;
     private  BaseEvent baseEventLike,baseEventGeDan;
 
     @Override
     protected void setStatus() {
         StatusUtils.setNoActionBar(this);
         StatusUtils.setTranslucentStatus(this);
+    }
+
+    @Override
+    public <T extends View> T findViewById(int id) {
+        T t = super.findViewById(id);
+        if(t == null){
+            t = contentView.findViewById(id);
+        }
+        return t;
     }
 
     @Override
@@ -53,6 +65,16 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         }
         if(baseEventGeDan != null){
             MessageManager.getInstance().unRegisterMessageEvent(MessageTag.GE_DAN_ID,baseEventGeDan);
+        }
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        if(layoutId() != 0) {
+            rlContentView = findViewById(R.id.rl_layout);
+            contentView = LayoutInflater.from(this).inflate(layoutId(), null);
+            rlContentView.addView(contentView);
         }
     }
 
@@ -121,6 +143,11 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
 
     protected abstract void update();
 
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_base;
+    }
+
     protected void updatePlayerMianUi(MusicPlay musicPlay) {
         if (musicPlay != null && musicPlay.isClear()) {
             //恢复至默认
@@ -186,5 +213,9 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     protected void registerGeDan(BaseEvent baseEvent){
         this.baseEventGeDan = baseEvent;
         MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,baseEvent);
+    }
+
+    protected int layoutId(){
+        return 0;
     }
 }

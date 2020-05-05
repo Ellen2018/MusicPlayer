@@ -350,7 +350,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                         ivLike.setImageResource(R.mipmap.like);
                     }
                     //发送喜欢更新的消息
-                    MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
+                    MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.LIKE_ID);
                 } else {
                     ToastUtils.toast(this, "当前没有播放歌曲，喜欢失败!");
                 }

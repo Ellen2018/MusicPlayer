@@ -30,7 +30,7 @@ public class NearMusicActivity extends BaseMediaPlayerActivity {
     }
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_near_music;
     }
 

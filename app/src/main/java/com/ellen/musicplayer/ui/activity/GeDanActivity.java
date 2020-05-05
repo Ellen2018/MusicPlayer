@@ -39,7 +39,7 @@ public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnCli
     private PiFu currentPiFu;
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_sort;
     }
 

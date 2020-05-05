@@ -83,7 +83,7 @@ public class SerachActivity extends BaseMediaPlayerActivity implements View.OnCl
     }
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_serach;
     }
 

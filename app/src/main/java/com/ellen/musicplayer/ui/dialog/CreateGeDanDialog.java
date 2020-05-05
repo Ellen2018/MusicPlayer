@@ -96,7 +96,7 @@ public class CreateGeDanDialog extends BaseDialogFragment {
                         .getInstance(false)
                         .addAndWhereValue("geDanSqlTableName", WhereSymbolEnum.EQUAL, geDan.getGeDanSqlTableName())
                         .createSQL());
-                MessageManager.getInstance().sendMainThreadMessage(MessageTag.GE_DAN_ID);
+                MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.GE_DAN_ID);
                 ToastUtils.toast(getActivity(),"歌单修改成功!");
                 dismiss();
             }

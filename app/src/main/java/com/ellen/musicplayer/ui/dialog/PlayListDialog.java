@@ -74,7 +74,7 @@ public class PlayListDialog extends BaseBottomPopWindow {
             public void onClick(View v) {
                 MediaPlayerManager.getInstance().adjustPlayMode();
                 updatePlayModeUi();
-                MessageManager.getInstance().sendMainThreadMessage(MessageTag.PLAY_MODE_ID);
+                MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.PLAY_MODE_ID);
             }
         });
         llAddToGeDan.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +113,10 @@ public class PlayListDialog extends BaseBottomPopWindow {
             public void handleMessage(SuperMessage message) {
                 if(MediaPlayerManager.getInstance().getPlayList() == null
                         || MediaPlayerManager.getInstance().getPlayList().size() == 0){
+
                     playMusicAdapter.notifyDataSetChanged();
                     dismiss();
+
                 }else {
                     playMusicAdapter.notifyDataSetChanged();
                 }
@@ -131,7 +133,6 @@ public class PlayListDialog extends BaseBottomPopWindow {
                         @Override
                         public void ok() {
                             MediaPlayerManager.getInstance().clearPlayList();
-                            playMusicAdapter.notifyDataSetChanged();
                             dismiss();
                         }
 

@@ -80,7 +80,7 @@ public class GeDanManagerDialog extends BaseBottomPopWindow {
                     @Override
                     public void ok() {
                         SQLManager.getInstance().deleteGeDan(geDan);
-                        MessageManager.getInstance().sendMainThreadMessage(MessageTag.GE_DAN_ID);
+                        MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.GE_DAN_ID);
                     }
 
                     @Override

@@ -42,7 +42,7 @@ public class ManyChooseActivity extends BaseMediaPlayerActivity implements View.
     }
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_music_list;
     }
 

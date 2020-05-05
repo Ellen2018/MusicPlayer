@@ -42,7 +42,7 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
     private ImageView ivBack;
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_sort;
     }
 
@@ -112,7 +112,7 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
                     public void ok() {
                         //从喜欢列表中删除该歌曲
                         SQLManager.getInstance().removeLikeMusic(music);
-                        MessageManager.getInstance().sendMainThreadMessage(MessageTag.LIKE_ID);
+                        MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.LIKE_ID);
                         ToastUtils.toast(LikeActivity.this,"从<我喜欢>列表中移除此歌曲成功!");
                     }
 

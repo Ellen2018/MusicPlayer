@@ -43,7 +43,7 @@ public class GeDanManagerActivity extends BaseMediaPlayerActivity {
     }
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_ge_dan_manager;
     }
 

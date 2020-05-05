@@ -45,7 +45,7 @@ public class App extends BaseApplication {
                                 .addAndWhereValue("nearTag", WhereSymbolEnum.EQUAL, musicPlay.getMusic().getWeiOneTag())
                                 .createSQL());
                     }
-                    MessageManager.getInstance().sendMainThreadMessage(MessageTag.NEAR_ID);
+                    MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.NEAR_ID);
                 }
             }
         };

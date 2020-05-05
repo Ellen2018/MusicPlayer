@@ -42,7 +42,7 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
     private PiFu currentPiFu;
 
     @Override
-    protected int setLayoutId() {
+    protected int layoutId() {
         return R.layout.activity_sort;
     }
 

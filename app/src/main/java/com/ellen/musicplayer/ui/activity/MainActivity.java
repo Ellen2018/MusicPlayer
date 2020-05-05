@@ -155,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);
                         break;
                     case R.mipmap.din_shi:
-                        ToastUtils.toast(MainActivity.this,"定时");
+                        intent = new Intent(MainActivity.this, TestActivty.class);
+                        startActivity(intent);
                         break;
                 }
             }
