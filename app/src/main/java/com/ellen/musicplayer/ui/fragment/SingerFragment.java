@@ -26,7 +26,7 @@ import com.ellen.musicplayer.utils.ToastUtils;
 
 import java.util.List;
 
-public class SingerFragment extends BaseFragment {
+public class SingerFragment extends BaseFragment implements BaseFragment.LazyLoadInterface {
 
     private List<Singer> singerList;
     private RecyclerView recyclerView;
@@ -34,11 +34,15 @@ public class SingerFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+
+    }
+
+    public void updateUi(){
         new Sender<List<Singer>>(){
             @Override
             protected void handlerInstruction(SenderController<List<Singer>> senderController) {
                 if(singerList == null)
-                singerList = LocalSDMusicUtils.getArtist(getActivity());
+                    singerList = LocalSDMusicUtils.getArtist(getActivity());
                 senderController.sendMessageToNext(singerList);
             }
         }.runOn(RunMode.NEW_THREAD)
@@ -73,6 +77,12 @@ public class SingerFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void initView() {
        recyclerView = findViewById(R.id.recycler_view);
     }
@@ -80,5 +90,10 @@ public class SingerFragment extends BaseFragment {
     @Override
     protected int setLayout() {
         return R.layout.fragment_singer;
+    }
+
+    @Override
+    public void lazyLoad() {
+        updateUi();
     }
 }

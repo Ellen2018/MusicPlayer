@@ -29,7 +29,7 @@ import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.List;
 
-public class DanQuFragment extends BaseFragment {
+public class DanQuFragment extends BaseFragment implements BaseFragment.LazyLoadInterface {
 
     private RecyclerView recyclerView;
     private PermissionUtils permissionUtils;
@@ -40,7 +40,14 @@ public class DanQuFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+    }
 
+    @Override
+    protected void initView() {
+        recyclerView = findViewById(R.id.recycler_view);
+    }
+
+    public void updateUi(){
         new Sender<List<Music>>() {
             @Override
             protected void handlerInstruction(SenderController<List<Music>> senderController) {
@@ -93,8 +100,9 @@ public class DanQuFragment extends BaseFragment {
     }
 
     @Override
-    protected void initView() {
-        recyclerView = findViewById(R.id.recycler_view);
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -112,5 +120,10 @@ public class DanQuFragment extends BaseFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void lazyLoad() {
+        updateUi();
     }
 }

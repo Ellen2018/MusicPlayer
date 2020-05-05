@@ -18,18 +18,28 @@ import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 
 import java.util.List;
 
-public class FileFragment extends BaseFragment {
+public class FileFragment extends BaseFragment implements BaseFragment.LazyLoadInterface {
 
     private RecyclerView recyclerView;
     private List<FileMusic> fileMusicList;
     private FileMusicAdapter fileMusicAdapter;
 
     @Override
+    public void lazyLoad() {
+        updateUi();
+    }
+
+    @Override
     protected void initData() {
-        new Sender<List<FileMusic>>(){
+
+    }
+
+    public void updateUi() {
+        new Sender<List<FileMusic>>() {
             @Override
             protected void handlerInstruction(SenderController<List<FileMusic>> senderController) {
-                fileMusicList = LocalSDMusicUtils.getFileMusics(getActivity());
+                if (fileMusicList == null)
+                    fileMusicList = LocalSDMusicUtils.getFileMusics(getActivity());
                 senderController.sendMessageToNext(fileMusicList);
             }
         }.runOn(RunMode.NEW_THREAD)
@@ -37,12 +47,12 @@ public class FileFragment extends BaseFragment {
                     @Override
                     protected void handleMessage(List<FileMusic> message) {
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        recyclerView.setAdapter(fileMusicAdapter = new FileMusicAdapter(getActivity(),recyclerView,message));
+                        recyclerView.setAdapter(fileMusicAdapter = new FileMusicAdapter(getActivity(), recyclerView, message));
                         fileMusicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
                                 FileMusic fileMusic = fileMusicList.get(position);
-                                JumpSortUtils.jumpToSort(getActivity(),"文件夹",fileMusic.getName(),fileMusic.getMusicList());
+                                JumpSortUtils.jumpToSort(getActivity(), "文件夹", fileMusic.getName(), fileMusic.getMusicList());
                             }
                         });
                     }
@@ -60,8 +70,13 @@ public class FileFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void initView() {
-       recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
     }
 
     @Override

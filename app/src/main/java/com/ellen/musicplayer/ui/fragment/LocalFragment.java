@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.viewpager.BaseFragmentPagerAdapter;
+import com.ellen.musicplayer.base.adapter.viewpager.BaseFragmentStateAdapter;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -36,7 +37,7 @@ public class LocalFragment extends BaseFragment {
         //fragmentList.add(new LiuPaiFragment());
         fragmentList.add(new FileFragment());
 
-        viewPager.setAdapter(new BaseFragmentPagerAdapter(getFragmentManager()) {
+        viewPager.setAdapter(new BaseFragmentStateAdapter(getFragmentManager()) {
             @Override
             protected int getFragmentPagerSize() {
                 return fragmentList.size();

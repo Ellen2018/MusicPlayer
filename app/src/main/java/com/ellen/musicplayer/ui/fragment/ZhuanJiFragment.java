@@ -19,7 +19,7 @@ import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 
 import java.util.List;
 
-public class ZhuanJiFragment extends BaseFragment {
+public class ZhuanJiFragment extends BaseFragment implements BaseFragment.LazyLoadInterface {
 
     private RecyclerView recyclerView;
     private List<ZhuanJi> zhuanJiList;
@@ -27,6 +27,9 @@ public class ZhuanJiFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+    }
+
+    public void updateUi(){
         new Sender<List<ZhuanJi>>(){
             @Override
             protected void handlerInstruction(SenderController<List<ZhuanJi>> senderController) {
@@ -37,29 +40,29 @@ public class ZhuanJiFragment extends BaseFragment {
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver<List<ZhuanJi>>() {
-            @Override
-            protected void handleMessage(List<ZhuanJi> message) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(zhuanJiAdapter = new ZhuanJiAdapter(getActivity(),recyclerView,message));
-                zhuanJiAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                        ZhuanJi zhuanJi = zhuanJiList.get(position);
-                        JumpSortUtils.jumpToSort(getActivity(),"专辑",zhuanJi.getName(),zhuanJi.getMusicList());
+                    protected void handleMessage(List<ZhuanJi> message) {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerView.setAdapter(zhuanJiAdapter = new ZhuanJiAdapter(getActivity(),recyclerView,message));
+                        zhuanJiAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseViewHolder baseViewHolder, int position) {
+                                ZhuanJi zhuanJi = zhuanJiList.get(position);
+                                JumpSortUtils.jumpToSort(getActivity(),"专辑",zhuanJi.getName(),zhuanJi.getMusicList());
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            protected void handleErrMessage(Throwable throwable) {
+                    @Override
+                    protected void handleErrMessage(Throwable throwable) {
 
-            }
+                    }
 
-            @Override
-            protected void complete() {
+                    @Override
+                    protected void complete() {
 
-            }
-        }).runOn(RunMode.MAIN_THREAD).start();
+                    }
+                }).runOn(RunMode.MAIN_THREAD).start();
 
     }
 
@@ -76,5 +79,10 @@ public class ZhuanJiFragment extends BaseFragment {
     @Override
     protected int setLayout() {
         return R.layout.fragment_zhuan_ji;
+    }
+
+    @Override
+    public void lazyLoad() {
+        updateUi();
     }
 }
