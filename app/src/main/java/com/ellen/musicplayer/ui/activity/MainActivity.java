@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     ToastUtils.toast(app.getActivity(), "退出定时停止播放成功!");
                                 }
                             });
-
                             AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
                             closeAppDialog.show(appCompatActivity.getSupportFragmentManager(), "");
                             if (myServiceConncetion != null) {
