@@ -11,13 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,11 +31,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ellen.musicplayer.App;
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.MenuAdapter;
 import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.bean.PiFu;
+import com.ellen.musicplayer.service.DinShiService;
+import com.ellen.musicplayer.ui.dialog.CloseAppDialog;
 import com.ellen.musicplayer.ui.dialog.DinShiDialog;
 import com.ellen.musicplayer.ui.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
@@ -41,6 +49,7 @@ import com.ellen.musicplayer.ui.fragment.SortFragment;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.notification.MusicNotification;
 import com.ellen.musicplayer.utils.PermissionUtils;
+import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.musicplayer.utils.statusutil.StatusUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
 import com.ellen.supermessagelibrary.MessageEventTrigger;
@@ -49,6 +58,8 @@ import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PermissionUtils permissionUtils;
     private RelativeLayout rl;
     private MusicNotification musicNotification;
+    private BaseEvent dinShiBaseEvent;
+    private MyServiceConncetion myServiceConncetion;
+    private Handler handler = new Handler();
 
     /**
      * 取代EventBus
@@ -84,6 +98,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initData() {
+
+        dinShiBaseEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        App app = (App) getApplication();
+                        CloseAppDialog closeAppDialog = new CloseAppDialog(System.currentTimeMillis(),new CloseAppDialog.Callback(){
+                            @Override
+                            public void ok() {
+
+                            }
+
+                            @Override
+                            public void stop() {
+                                if(MediaPlayerManager.getInstance().checkCanPlay()){
+                                   MediaPlayerManager.getInstance().pause();
+                                }
+
+                            }
+
+                            @Override
+                            public void cancel() {
+                                ToastUtils.toast(app.getActivity(),"退出定时停止播放成功!");
+                            }
+                        });
+                        AppCompatActivity appCompatActivity = (AppCompatActivity) app.getActivity();
+                        closeAppDialog.show(appCompatActivity.getSupportFragmentManager(),"");
+                        if(myServiceConncetion != null) {
+                            unbindService(myServiceConncetion);
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return MainActivity.this;
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.DIN_SHI_COMPLETE,dinShiBaseEvent);
         updatePiFu(PiFuManager.getInstance().getPiFu());
         //走马灯设置
         tvMusicName.setSelected(true);
@@ -155,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);
                         break;
                     case R.mipmap.din_shi:
-                        DinShiDialog dinShiDialog = new DinShiDialog();
-                        dinShiDialog.show(getSupportFragmentManager(),"");
+                        //直接进行倒计时
+                        myServiceConncetion = new MyServiceConncetion();
+                        intent = new Intent(MainActivity.this,DinShiService.class);
+                        bindService(intent,myServiceConncetion,Context.BIND_AUTO_CREATE);
                         drawerLayout.closeDrawers();
                         break;
                 }
@@ -372,6 +432,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //使用Glide加载本地图片
                 Glide.with(MainActivity.this).load(piFu.getImagePath()).into(ivPiFu);
             }
+        }
+    }
+
+    private static class MyServiceConncetion implements ServiceConnection{
+
+        private DinShiService.DinShiBinder dinShiBinder;
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            dinShiBinder = (DinShiService.DinShiBinder) service;
+            dinShiBinder.startDinShiTask(1);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
         }
     }
 }

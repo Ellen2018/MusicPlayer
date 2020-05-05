@@ -1,5 +1,13 @@
 package com.ellen.musicplayer;
 
+import android.app.Activity;
+import android.app.Application;
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.ellen.musicplayer.base.BaseApplication;
 import com.ellen.musicplayer.bean.NearMusic;
 import com.ellen.musicplayer.manager.sql.SQLManager;
@@ -12,9 +20,14 @@ import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 import com.tencent.mmkv.MMKV;
 
-public class App extends BaseApplication {
+public class App extends Application {
 
     private BaseEvent baseEvent;
+    private Activity activity;
+
+    public Activity getActivity() {
+        return activity;
+    }
 
     @Override
     public void onCreate() {
@@ -22,6 +35,42 @@ public class App extends BaseApplication {
         SQLManager.getInstance().initLibrary(getApplicationContext());
         MMKV.initialize(App.this);
         SQLManager.getInstance();
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+                App.this.activity = activity;
+            }
+
+            @Override
+            public void onActivityStarted(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(@NonNull Activity activity) {
+
+            }
+        });
         baseEvent = new MessageEventTrigger() {
             @Override
             public void handleMessage(SuperMessage message) {
@@ -50,15 +99,5 @@ public class App extends BaseApplication {
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
-    }
-
-    @Override
-    protected Boolean isListenerActivity() {
-        return false;
-    }
-
-    @Override
-    protected void initLibraySetting() {
-
     }
 }

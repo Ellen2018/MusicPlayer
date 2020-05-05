@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name=" android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -64,6 +65,8 @@
         <activity
             android:name=".ui.activity.DinShiActivity"
             android:launchMode="singleTask"/>
+
+        <service android:name=".service.DinShiService"/>
     </application>
 
 </manifest>

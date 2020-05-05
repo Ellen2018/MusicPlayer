@@ -10,4 +10,6 @@ public interface MessageTag {
     String NEAR_ID = "near";
     String PLAY_MODE_ID = "play_mode_id";
 
+    String DIN_SHI_COMPLETE = "din_shi_complete";
+
 }
