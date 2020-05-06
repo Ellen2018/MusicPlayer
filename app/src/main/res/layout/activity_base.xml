@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:src="@color/pi_fu_zz_color" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -23,9 +23,8 @@
         <RelativeLayout
             android:id="@+id/rl_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
+            android:layout_marginBottom="?actionBarSize"
+            android:layout_height="match_parent" />
 
         <include
             android:id="@+id/layout_player"
@@ -34,6 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
