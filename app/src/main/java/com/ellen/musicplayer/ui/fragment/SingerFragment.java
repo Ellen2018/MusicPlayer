@@ -41,9 +41,10 @@ public class SingerFragment extends BaseFragment implements BaseFragment.LazyLoa
         new Sender<List<Singer>>(){
             @Override
             protected void handlerInstruction(SenderController<List<Singer>> senderController) {
-                if(singerList == null)
+                if(singerList == null) {
                     singerList = LocalSDMusicUtils.getArtist(getActivity());
-                senderController.sendMessageToNext(singerList);
+                    senderController.sendMessageToNext(singerList);
+                }
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver<List<Singer>>() {

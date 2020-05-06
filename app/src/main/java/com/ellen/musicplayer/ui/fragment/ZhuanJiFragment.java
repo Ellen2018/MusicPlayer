@@ -35,8 +35,8 @@ public class ZhuanJiFragment extends BaseFragment implements BaseFragment.LazyLo
             protected void handlerInstruction(SenderController<List<ZhuanJi>> senderController) {
                 if(zhuanJiList == null) {
                     zhuanJiList = LocalSDMusicUtils.getAlbum(getContext());
+                    senderController.sendMessageToNext(zhuanJiList);
                 }
-                senderController.sendMessageToNext(zhuanJiList);
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver<List<ZhuanJi>>() {

@@ -51,9 +51,10 @@ public class DanQuFragment extends BaseFragment implements BaseFragment.LazyLoad
         new Sender<List<Music>>() {
             @Override
             protected void handlerInstruction(SenderController<List<Music>> senderController) {
-                if (musicList == null)
+                if (musicList == null) {
                     musicList = LocalSDMusicUtils.getLocalAllMusic(getActivity());
-                senderController.sendMessageToNext(musicList);
+                    senderController.sendMessageToNext(musicList);
+                }
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver() {

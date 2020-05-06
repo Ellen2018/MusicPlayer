@@ -1,6 +1,7 @@
 package com.ellen.musicplayer.ui.fragment;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -8,6 +9,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.base.BaseFragment;
 import com.ellen.musicplayer.base.adapter.viewpager.BaseFragmentPagerAdapter;
 import com.ellen.musicplayer.base.adapter.viewpager.BaseFragmentStateAdapter;
+import com.ellen.musicplayer.base.adapter.viewpager.SaveStatusFragmentPagerAdapter;
 import com.ellen.musicplayer.utils.LocalSDMusicUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,23 +39,15 @@ public class LocalFragment extends BaseFragment {
         //fragmentList.add(new LiuPaiFragment());
         fragmentList.add(new FileFragment());
 
-        viewPager.setAdapter(new BaseFragmentStateAdapter(getFragmentManager()) {
-            @Override
-            protected int getFragmentPagerSize() {
-                return fragmentList.size();
-            }
+        SaveStatusFragmentPagerAdapter saveStatusFragmentPagerAdapter = new
+                SaveStatusFragmentPagerAdapter(viewPager, (AppCompatActivity) getActivity(), fragmentList) {
 
-            @Override
-            protected Fragment getFragment(int position) {
-                return fragmentList.get(position);
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return titles.get(position);
-            }
-        });
+                    @Nullable
+                    @Override
+                    public CharSequence getPageTitle(int position) {
+                        return titles.get(position);
+                    }
+                };
         tabLayout.setupWithViewPager(viewPager);
     }
 

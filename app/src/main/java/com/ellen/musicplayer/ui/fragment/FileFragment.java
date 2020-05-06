@@ -38,9 +38,10 @@ public class FileFragment extends BaseFragment implements BaseFragment.LazyLoadI
         new Sender<List<FileMusic>>() {
             @Override
             protected void handlerInstruction(SenderController<List<FileMusic>> senderController) {
-                if (fileMusicList == null)
+                if (fileMusicList == null) {
                     fileMusicList = LocalSDMusicUtils.getFileMusics(getActivity());
-                senderController.sendMessageToNext(fileMusicList);
+                    senderController.sendMessageToNext(fileMusicList);
+                }
             }
         }.runOn(RunMode.NEW_THREAD)
                 .setReceiver(new Receiver<List<FileMusic>>() {
