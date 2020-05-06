@@ -57,6 +57,7 @@ public class DanQuFragment extends BaseFragment implements BaseFragment.LazyLoad
             char c = (char) i;
             stringList.add(String.valueOf(c));
         }
+
         LinearLayoutManager linearLayoutManager;
         recyclerViewSx.setLayoutManager(linearLayoutManager = new LinearLayoutManager(getContext()));
         SxAdapter sxAdapter;
