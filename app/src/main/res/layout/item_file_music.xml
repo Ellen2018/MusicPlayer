@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:background="@drawable/touch_bg"
-        android:layout_marginLeft="10dp"
+        android:paddingLeft="10dp"
         android:orientation="horizontal">
 
         <LinearLayout

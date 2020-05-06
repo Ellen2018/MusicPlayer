@@ -82,12 +82,7 @@ public class SerachGeDanFragment extends BaseFragment implements BaseFragment.La
                             geDanManagerAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                                    List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(geDanManagerAdapter.getDataList().get(position));
-                                    List<Music> musicList = new ArrayList<>();
-                                    for (GeDanMusic geDanMusic : geDanMusicList) {
-                                        musicList.add(geDanMusic.getMusic());
-                                    }
-                                    JumpSortUtils.jumpToSort(getActivity(), "歌单", geDanManagerAdapter.getDataList().get(position).getGeDanName(), musicList);
+                                    JumpSortUtils.jumpToGeDanMusicList(getActivity(),geDanManagerAdapter.getDataList().get(position));
                                 }
                             });
                         } else {
