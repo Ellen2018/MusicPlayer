@@ -117,6 +117,13 @@ public class SerachDanQuFragment extends BaseFragment implements BaseFragment.La
                                     MediaPlayerManager.getInstance().open(position,musicAdapter.getDataList());
                                 }
                             });
+                            musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+                                @Override
+                                public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
+                                    JumpSortUtils.jumpToMusicList(getActivity(),musicAdapter.getDataList());
+                                    return true;
+                                }
+                            });
                         }else {
                             musicAdapter.getDataList().clear();
                             musicAdapter.getDataList().addAll(musicList);

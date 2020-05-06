@@ -119,7 +119,9 @@ public class SerachGeDanFragment extends BaseFragment implements BaseFragment.La
                 allGeDanList = null;
                 newSerachTag = currentSerachTag;
                 currentSerachTag = null;
-                updateUi(newSerachTag);
+                if(isVisibleToUser){
+                    updateUi(newSerachTag);
+                }
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID, baseEvent);

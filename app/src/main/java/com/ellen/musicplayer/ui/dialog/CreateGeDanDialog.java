@@ -2,6 +2,7 @@ package com.ellen.musicplayer.ui.dialog;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 
 import java.util.List;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class CreateGeDanDialog extends BaseDialogFragment {
 
@@ -145,5 +148,14 @@ public class CreateGeDanDialog extends BaseDialogFragment {
     @Override
     protected Boolean setWinowTransparent() {
         return true;
+    }
+
+    @Override
+    public void dismiss() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        if(imm != null){
+            imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+        }
+        super.dismiss();
     }
 }
