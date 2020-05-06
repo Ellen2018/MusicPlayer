@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_below="@id/view_top"
-        android:orientation="horizontal"
-        android:background="@color/wang_yi_yun_bar_bg_color">
+        android:background="@color/wang_yi_yun_bar_bg_color"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -27,28 +27,31 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:textColor="@color/white"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
                 android:text="标题"
-                android:layout_weight="1"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:textColor="@color/gray"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
                 android:gravity="center_vertical"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:text="标题"
-                android:layout_weight="1"/>
+                android:textColor="@color/gray" />
 
         </LinearLayout>
 

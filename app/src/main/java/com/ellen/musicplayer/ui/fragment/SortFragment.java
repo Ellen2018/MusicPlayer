@@ -222,12 +222,7 @@ public class SortFragment extends BaseFragment {
         geDanAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseViewHolder baseViewHolder, int position) {
-                List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(geDanList.get(position));
-                List<Music> musicList = new ArrayList<>();
-                for(GeDanMusic geDanMusic:geDanMusicList){
-                    musicList.add(geDanMusic.getMusic());
-                }
-                JumpSortUtils.jumpToSort(getActivity(),"歌单",geDanList.get(position).getGeDanName(),musicList);
+                JumpSortUtils.jumpToGeDanMusicList(getActivity(),geDanList.get(position));
             }
         });
         geDanAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {

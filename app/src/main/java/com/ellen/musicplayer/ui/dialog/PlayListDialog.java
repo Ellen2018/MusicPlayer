@@ -17,6 +17,7 @@ import com.ellen.musicplayer.R;
 import com.ellen.musicplayer.adapter.PlayMusicAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
+import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.supermessagelibrary.BaseEvent;
@@ -31,7 +32,7 @@ public class PlayListDialog extends BaseBottomPopWindow {
     private BaseEvent baseEvent;
     private ImageView ivClear, ivPlayMode;
     private LinearLayout llPlayMode,llAddToGeDan;
-    private TextView tvPlayMode,tvCount;
+    private TextView tvPlayMode,tvCount,tvDinWei;
 
     public PlayListDialog(Activity activity) {
         super(activity);
@@ -62,6 +63,13 @@ public class PlayListDialog extends BaseBottomPopWindow {
         tvPlayMode = view.findViewById(R.id.tv_play_mode);
         ivPlayMode = view.findViewById(R.id.iv_play_mode);
         tvCount = view.findViewById(R.id.tv_count);
+        tvDinWei = view.findViewById(R.id.tv_din_wei);
+        tvDinWei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.scrollToPosition(MediaPlayerManager.getInstance().getCurrentPlayPosition());
+            }
+        });
         llAddToGeDan = view.findViewById(R.id.ll_add_ge_dan);
         if(MediaPlayerManager.getInstance().checkCanPlay()) {
             tvCount.setText("("+MediaPlayerManager.getInstance().getPlayList().size()+")");

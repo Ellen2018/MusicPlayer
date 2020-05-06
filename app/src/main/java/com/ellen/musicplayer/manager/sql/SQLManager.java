@@ -268,6 +268,16 @@ public class SQLManager {
                 .setIsDesc(true).createSQL());
     }
 
+    public void deleteMusicFromGeDan(GeDan geDan,Music music){
+        String tableName = SQLTag.GE_DAN_NAME + "_" + geDan.getGeDanSqlTableName();
+        GeDanMusicTable geDanMusicTable = new GeDanMusicTable(library.getWriteDataBase(), GeDanMusic.class, tableName);
+        String whererSqlWhere = Where
+                .getInstance(false)
+                .addAndWhereValue("likeTag", WhereSymbolEnum.EQUAL, music.getWeiOneTag())
+                .createSQL();
+        geDanMusicTable.delete(whererSqlWhere);
+    }
+
     /**
      * 判断此歌曲是否为喜欢曲目
      *
