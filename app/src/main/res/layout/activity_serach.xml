@@ -75,7 +75,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/wang_yi_yun_bar_bg_color"
             app:tabIndicatorColor="@color/white"
             app:tabSelectedTextColor="@color/white"

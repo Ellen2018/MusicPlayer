@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseFragment extends Fragment {
 
     protected View mContentView;
+    protected boolean isVisibleToUser = true;
 
     @Nullable
     @Override
@@ -46,6 +47,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        this.isVisibleToUser = isVisibleToUser;
         if(isVisibleToUser){
             if(this instanceof LazyLoadInterface){
                 LazyLoadInterface lazyLoadInterface = (LazyLoadInterface) this;

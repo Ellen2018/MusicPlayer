@@ -1,6 +1,7 @@
 package com.ellen.musicplayer.adapter;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,12 +19,18 @@ import com.ellen.musicplayer.bean.Music;
 import com.ellen.musicplayer.ui.dialog.GeDanManagerDialog;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.utils.MusicBitmap;
+import com.ellen.musicplayer.utils.ZhuoSeUtils;
 
 import java.util.List;
 
 public class GeDanManagerAdapter extends BaseSingleRecyclerViewAdapter<GeDan, GeDanManagerAdapter.GeDanViewHolder> {
 
     private View parentView;
+    private String serachTag;
+
+    public void setSerachTag(String serachTag) {
+        this.serachTag = serachTag;
+    }
 
     public GeDanManagerAdapter(Activity activity, View parentView, List<GeDan> dataList) {
         super(activity, dataList);
@@ -44,7 +51,11 @@ public class GeDanManagerAdapter extends BaseSingleRecyclerViewAdapter<GeDan, Ge
     protected void showData(GeDanViewHolder geDanViewHolder, GeDan data, int position) {
         List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(data);
         geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(data);
-        geDanViewHolder.tvGeDanName.setText(data.getGeDanName());
+        if(TextUtils.isEmpty(serachTag)) {
+            geDanViewHolder.tvGeDanName.setText(data.getGeDanName());
+        }else {
+            geDanViewHolder.tvGeDanName.setText(ZhuoSeUtils.getSpannable(data.getGeDanName(),serachTag));
+        }
         geDanViewHolder.tvGeDanCount.setText(String.valueOf(geDanMusicList.size()));
         geDanViewHolder.ivGeDanMore.setOnClickListener(new View.OnClickListener() {
             @Override

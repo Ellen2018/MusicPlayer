@@ -12,4 +12,6 @@ public interface MessageTag {
 
     String DIN_SHI_COMPLETE = "din_shi_complete";
 
+    String SERACH_MUSIC_ID = "serach_music_id";
+
 }
