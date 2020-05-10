@@ -41,6 +41,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
     private RelativeLayout rlContentView;
     private  View contentView;
     private  BaseEvent baseEventLike,baseEventGeDan;
+    private View viewBottom;
 
     @Override
     protected void setStatus() {
@@ -91,6 +92,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         ivPlayList = findViewById(R.id.iv_player_list);
         ivBg = findViewById(R.id.iv_player_bg);
         ivPiFuIcon = findViewById(R.id.iv_pi_fu_icon);
+        viewBottom = findViewById(R.id.view_bottom);
         tvMusicName.setSelected(true);
 
         rlMainBan.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +154,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
         if (musicPlay != null && musicPlay.isClear()) {
             //恢复至默认
             rlMainBan.setVisibility(View.GONE);
+            viewBottom.setVisibility(View.GONE);
             ivMusicIcon.setImageResource(R.mipmap.default_music_icon);
             ivBg.setImageResource(R.mipmap.default_bg);
             tvSingerName.setText("歌手名");
@@ -161,6 +164,7 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
             if (musicPlay == null || musicPlay.isQieHuan()) {
                 if(MediaPlayerManager.getInstance().checkCanPlay()) {
                     rlMainBan.setVisibility(View.VISIBLE);
+                    viewBottom.setVisibility(View.VISIBLE);
                     //设置歌曲名和歌手名
                     tvMusicName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getName());
                     tvSingerName.setText(MediaPlayerManager.getInstance().currentOpenMusic().getArtist());

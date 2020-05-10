@@ -17,14 +17,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/rl_layout"
             android:layout_width="match_parent"
             android:layout_marginBottom="?actionBarSize"
             android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="?actionBarSize"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_layout"
+            android:layout_above="@id/view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <include
             android:id="@+id/layout_player"
