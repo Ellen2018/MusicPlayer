@@ -304,7 +304,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             playList.add(music);
             open(0, playList);
         } else {
-            if (!playList.contains(music)) {
+            if (!isContainsMusic(music)) {
                 playList.add(playPosition + 1, music);
                 if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
                     addMusicPlayList = new ArrayList<>();
@@ -322,7 +322,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         } else {
             List<Music> mlist = new ArrayList<>();
             for (Music music : musicList) {
-                if (!playList.contains(music)) {
+                if (!isContainsMusic(music)) {
                     mlist.add(music);
                 }
             }
@@ -396,6 +396,19 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             pauseAndPlay();
         }
+    }
+
+    @Override
+    public boolean isContainsMusic(Music music) {
+        if (playList == null || playList.size() == 0) return false;
+        boolean falg = false;
+        for (Music m : playList) {
+            if (m.getPath().equals(music.getPath())) {
+                falg = true;
+                break;
+            }
+        }
+        return falg;
     }
 
     public int getAllTime() {
