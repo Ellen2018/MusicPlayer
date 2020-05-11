@@ -319,7 +319,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         tvDinShiTime.setVisibility(View.GONE);
                         App app = (App) getApplication();
-                        MediaPlayerManager.getInstance().clearPlayList();
+                        if(MediaPlayerManager.getInstance().checkCanPlay()) {
+                            MediaPlayerManager.getInstance().clearPlayList();
+                        }
                         app.quitApp();
                     }
 
