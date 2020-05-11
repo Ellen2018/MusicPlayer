@@ -41,6 +41,7 @@ import com.ellen.musicplayer.bean.Menu;
 import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.service.DinShiService;
 import com.ellen.musicplayer.ui.dialog.CloseAppDialog;
+import com.ellen.musicplayer.ui.dialog.CommonOkCancelDialog;
 import com.ellen.musicplayer.ui.dialog.DinShiDialog;
 import com.ellen.musicplayer.ui.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MusicNotification musicNotification;
     private BaseEvent dinShiBaseEvent;
     private MyServiceConncetion myServiceConncetion;
+    private LinearLayout llExit;
     private Handler handler = new Handler();
     private TextView tvDinShiTime;
     private LinearLayout llPiFu,llDinShi;
@@ -275,7 +277,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         llDinShi = findViewById(R.id.ll_din_Shi);
         rl = findViewById(R.id.rl);
         ivPiFu = findViewById(R.id.iv_pi_fu);
+        llExit = findViewById(R.id.ll_exit);
         tvTabOne.setOnClickListener(this);
+        llExit.setOnClickListener(this);
         tvTabTwo.setOnClickListener(this);
         rlPlayerMb.setOnClickListener(this);
         ivSerach.setOnClickListener(this);
@@ -301,6 +305,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_exit:
+                drawerLayout.closeDrawers();
+                String titile = "退出";
+                String content = "确定退出吗?";
+                CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog(titile, content, new CommonOkCancelDialog.Callback() {
+                    @Override
+                    public void ok() {
+                        App app = (App) getApplication();
+                        MediaPlayerManager.getInstance().clearPlayList();
+                        app.quitApp();
+                    }
+
+                    @Override
+                    public void cancel() {
+
+                    }
+                });
+                commonOkCancelDialog.show(getSupportFragmentManager(),"");
+                break;
             case R.id.tv_tab_1:
                 viewPager.setCurrentItem(0);
                 break;

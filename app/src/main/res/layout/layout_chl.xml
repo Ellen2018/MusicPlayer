@@ -26,17 +26,43 @@
             android:layout_height="match_parent"
             android:src="#88000000" />
 
-        <TextView
-            android:id="@+id/tv_bottom"
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/white" />
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:id="@+id/ll_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/touch_bg"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <ImageView
+                    android:layout_width="?actionBarSize"
+                    android:layout_height="?actionBarSize"
+                    android:padding="18dp"
+                    android:src="@mipmap/exit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="退出"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/tv_bottom">
+            android:layout_above="@id/rl_bottom">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -21,11 +21,15 @@ import com.ellen.supermessagelibrary.MessageManager;
 import com.ellen.supermessagelibrary.SuperMessage;
 import com.tencent.mmkv.MMKV;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App extends Application {
 
     private BaseEvent baseEvent;
     private Activity activity;
     private boolean isAppActive = true;
+    private List<Activity> activityList;
 
     public Activity getActivity() {
         return activity;
@@ -44,7 +48,10 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-
+                if(activityList == null){
+                    activityList = new ArrayList<>();
+                }
+                activityList.add(activity);
             }
 
             @Override
@@ -74,7 +81,7 @@ public class App extends Application {
 
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
-
+                activityList.remove(activity);
             }
         });
         registerActivityLifecycleCallbacks(new AppLifeListener() {
@@ -121,5 +128,11 @@ public class App extends Application {
             }
         };
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
+    }
+
+    public void quitApp(){
+        for(Activity activity:activityList){
+            activity.finish();
+        }
     }
 }
