@@ -258,7 +258,6 @@ public class ManyChooseActivity extends BaseMediaPlayerActivity implements View.
 
                             }
                         });
-
                         commonOkCancelDialog.show(getSupportFragmentManager(),"");
                     }else {
                         //从歌单里进行删除
