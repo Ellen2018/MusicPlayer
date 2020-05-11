@@ -44,6 +44,14 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
     private MusicMessageMenuAdapter musicMessageMenuAdapter;
     private View parentView;
     private MusicMessageDialog.DeleteInterface deleteInterface;
+    private boolean isContainsNext = true;
+
+    public MusicMessageDialog(Activity activity,View parentView, Music music,boolean isContainsNext) {
+        super(activity);
+        this.music = music;
+        this.parentView = parentView;
+        this.isContainsNext = isContainsNext;
+    }
 
     public MusicMessageDialog(Activity activity,View parentView, Music music) {
         super(activity);
@@ -73,7 +81,9 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
         tvSingerName.setSelected(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         musicMessageMenuList = new ArrayList<>();
-        musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_next,"下一曲播放",""));
+        if(isContainsNext){
+            musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_next,"下一曲播放",""));
+        }
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_add_gedan,"收藏",""));
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_share,"分享",""));
         musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_singer,"歌手: ",music.getArtist()));
@@ -82,6 +92,7 @@ public class MusicMessageDialog extends BaseBottomPopWindow {
         if(deleteInterface != null) {
             musicMessageMenuList.add(new MusicMessageMenu(R.mipmap.menu_delete, "删除", ""));
         }
+
         recyclerView.setAdapter(musicMessageMenuAdapter = new MusicMessageMenuAdapter(getActivity(),musicMessageMenuList));
         musicMessageMenuAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override

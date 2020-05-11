@@ -329,6 +329,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ll_pi_fu:
                 intent = new Intent(this,PiFuSettingActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
                 break;
             case R.id.ll_din_Shi:
                 DinShiDialog dinShiDialog = new DinShiDialog(new DinShiDialog.ChooseTime() {

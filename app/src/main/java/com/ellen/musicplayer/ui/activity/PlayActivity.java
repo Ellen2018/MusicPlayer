@@ -357,7 +357,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv_message:
                 if (MediaPlayerManager.getInstance().checkCanPlay()) {
-                    MusicMessageDialog musicMessageDialog = new MusicMessageDialog(this, rl,MediaPlayerManager.getInstance().currentOpenMusic());
+                    MusicMessageDialog musicMessageDialog = new MusicMessageDialog(this, rl,MediaPlayerManager.getInstance().currentOpenMusic(),false);
                     musicMessageDialog.showAtLocation(rl, Gravity.BOTTOM, 0, 0);
                 } else {
                     ToastUtils.toast(this, "当前没有播放歌曲!");

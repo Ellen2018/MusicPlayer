@@ -304,12 +304,14 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             playList.add(music);
             open(0, playList);
         } else {
-            playList.add(playPosition + 1, music);
-            if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
-                addMusicPlayList = new ArrayList<>();
+            if (!playList.contains(music)) {
+                playList.add(playPosition + 1, music);
+                if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
+                    addMusicPlayList = new ArrayList<>();
+                }
+                addMusicPlayList.clear();
+                addMusicPlayList.add(music);
             }
-            addMusicPlayList.clear();
-            addMusicPlayList.add(music);
         }
     }
 
@@ -318,12 +320,20 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         if (playList == null || playList.size() == 0) {
             open(0, musicList);
         } else {
-            playList.addAll(playPosition + 1, musicList);
-            if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
-                addMusicPlayList = new ArrayList<>();
+            List<Music> mlist = new ArrayList<>();
+            for (Music music : musicList) {
+                if (!playList.contains(music)) {
+                    mlist.add(music);
+                }
             }
-            addMusicPlayList.clear();
-            addMusicPlayList.add(musicList.get(0));
+            if (mlist != null && mlist.size() > 0) {
+                playList.addAll(playPosition + 1, musicList);
+                if (addMusicPlayList == null || addMusicPlayList.size() == 0) {
+                    addMusicPlayList = new ArrayList<>();
+                }
+                addMusicPlayList.clear();
+                addMusicPlayList.add(musicList.get(0));
+            }
         }
     }
 
