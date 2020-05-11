@@ -21,7 +21,6 @@ import java.util.List;
 
 public class MusicAdapter extends BaseSingleRecyclerViewAdapter<Music, MusicAdapter.MusicViewHolder> {
 
-
     private View parentView;
     private DeleteCallback deleteCallback;
     private String serachTag;

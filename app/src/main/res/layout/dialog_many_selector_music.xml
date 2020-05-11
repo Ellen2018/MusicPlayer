@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/wang_yi_yun_dialog_bg_color"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -31,16 +32,15 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_delete"
             android:layout_width="wrap_content"
             android:layout_height="?actionBarSize"
-            android:background="@drawable/touch_bg"
             android:gravity="center"
             android:minWidth="?actionBarSize"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="删除"
-            android:textColor="@color/white" />
+            android:text="全选"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
 
     </LinearLayout>
@@ -108,6 +108,5 @@
             android:layout_above="@id/ll_bottom_menu" />
 
     </RelativeLayout>
-
 
 </RelativeLayout>

@@ -39,15 +39,15 @@ public class CommonOkCancelDialog extends BaseDialogFragment {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.ok();
                 CommonOkCancelDialog.this.dismiss();
+                callback.ok();
             }
         });
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.cancel();
                 CommonOkCancelDialog.this.dismiss();
+                callback.cancel();
             }
         });
     }

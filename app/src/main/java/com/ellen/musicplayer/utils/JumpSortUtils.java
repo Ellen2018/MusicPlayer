@@ -39,10 +39,14 @@ public class JumpSortUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpToMusicList(Context context, List<Music> musicList){
+    public static void jumpToMusicList(Context context, List<Music> musicList,boolean isDelete,GeDan geDan){
         Intent intent = new Intent(context, ManyChooseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ManyChooseActivity.MUSIC_ACTIVITY_MUSIC_LIST, (Serializable) musicList);
+        bundle.putBoolean(ManyChooseActivity.MUSIC_ACTIVITY_IS_DELTE, isDelete);
+        if(geDan != null){
+            bundle.putString(ManyChooseActivity.MUSCI_ACTIVITY_GE_DAN_JSON,new Gson().toJson(geDan));
+        }
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

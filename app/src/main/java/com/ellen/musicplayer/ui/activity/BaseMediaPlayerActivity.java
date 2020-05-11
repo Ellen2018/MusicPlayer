@@ -179,9 +179,11 @@ public abstract class BaseMediaPlayerActivity extends BaseActivity {
                         ivMusicIcon.setImageBitmap(bitmap);
                         ivBg.setImageBitmap(MediaPlayerManager.getInstance().getGaoShiBitmap(this));
                     }
+                }else {
+                    rlMainBan.setVisibility(View.GONE);
+                    viewBottom.setVisibility(View.GONE);
                 }
             }
-
             //更新播放/暂停状态
             if (MediaPlayerManager.getInstance().getMediaPlayer().isPlaying()) {
                 ivPause.setImageResource(R.mipmap.play);

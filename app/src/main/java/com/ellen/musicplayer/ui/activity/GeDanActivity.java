@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +24,10 @@ import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.ui.dialog.CommonOkCancelDialog;
 import com.ellen.musicplayer.utils.JumpSortUtils;
+import com.ellen.supermessagelibrary.BaseEvent;
+import com.ellen.supermessagelibrary.MessageEventTrigger;
 import com.ellen.supermessagelibrary.MessageManager;
+import com.ellen.supermessagelibrary.SuperMessage;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnCli
     private RelativeLayout rl;
     private TextView tvTitle, tvContent;
     private ImageView ivBack;
+    private BaseEvent geDanEvent;
 
     @Override
     protected int layoutId() {
@@ -66,6 +71,23 @@ public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnCli
 
     @Override
     protected void initData() {
+        geDanEvent = new MessageEventTrigger() {
+            @Override
+            public void handleMessage(SuperMessage message) {
+                List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(geDan);
+                musicList.clear();
+                for(GeDanMusic geDanMusic:geDanMusicList){
+                    musicList.add(geDanMusic.getMusic());
+                }
+                musicAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return GeDanActivity.this;
+            }
+        };
+        MessageManager.getInstance().registerMessageEvent(MessageTag.GE_DAN_ID,geDanEvent);
         handlerIntent(getIntent());
     }
 
@@ -94,12 +116,6 @@ public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnCli
                     @Override
                     public void ok() {
                         SQLManager.getInstance().deleteMusicFromGeDan(geDan,music);
-                        List<GeDanMusic> geDanMusicList = SQLManager.getInstance().getGeDanMusicListByName(geDan);
-                        musicList.clear();
-                        for(GeDanMusic geDanMusic:geDanMusicList){
-                            musicList.add(geDanMusic.getMusic());
-                        }
-                        musicAdapter.notifyDataSetChanged();
                         MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.GE_DAN_ID);
                     }
 
@@ -120,7 +136,7 @@ public class GeDanActivity extends BaseMediaPlayerActivity implements View.OnCli
         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                JumpSortUtils.jumpToMusicList(GeDanActivity.this,musicList);
+                JumpSortUtils.jumpToMusicList(GeDanActivity.this,musicList,true,geDan);
                 return true;
             }
         });

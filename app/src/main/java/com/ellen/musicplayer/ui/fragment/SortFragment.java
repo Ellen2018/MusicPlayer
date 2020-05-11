@@ -275,6 +275,8 @@ public class SortFragment extends BaseFragment {
                     .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
                     .error(R.mipmap.default_music_icon)
                     .into(ivLikeIcon);
+        }else {
+            ivLikeIcon.setImageResource(R.mipmap.default_music_icon);
         }
         tvLikeCount.setText(String.valueOf(geDanMusicList.size()));
     }
@@ -292,6 +294,8 @@ public class SortFragment extends BaseFragment {
                     .load(MusicBitmap.getArtwork(getContext(), music.getMusicId(), music.getAlbumId()))
                     .error(R.mipmap.default_music_icon)
                     .into(ivNearIcon);
+        }else {
+            ivNearIcon.setImageResource(R.mipmap.default_music_icon);
         }
         tvNearCount.setText(String.valueOf(nearMusicList.size()));
     }

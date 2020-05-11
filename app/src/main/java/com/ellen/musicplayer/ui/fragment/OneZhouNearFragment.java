@@ -65,7 +65,7 @@ public class OneZhouNearFragment extends BaseFragment {
                 for(NearMusic nearMusic:nearMusicList){
                     musicList.add(nearMusic.getMusic());
                 }
-                JumpSortUtils.jumpToMusicList(getActivity(),musicList);
+                JumpSortUtils.jumpToMusicList(getActivity(),musicList,false,null);
                 return true;
             }
         });

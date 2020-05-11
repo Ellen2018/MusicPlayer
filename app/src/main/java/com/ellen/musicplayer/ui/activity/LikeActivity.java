@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ellen.musicplayer.MessageTag;
 import com.ellen.musicplayer.R;
+import com.ellen.musicplayer.adapter.ManyChooseAdapter;
 import com.ellen.musicplayer.adapter.MusicAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseRecyclerViewAdapter;
 import com.ellen.musicplayer.base.adapter.recyclerview.BaseViewHolder;
@@ -20,6 +21,7 @@ import com.ellen.musicplayer.ui.dialog.CommonOkCancelDialog;
 import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.GeDanMusicTable;
 import com.ellen.musicplayer.manager.sql.SQLManager;
+import com.ellen.musicplayer.ui.dialog.ManySelectorMusicDialog;
 import com.ellen.musicplayer.utils.JumpSortUtils;
 import com.ellen.musicplayer.utils.ToastUtils;
 import com.ellen.sqlitecreate.createsql.order.Order;
@@ -96,6 +98,7 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
         } else {
             musicList = new ArrayList<>();
         }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         musicAdapter = new MusicAdapter(this, rl, musicList);
         musicAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
@@ -113,7 +116,7 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
                         //从喜欢列表中删除该歌曲
                         SQLManager.getInstance().removeLikeMusic(music);
                         MessageManager.getInstance().sendEmptyMainThreadMessage(MessageTag.LIKE_ID);
-                        ToastUtils.toast(LikeActivity.this,"从<我喜欢>列表中移除此歌曲成功!");
+                        ToastUtils.toast(LikeActivity.this, "从<我喜欢>列表中移除此歌曲成功!");
                     }
 
                     @Override
@@ -121,18 +124,19 @@ public class LikeActivity extends BaseMediaPlayerActivity implements View.OnClic
 
                     }
                 });
-                commonOkCancelDialog.show(getSupportFragmentManager(),"");
+                commonOkCancelDialog.show(getSupportFragmentManager(), "");
 
             }
         });
         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                JumpSortUtils.jumpToMusicList(LikeActivity.this,musicList);
+                JumpSortUtils.jumpToMusicList(LikeActivity.this, musicList,true,null);
                 return true;
             }
         });
         recyclerView.setAdapter(musicAdapter);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
 

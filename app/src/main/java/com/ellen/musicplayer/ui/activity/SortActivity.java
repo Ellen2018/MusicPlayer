@@ -100,7 +100,7 @@ public class SortActivity extends BaseMediaPlayerActivity implements View.OnClic
         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                JumpSortUtils.jumpToMusicList(SortActivity.this,musicList);
+                JumpSortUtils.jumpToMusicList(SortActivity.this,musicList,false,null);
                 return true;
             }
         });

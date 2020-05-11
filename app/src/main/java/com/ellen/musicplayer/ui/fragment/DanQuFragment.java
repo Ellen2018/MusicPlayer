@@ -106,7 +106,7 @@ public class DanQuFragment extends BaseFragment implements BaseFragment.LazyLoad
                         musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
                             @Override
                             public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                                JumpSortUtils.jumpToMusicList(getActivity(), musicList);
+                                JumpSortUtils.jumpToMusicList(getActivity(), musicList,false,null);
                                 return true;
                             }
                         });

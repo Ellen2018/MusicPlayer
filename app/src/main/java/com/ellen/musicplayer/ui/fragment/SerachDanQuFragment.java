@@ -120,7 +120,7 @@ public class SerachDanQuFragment extends BaseFragment implements BaseFragment.La
                             musicAdapter.setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
                                 @Override
                                 public boolean onItemLongClick(BaseViewHolder baseViewHolder, int position) {
-                                    JumpSortUtils.jumpToMusicList(getActivity(),musicAdapter.getDataList());
+                                    JumpSortUtils.jumpToMusicList(getActivity(),musicAdapter.getDataList(),false,null);
                                     return true;
                                 }
                             });
