@@ -90,6 +90,10 @@ public class DinShiService extends Service implements DinShiInterface {
 
     @Override
     public void resetTask(int m) {
+        if(m == 0){
+            timer.cancel();
+            return;
+        }
         closeTime = System.currentTimeMillis() + m * 60 * 1000;
     }
 

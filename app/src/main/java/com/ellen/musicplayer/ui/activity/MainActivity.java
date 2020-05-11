@@ -312,6 +312,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CommonOkCancelDialog commonOkCancelDialog = new CommonOkCancelDialog(titile, content, new CommonOkCancelDialog.Callback() {
                     @Override
                     public void ok() {
+                        if(myServiceConncetion != null) {
+                            myServiceConncetion.dinShiBinder.cancelDinShiTask();
+                            unbindService(myServiceConncetion);
+                            myServiceConncetion = null;
+                        }
+                        tvDinShiTime.setVisibility(View.GONE);
                         App app = (App) getApplication();
                         MediaPlayerManager.getInstance().clearPlayList();
                         app.quitApp();
