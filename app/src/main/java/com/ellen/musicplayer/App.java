@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.ellen.musicplayer.base.AppLifeListener;
 import com.ellen.musicplayer.base.BaseApplication;
 import com.ellen.musicplayer.bean.NearMusic;
+import com.ellen.musicplayer.manager.mediaplayer.MediaPlayerManager;
 import com.ellen.musicplayer.manager.sql.SQLManager;
 import com.ellen.musicplayer.message.MusicPlay;
 import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
@@ -48,7 +49,7 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-                if(activityList == null){
+                if (activityList == null) {
                     activityList = new ArrayList<>();
                 }
                 activityList.add(activity);
@@ -92,12 +93,12 @@ public class App extends Application {
 
             @Override
             protected void onSwitchBack() {
-              isAppActive = false;
+                isAppActive = false;
             }
 
             @Override
             protected void onSwitchLife() {
-              isAppActive = true;
+                isAppActive = true;
             }
         });
         baseEvent = new MessageEventTrigger() {
@@ -113,6 +114,7 @@ public class App extends Application {
                         nearMusic.setNearTag(musicPlay.getMusic().getWeiOneTag());
                         nearMusic.setPlayTime(System.currentTimeMillis());
                         nearMusic.setPlayTimes(1);
+                        nearMusic.setPlayListName(MediaPlayerManager.getInstance().getPlayListName());
                         SQLManager.getInstance().getNearMusicTable().saveData(nearMusic);
                     } else {
                         NearMusic nearMusic = SQLManager.getInstance().getNearMusicByTag(musicPlay.getMusic().getWeiOneTag());
@@ -130,8 +132,8 @@ public class App extends Application {
         MessageManager.getInstance().registerMessageEvent(MessageTag.OPEN_MUSIC_ID, baseEvent);
     }
 
-    public void quitApp(){
-        for(Activity activity:activityList){
+    public void quitApp() {
+        for (Activity activity : activityList) {
             activity.finish();
         }
     }

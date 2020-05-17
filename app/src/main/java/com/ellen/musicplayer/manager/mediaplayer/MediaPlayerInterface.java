@@ -41,4 +41,5 @@ public interface MediaPlayerInterface {
     int getCurrentPlayPosition();
     void pause();
     boolean isContainsMusic(Music music);
+    public long getPlayListName();
 }

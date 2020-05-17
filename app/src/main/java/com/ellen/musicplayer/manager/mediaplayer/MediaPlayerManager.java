@@ -46,6 +46,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     private Bitmap bitmap = null;
     private int bitmapPosition = -1;
     private Bitmap gaoShiBitmap = null;
+    private long playListName = -1;
 
     private MediaPlayerManager() {
         musicMmkv = new MMKVHelper(KeyValueTag.MUSIC_PLAY_NAME);
@@ -71,7 +72,6 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         });
     }
 
-
     public static MediaPlayerManager getInstance() {
         if (mediaPlayerManager == null) {
             synchronized (MediaPlayerManager.class) {
@@ -88,10 +88,12 @@ public class MediaPlayerManager implements MediaPlayerInterface {
         if (playList == null) {
             playList = new ArrayList<>();
             this.playList.addAll(musicList);
+            playListName = System.currentTimeMillis();
         } else {
             if (musicList != playList) {
                 this.playList.clear();
                 this.playList.addAll(musicList);
+                playListName = System.currentTimeMillis();
             }
         }
         this.playPosition = position;
@@ -130,6 +132,7 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public void start() {
         mediaPlayer.start();
+        //记录播放历史
         sendMessage(true);
     }
 
@@ -165,11 +168,9 @@ public class MediaPlayerManager implements MediaPlayerInterface {
 
     public void nextByUser() {
         if (playMode == PlayMode.DAN_QU) {
-            if (playMode == PlayMode.DAN_QU) {
-                playPosition++;
-                if (playPosition >= playList.size()) {
-                    playPosition = 0;
-                }
+            playPosition++;
+            if (playPosition >= playList.size()) {
+                playPosition = 0;
             }
             open(playPosition, playList);
         } else {
@@ -180,11 +181,16 @@ public class MediaPlayerManager implements MediaPlayerInterface {
     @Override
     public void pre() {
         //先判断上一曲列表是否有歌曲,有的话，将列表切换到record
-        playPosition--;
-        if (playPosition < 0) {
-            playPosition = playList.size() - 1;
-        }
+        playPosition = getPrePosition(playPosition);
         open(playPosition, playList);
+    }
+
+    private int getPrePosition(int position) {
+        position--;
+        if (position < 0) {
+            position = playList.size() - 1;
+        }
+        return position;
     }
 
     @Override
@@ -409,6 +415,11 @@ public class MediaPlayerManager implements MediaPlayerInterface {
             }
         }
         return falg;
+    }
+
+    @Override
+    public long getPlayListName() {
+        return playListName > 0 ? playListName : -1;
     }
 
     public int getAllTime() {

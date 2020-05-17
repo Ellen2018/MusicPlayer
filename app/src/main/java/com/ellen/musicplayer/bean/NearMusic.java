@@ -15,6 +15,18 @@ public class NearMusic {
      * 播放次数
      */
     private int playTimes;
+    /**
+     * 属于哪个播放列表
+     */
+    private long playListName;
+
+    public long getPlayListName() {
+        return playListName;
+    }
+
+    public void setPlayListName(long playListName) {
+        this.playListName = playListName;
+    }
 
     public Music getMusic() {
         return music;
