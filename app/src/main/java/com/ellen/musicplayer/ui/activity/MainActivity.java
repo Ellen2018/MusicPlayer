@@ -42,6 +42,7 @@ import com.ellen.musicplayer.bean.PiFu;
 import com.ellen.musicplayer.service.DinShiService;
 import com.ellen.musicplayer.ui.dialog.CloseAppDialog;
 import com.ellen.musicplayer.ui.dialog.CommonOkCancelDialog;
+import com.ellen.musicplayer.ui.dialog.DeveloperDialog;
 import com.ellen.musicplayer.ui.dialog.DinShiDialog;
 import com.ellen.musicplayer.ui.dialog.PlayListDialog;
 import com.ellen.musicplayer.manager.pifu.PiFuManager;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout llExit;
     private Handler handler = new Handler();
     private TextView tvDinShiTime;
-    private LinearLayout llPiFu,llDinShi;
+    private LinearLayout llPiFu,llDinShi,llDeveloper;
 
     /**
      * 取代EventBus
@@ -280,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         llExit = findViewById(R.id.ll_exit);
         tvTabOne.setOnClickListener(this);
         llExit.setOnClickListener(this);
+        llDeveloper = findViewById(R.id.ll_developer);
         tvTabTwo.setOnClickListener(this);
         rlPlayerMb.setOnClickListener(this);
         ivSerach.setOnClickListener(this);
@@ -287,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivPlayerList.setOnClickListener(this);
         llPiFu.setOnClickListener(this);
         llDinShi.setOnClickListener(this);
+        llDeveloper.setOnClickListener(this);
 
         ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,6 +308,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_developer:
+                drawerLayout.closeDrawers();
+                DeveloperDialog developerDialog = new DeveloperDialog();
+                developerDialog.show(getSupportFragmentManager(),"");
+                break;
             case R.id.ll_exit:
                 drawerLayout.closeDrawers();
                 String titile = "退出";

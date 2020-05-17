@@ -129,6 +129,30 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_developer"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:background="@drawable/touch_bg">
+
+                    <ImageView
+                        android:layout_width="?actionBarSize"
+                        android:layout_height="?actionBarSize"
+                        android:padding="15dp"
+                        android:src="@mipmap/developer" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="关于开发者"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>
